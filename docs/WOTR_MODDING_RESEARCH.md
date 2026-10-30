@@ -4,6 +4,8 @@ Research date: 30 October 2026.
 
 Purpose: identify documentation, communities and reference projects relevant to the Making Friends Synthesist extension. This is a research note, not an implementation plan. No tools were installed and no gameplay code was changed during this research.
 
+Follow-up, 31 October 2026: [How WotR handles archetypes](WOTR_ARCHETYPE_RESEARCH.md) examines the installed engine, seven native archetypes, pinned BlueprintCore support and the integration points in our Summoner implementation.
+
 **Main findings**
 
 There are two distinct development routes: Owlcat's official modification template and community C# mods loaded through Unity Mod Manager (UMM). Making Friends already uses UMM, Harmony and BlueprintCore. My assessment is that its existing route remains the appropriate foundation for this extension; finding an official template does not establish a reason to migrate it.
