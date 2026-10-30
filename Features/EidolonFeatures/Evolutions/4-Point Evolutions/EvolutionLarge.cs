@@ -6,6 +6,7 @@ using BlueprintCore.Blueprints.References;
 using BlueprintCore.Conditions.Builder;
 using BlueprintCore.Conditions.Builder.BasicEx;
 using BlueprintCore.Utils;
+using BlueprintCore.Utils.Types;
 using Kingmaker.Blueprints;
 using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.EntitySystem.Stats;
@@ -44,9 +45,10 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._4_Point_Evolu
                 .SetIcon(IClass.icon)
                 .AddStatBonus(ModifierDescriptor.Racial, false, StatType.Strength, 4)
                 .AddStatBonus(ModifierDescriptor.Racial, false, StatType.Constitution, 2)
-                .AddStatBonus(ModifierDescriptor.NaturalArmor, false, StatType.AC, 2)
+                .AddContextRankConfig(ContextRankConfigs.FeatureRank(GetGUID.GUIDByName(IClass.Feature)).WithCustomProgression((1, 2), (2, 5)))
+                .AddContextStatBonus(StatType.AC, ContextValues.Rank(), ModifierDescriptor.NaturalArmor)
                 .AddStatBonus(ModifierDescriptor.Racial, false, StatType.Dexterity, -2)
-                .AddStatBonus(ModifierDescriptor.Other, false, StatType.Reach, 5)
+                .AddComponent<GrowthReachBonus>()
                 .SetRanks(2)
                 .ConfigureWithLogging(true);
         }
@@ -93,7 +95,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._4_Point_Evolu
                     var eidolonOriginalFeatureName = IClass.EvolutionSizeChange + System.Enum.GetName(typeof(Size), enumValue) + "OriginalFeature";
                     var eidolonOriginalFeatureGuid = GetGUID.GUIDByName(eidolonOriginalFeatureName);
                     FeatureConfigurator.New(eidolonOriginalFeatureName, eidolonOriginalFeatureGuid)
-                        .CopyFrom(eidolonOriginalFeatureGuid, c => c is not ChangeUnitSize)
+                        .CopyFrom(eidolonFeatureGuid, c => c is not ChangeUnitSize)
                         .SetGroups(FeatureGroupExtension.EvolutionBase, FeatureGroupExtension.EvolutionSizeChangeGroup)
                         .ConfigureWithLogging();
 
@@ -115,7 +117,18 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._4_Point_Evolu
                 .RemoveComponents(c => c is (AbilityEffectRunAction or AbilityEidolonHasResource))
                 .ConfigureWithLogging(true);
 
-            var action = ActionsBuilder.New().AddFeature(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName(IClass.Feature)))
+            // Check the old rank before granting Growth: only the second purchase costs six.
+            var action = ActionsBuilder.New()
+                                             .Conditional(ConditionsBuilder.New().HasFact(GetGUID.GUIDByName(IClass.Feature)),
+                                                 ActionsBuilder.New()
+                                                     .AddFeature(GetGUID.GUIDByName("EvolutionCost2Feature"))
+                                                     .Add<AddContextFeatureToPet>(c =>
+                                                     {
+                                                         c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost2Feature"));
+                                                         c.m_ReplaceFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost1Feature"));
+                                                         c.m_HasFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("SummonerAspectGreaterFeature"));
+                                                     }))
+                                             .AddFeature(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName(IClass.Feature)))
                                              .Add<ContextActionAddRemoveFeature>(c =>
                                              {
                                                  c.m_Features = blueprintUnitFactReferences;
@@ -128,18 +141,19 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._4_Point_Evolu
                                                  c.m_HasFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("SummonerAspectGreaterFeature"));
                                              })
                                              .AddFeature(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost4Feature")))
-                                             .Conditional(ConditionsBuilder.New().HasFact(BlueprintTool.GetRef<BlueprintUnitFactReference>(GetGUID.GUIDByName(IClass.Feature))),
-                                                                                  ActionsBuilder.New().AddFeature(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost2Feature"))))
-                                             .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")))
-                                             .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")));
+                                             .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")), 99)
+                                             .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")), 99)
+                                             .Add<ContextRestoreResourceOnPets>(c => { c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")); })
+                                             .Add<ContextRestoreResourceOnPets>(c => { c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")); });
 
             AbilityConfigurator.For(GetGUID.GUIDByName(IClass.Ability))
                 .SetIcon(IClass.icon)
+                .AddComponent<AbilityGrowthSizeRestriction>()
                 .AddAbilityEffectRunAction(action.Build())
                 .AddComponent<AbilityCasterHasResource>(c =>
                 {
                     c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource"));
-                    c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(IClass.Feature);
+                    c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName(IClass.Feature));
                     c.featureRank = 2;
                     c.resourceAmount = 4;
                     c.costMultiplierByRank = 2;
@@ -147,7 +161,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._4_Point_Evolu
                 .AddComponent<AbilityEidolonHasResource>(c =>
                 {
                     c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource"));
-                    c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(IClass.Feature);
+                    c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName(IClass.Feature));
                     c.featureRank = 2;
                     c.resourceAmount = 4;
                     c.costMultiplierByRank = 2;

@@ -65,7 +65,7 @@ namespace WOTR_MAKING_FRIENDS.Progressions.EidolonProgressions
                     var characterClassGuid = GetGUID.GUIDByName(characterClassName);
                     progression.AddToClasses(BlueprintTool.GetRef<BlueprintCharacterClassReference>(characterClassGuid));
                 }
-                catch { }
+                catch (Exception ex) { Main.Log("Unable to register an eidolon progression class.", ex); }
             }
 
             progression.ConfigureWithLogging();

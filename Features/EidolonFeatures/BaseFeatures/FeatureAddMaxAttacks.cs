@@ -3,6 +3,9 @@ using BlueprintCore.Blueprints.References;
 using Kingmaker.Localization;
 using WOTR_MAKING_FRIENDS.GUIDs;
 using WOTR_MAKING_FRIENDS.Utilities;
+using WOTR_MAKING_FRIENDS.ComponentsNew;
+using BlueprintCore.Utils;
+using Kingmaker.Blueprints;
 namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
 {
     public static class FeatureAddMaxAttacks
@@ -22,6 +25,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
                 .SetDescription(IClass.Description)
                 .SetIcon(AbilityRefs.MagicFangGreater.Reference.Get().m_Icon)
                 .AddAbilityResources(0, GetGUID.GUIDByName("EidolonMaxAttacksResource"), true, true)
+                .AddComponent<PrimaryAttackBudget>(c => c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")))
                 .ConfigureWithLogging();
 
             FeatureConfigurator.New(IClass.StepFeature, GetGUID.GUIDByName(IClass.StepFeature))

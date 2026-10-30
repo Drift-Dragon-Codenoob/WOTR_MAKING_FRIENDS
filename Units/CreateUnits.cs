@@ -42,7 +42,7 @@ namespace WOTR_MAKING_FRIENDS.Units
                     eidolonCount++;
                     baseFormList.Add(eidolon.eidolonBaseForm);
                 }
-                catch { }
+                catch (Exception ex) { Main.Log("Unable to configure an eidolon unit.", ex); }
 
             }
             Main.Log("Total Eidolon Count: " + eidolonCount);
@@ -101,7 +101,7 @@ namespace WOTR_MAKING_FRIENDS.Units
                 }
                 catch (Exception ex)
                 {
-                    Main.Log(ex.ToString());
+                    Main.Log(e: ex);
                 }
             }
 

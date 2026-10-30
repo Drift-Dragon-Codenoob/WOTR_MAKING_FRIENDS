@@ -26,7 +26,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
             {
                 if (base.Fact.Active && resource == Resource)
                 {
-                    bonus += Value * base.Fact.GetRank();
+                    bonus += Value * (base.Fact.GetRank() - Rank + 1);
                 }
             }
         }

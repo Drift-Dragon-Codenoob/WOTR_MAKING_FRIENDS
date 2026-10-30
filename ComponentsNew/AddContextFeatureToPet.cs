@@ -40,7 +40,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
 
         public override void RunAction()
         {
-            if (base.Target.Unit.IsPet || base.Target.Unit.IsReallyInFactPet)
+            if (Target.Unit == null || Target.Unit.IsPet || Target.Unit.IsReallyInFactPet)
             {
                 return;
             }
@@ -60,7 +60,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
                     }
                     else
                     {
-                        Main.Log(HasFeature.m_DisplayName);
+                        Main.Log(Feature?.m_DisplayName);
                         petFeatures.AddFeature(Feature);
                     }
                 }
@@ -71,7 +71,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
 
         public override string GetCaption()
         {
-            throw new NotImplementedException();
+            return "Add evolution cost to the linked eidolon.";
         }
     }
 }

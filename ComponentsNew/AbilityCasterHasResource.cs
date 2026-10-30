@@ -18,6 +18,8 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
         public int featureRank = 0;
         public int resourceAmount = 1;
         public int costMultiplierByRank = 0;
+        public int primaryAttackCount = 0;
+        public bool doubleForLargePhysicalIncrease;
         public bool IsCasterRestrictionPassed(UnitEntityData caster)
         {
             int costBonus = 0;
@@ -37,7 +39,12 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
                 }
             }
 
-            return caster.Descriptor.Resources.HasEnoughResource(m_Resource, resourceAmount + costBonus);
+            int required = primaryAttackCount > 0
+                ? Math.Max(0, primaryAttackCount - PrimaryAttackBudget.ReservedCount(caster))
+                : resourceAmount + costBonus;
+            if (doubleForLargePhysicalIncrease && PhysicalEvolutionCost.IsDoubled(caster))
+                required *= 2;
+            return caster.Descriptor.Resources.HasEnoughResource(m_Resource, required);
         }
 
         public string GetAbilityCasterRestrictionUIText()

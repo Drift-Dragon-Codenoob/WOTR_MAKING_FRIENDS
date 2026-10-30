@@ -4,6 +4,8 @@ using BlueprintCore.Utils;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
 using Kingmaker.Localization;
+using Kingmaker.EntitySystem.Stats;
+using Kingmaker.Enums;
 using System;
 using System.Collections.Generic;
 using WOTR_MAKING_FRIENDS.GUIDs;
@@ -71,8 +73,12 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
                                                             .SetHideInCharacterSheetAndLevelUp(true)
                                                             .SetGroups(FeatureGroup.CreatureType)
                                                             .SetRanks(1)
-                                                            .SetIsClassFeature(true)
-                                                            .ConfigureWithLogging();
+                                                            .SetIsClassFeature(true);
+
+                    if (name == "BaseFormFeature")
+                        feature.AddStatBonus(ModifierDescriptor.NaturalArmor, false, StatType.AC, 2);
+
+                    feature.ConfigureWithLogging();
                 }
                 catch (Exception ex)
                 {

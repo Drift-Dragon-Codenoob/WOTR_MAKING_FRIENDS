@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Utilities/BaselineRules.cs" Link="Actual/BaselineRules.cs" />
+    <Compile Include="../ComponentsNew/AbilityCasterFactRank.cs" Link="Actual/AbilityCasterFactRank.cs" />
+    <Compile Include="../ComponentsNew/PrimaryAttackBudget.cs" Link="Actual/PrimaryAttackBudget.cs" />
+    <Compile Include="../ComponentsNew/AbilityCasterHasResource.cs" Link="Actual/AbilityCasterHasResource.cs" />
+    <Compile Include="../ComponentsNew/AbilityEidolonHasResource.cs" Link="Actual/AbilityEidolonHasResource.cs" />
+    <Compile Include="../ComponentsNew/PhysicalEvolutionCost.cs" Link="Actual/PhysicalEvolutionCost.cs" />
+    <Compile Include="../ComponentsNew/IncreaseResourceAmountByRank.cs" Link="Actual/IncreaseResourceAmountByRank.cs" />
+    <Compile Include="../ComponentsNew/RemoveFactWithGroup.cs" Link="Actual/RemoveFactWithGroup.cs" />
+    <Compile Include="../ComponentsNew/AddFactsOnArray.cs" Link="Actual/AddFactsOnArray.cs" />
+    <Compile Include="../ComponentsNew/RestoreResourceOnPet.cs" Link="Actual/RestoreResourceOnPet.cs" />
+    <Compile Include="../ComponentsNew/LifeBond.cs" Link="Actual/LifeBond.cs" />
+    <Compile Include="../ComponentsNew/LifeLinkEidolon.cs" Link="Actual/LifeLinkEidolon.cs" />
+    <Compile Include="../MechanicsPatches/LifeTransferDamagePatch.cs" Link="Actual/LifeTransferDamagePatch.cs" />
+  </ItemGroup>
+</Project>

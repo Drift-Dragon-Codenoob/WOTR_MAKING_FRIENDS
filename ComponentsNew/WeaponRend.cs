@@ -118,7 +118,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
             }
             catch (Exception ex)
             {
-                Main.Log(ex.ToString());
+                Main.Log(e: ex);
             }
         }
 

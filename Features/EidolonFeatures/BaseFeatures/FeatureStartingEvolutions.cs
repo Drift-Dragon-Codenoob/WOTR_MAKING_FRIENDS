@@ -74,7 +74,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.ProgressionFeatures
 
             var feature = FeatureConfigurator.New(featureName, featureGuid, IClass.featureGroup)
                 .SetDisplayName(Helpers.ObtainString(featureName + ".Name"))
-                .SetDisplayName(Helpers.ObtainString(featureName + ".Description"))
+                .SetDescription(Helpers.ObtainString(featureName + ".Description"))
                 .AddPrerequisiteFeature(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("Eidolon" + subtypeName + "SubtypeFeature")))
                 .AddPrerequisiteFeature(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("Eidolon" + baseFormName + "BaseFormFeature")));
 

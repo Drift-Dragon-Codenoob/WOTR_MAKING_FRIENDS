@@ -27,8 +27,6 @@ namespace WOTR_MAKING_FRIENDS.Features
                 .SetDisplayName(IClass.Name)
                 .SetDescription(IClass.Description)
                 .AddComponent<BondedSensesComponent>()
-                .AddRecalculateOnStatChange(stat: Kingmaker.EntitySystem.Stats.StatType.SkillPerception)
-                .AddSavesFixerRecalculate()
                 .SetGroups(FeatureGroupExtension.SummonerFeatureGroup)
                 .ConfigureWithLogging();
         }

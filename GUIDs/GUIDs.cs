@@ -1,13 +1,7 @@
-﻿using Epic.OnlineServices.AntiCheatServer;
-using Epic.OnlineServices.Presence;
-using Kingmaker.Utility;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Linq;
 using static UnityModManagerNet.UnityModManager;
 
 namespace WOTR_MAKING_FRIENDS.GUIDs
@@ -17,55 +11,29 @@ namespace WOTR_MAKING_FRIENDS.GUIDs
         public static ModEntry ModEntry;
         public static bool buildOnly = true;
         public static string json;
-        
-        public static string GUIDByName(string s)
+        private static Dictionary<string, string> registered;
+
+        public static string GUIDByName(string name)
         {
-            var filePath = Path.Combine(ModEntry.Path, @"GUIDs\Guids.json");
-            if (File.Exists(filePath))
+            if (registered == null || !buildOnly)
             {
-                if (!buildOnly)
+                var path = Path.Combine(ModEntry.Path, "GUIDs", "GUIDs.json");
+                json = File.ReadAllText(path);
+                var entries = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var row in JArray.Parse(json))
                 {
-                    json = File.ReadAllText(filePath);
+                    string key = (string)row["name"];
+                    string value = (string)row["guid"];
+                    if (string.IsNullOrWhiteSpace(key) || !Guid.TryParse(value, out _))
+                        throw new InvalidDataException("Invalid Making Friends GUID registry entry: " + key);
+                    entries.Add(key, value);
                 }
-                else if(json.IsNullOrEmpty())
-                {
-                    json = File.ReadAllText(filePath);
-                }
-
-                var oba = JArray.Parse(json).ToList();
-                var value = (string)oba.FirstOrDefault(j => (string)j["name"] == s)?["guid"] ?? string.Empty;
-
-                if (value != string.Empty)
-                {
-                    return value;
-                }
-                else
-                {
-                    buildOnly = false;
-                    Main.Log("!!! Build Only Set To False!!!");
-                }
-
-                var newGuid = Guid.NewGuid().ToString().Replace(" ", "");
-                var newObject = new JObject();
-                newObject["name"] = s;
-                newObject["guid"] = newGuid;
-
-                oba.Add(newObject);
-                var settings = new JsonSerializerSettings
-                {
-                    Formatting = Formatting.Indented
-                };
-                var newJson = JsonConvert.SerializeObject(oba, settings);
-
-                File.WriteAllText(filePath, newJson);
-
-                return newGuid;
+                registered = entries;
             }
-            Main.Log("File : " + filePath + "not found.");
-            return string.Empty;
+            if (registered.TryGetValue(name, out string guid))
+                return guid;
+            throw new KeyNotFoundException("Missing stable Making Friends blueprint identifier: " + name +
+                ". Add it to the source GUID registry; runtime identifiers must not be generated.");
         }
-
-
     }
 }
-

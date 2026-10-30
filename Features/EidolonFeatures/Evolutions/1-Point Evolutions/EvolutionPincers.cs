@@ -91,6 +91,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._1_Point_Evolu
                 {
                     c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource"));
                     c.resourceAmount = 2;
+                    c.primaryAttackCount = 2;
                 })
                 .AddComponent<AbilityCasterHasNoFacts>(c =>
                 {

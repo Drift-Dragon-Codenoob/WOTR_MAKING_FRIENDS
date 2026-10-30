@@ -37,7 +37,7 @@ namespace WOTR_MAKING_FRIENDS.Settings
             }
             catch (Exception ex)
             {
-                Main.Log(ex.ToString());
+                Main.Log(e: ex);
                 return default;
             }
         }
@@ -53,6 +53,7 @@ namespace WOTR_MAKING_FRIENDS.Settings
     internal static class BlueprintsCache_Postfix
     {
         private static bool Initialized;
+        private static bool Failed;
 
         [HarmonyPatch(nameof(BlueprintsCache.Init)), HarmonyPostfix]
         private static void Postfix()
@@ -62,7 +63,12 @@ namespace WOTR_MAKING_FRIENDS.Settings
                 return;
             }
 
-            Initialized = true;
+            if (Failed)
+                throw new InvalidOperationException("Making Friends initialisation failed earlier. Restart after correcting the logged error.");
+
+            int errorsBefore = Main.ErrorCount;
+            try
+            {
 
             // Load Localizations
             LocalizationTool.LoadEmbeddedLocalizationPacks(
@@ -94,6 +100,16 @@ namespace WOTR_MAKING_FRIENDS.Settings
             CreateSpells.CreateAllSpells();
             CreatePortraits.CreateAllPortraits();
             Main.Log("Total number of new blueprints: " + RootConfiguratorExtensions.numberOfBlueprints);
+            if (Main.ErrorCount != errorsBefore)
+                throw new InvalidOperationException("Making Friends blueprint registration reported errors. See the preceding log entries.");
+            Initialized = true;
+            }
+            catch (Exception ex)
+            {
+                Failed = true;
+                Main.Log("Making Friends initialisation failed; restart is required before retrying.", ex);
+                throw;
+            }
         }
 
         private class SettingsUI

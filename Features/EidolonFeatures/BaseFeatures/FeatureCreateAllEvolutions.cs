@@ -14,6 +14,8 @@ using WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions;
 using WOTR_MAKING_FRIENDS.GUIDs;
 using WOTR_MAKING_FRIENDS.Utilities;
 using static Kingmaker.UnitLogic.Commands.Base.UnitCommand;
+using BlueprintCore.Conditions.Builder;
+using Kingmaker.ElementsSystem;
 
 namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
 {
@@ -45,6 +47,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
 
                 foreach (var evolution in level.Value)
                 {
+                    bool scaledPhysical = evolution == "EvolutionAbilityIncreaseStrength" || evolution == "EvolutionAbilityIncreaseConstitution";
                     var featureAction = ActionsBuilder.New().RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")), 99)
                                                      .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")), 99)
                                                      .Build();
@@ -66,15 +69,29 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
                                                          c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost" + amount + "Feature"));
                                                          c.m_ReplaceFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost" + Math.Max(1, Math.Ceiling((double)amount / 2)) + "Feature"));
                                                          c.m_HasFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("SummonerAspectGreaterFeature"));
-                                                     })
-                                                     .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")), 99)
+                                                     });
+
+                    if (scaledPhysical)
+                    {
+                        var large = ConditionsBuilder.New().Build();
+                        large.Conditions = new Condition[] { new ContextConditionLargePhysicalEvolution() };
+                        abilityAction.Conditional(large, ActionsBuilder.New()
+                            .AddFeature(GetGUID.GUIDByName("EvolutionCost2Feature"))
+                            .Add<AddContextFeatureToPet>(c =>
+                            {
+                                c.m_Feature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost2Feature"));
+                                c.m_ReplaceFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionCost1Feature"));
+                                c.m_HasFeature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("SummonerAspectGreaterFeature"));
+                            }));
+                    }
+
+                    abilityAction.RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")), 99)
                                                      .RestoreResource(BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")), 99)
-                                                     .Add<ContextRestoreResourceOnPets>(c => { c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")); c.m_IsFullRestoreAllResources = true; })
-                                                     .Add<ContextRestoreResourceOnPets>(c => { c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")); c.m_IsFullRestoreAllResources = true; })
-                                                     .Build();
+                                                     .Add<ContextRestoreResourceOnPets>(c => { c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")); })
+                                                     .Add<ContextRestoreResourceOnPets>(c => { c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("EidolonMaxAttacksResource")); });
 
                     var abilityName = evolution + "Ability";
-                    AbilityConfigurator.New(abilityName, GetGUID.GUIDByName(abilityName))
+                    var ability = AbilityConfigurator.New(abilityName, GetGUID.GUIDByName(abilityName))
                         .SetDisplayName(Helpers.ObtainString(featureName + ".Name"))
                         .SetDescription(Helpers.ObtainString(featureName + ".Description"))
                         .SetIcon(AbilityRefs.ElementalBodyIAir.Reference.Get().m_Icon)
@@ -84,14 +101,22 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
                         .AddAbilityTargetHasFact(new() { GetGUID.GUIDByName("EidolonSubtypeFeature"), GetGUID.GUIDByName("SummonerAspectFeature"), GetGUID.GUIDByName("SummonerAspectGreaterFeature") })
                         .SetCanTargetFriends(false)
                         .SetCanTargetSelf(true)
-                        .AddAbilityEffectRunAction(actions: abilityAction)
+                        .AddAbilityEffectRunAction(actions: abilityAction.Build())
                         .AddAbilityResourceLogic(amount, isSpendResource: true, requiredResource: BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource")))
                         .AddComponent<AbilityEidolonHasResource>(c =>
                         {
                             c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource"));
                             c.resourceAmount = amount;
-                        })
-                        .ConfigureWithLogging();
+                            c.doubleForLargePhysicalIncrease = scaledPhysical;
+                        });
+                    if (scaledPhysical)
+                        ability.AddComponent<AbilityCasterHasResource>(c =>
+                        {
+                            c.m_Resource = BlueprintTool.GetRef<BlueprintAbilityResourceReference>(GetGUID.GUIDByName("SummonerEvolutionPointsResource"));
+                            c.resourceAmount = amount;
+                            c.doubleForLargePhysicalIncrease = true;
+                        });
+                    ability.ConfigureWithLogging();
                 }
             }
         }
@@ -148,8 +173,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
                 {
                     var featureName = evolution + "Feature";
                     var baseFeatureName = evolution + "BaseFeature";
-                    var feature = FeatureConfigurator.New(baseFeatureName, GetGUID.GUIDByName(baseFeatureName))
-                        .SetGroups(FeatureGroupExtension.EvolutionBase);
+                    var feature = FeatureConfigurator.New(baseFeatureName, GetGUID.GUIDByName(baseFeatureName));
 
                     if (baseFeatureName.Contains("EvolutionLimbsArms"))
                     {
@@ -160,7 +184,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.BaseFeatures
                         feature.CopyFrom(BlueprintTool.GetRef<BlueprintFeatureBaseReference>(GetGUID.GUIDByName(featureName)), c => true);
                     }
 
-                    feature.ConfigureWithLogging();
+                    feature.SetGroups(FeatureGroupExtension.EvolutionBase).ConfigureWithLogging();
 
                 }
             }

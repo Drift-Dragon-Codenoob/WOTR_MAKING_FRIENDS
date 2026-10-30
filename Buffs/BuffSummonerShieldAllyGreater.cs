@@ -75,7 +75,7 @@ namespace WOTR_MAKING_FRIENDS.Buffs
                                                 .ApplyBuffPermanent(GetGUID.GUIDByName("SummonerShieldAllyGreaterIsMasterBuff"), isNotDispelable: true))
                                     .Build();
 
-            var actionsRemoveBuffBuilderIsMaster = ActionsBuilder.New().RemoveBuff(GetGUID.GUIDByName("SummonerShieldAllyGreaterBuff")).Build();
+            var actionsRemoveBuffBuilderIsMaster = ActionsBuilder.New().RemoveBuff(GetGUID.GUIDByName("SummonerShieldAllyGreaterIsMasterBuff")).Build();
 
             BuffConfigurator.New(IClass.ConditionalBuff, GetGUID.GUIDByName(IClass.ConditionalBuff))
                 .CopyFrom(BuffRefs.ShieldOfFaithBuff)

@@ -42,6 +42,7 @@ namespace WOTR_MAKING_FRIENDS.Features.EidolonFeatures.Evolutions._3_Point_Evolu
                     c.limbCount = 2;
                     c.m_feature = BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName(IClass.Feature));
                 })
+                .AddIncreaseResourceAmount(GetGUID.GUIDByName("EidolonMaxAttacksResource"), -2)
                 .SetRanks(IClass.Ranks)
                 .ConfigureWithLogging(true);
 

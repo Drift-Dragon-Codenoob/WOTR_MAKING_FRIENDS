@@ -3,6 +3,7 @@ using Kingmaker.Blueprints.JsonSystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components.Base;
+using WOTR_MAKING_FRIENDS.Utilities;
 
 namespace WOTR_MAKING_FRIENDS.ComponentsNew
 {
@@ -25,7 +26,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
             {
                 return false;
             }
-            int nextRankLevel = (1 + currentRank * numLevelsBetweenRanks) + startLevel;
+            int nextRankLevel = BaselineRules.NextRankLevel(startLevel, numLevelsBetweenRanks, currentRank);
 
             return currentLevel >= nextRankLevel;
         }

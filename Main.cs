@@ -13,6 +13,7 @@ namespace WOTR_MAKING_FRIENDS
     {
         private static Harmony harmony;
         public static UnityModManager.ModEntry modInfo = null;
+        internal static int ErrorCount;
         public class Settings : UnityModManager.ModSettings
         {
             public override void Save(UnityModManager.ModEntry modEntry)
@@ -40,19 +41,26 @@ namespace WOTR_MAKING_FRIENDS
             catch (Exception e)
             {
                 Log("Failed to patch", e);
+                harmony.UnpatchAll(modEntry.Info.Id);
+                return false;
             }
             return true;
         }
         public static void Log(string msg = null, Exception e = null)
         {
-#if DEBUG
-            modInfo.Logger.Log(msg != null && e != null ? $"{msg}, Exception: {e}" : msg != null ? $"{msg}" : e != null ? $"Exception: {e}" : "");
-#endif
+            var message = msg != null && e != null ? $"{msg}, Exception: {e}" : msg ?? e?.ToString() ?? "";
+            if (e != null)
+            {
+                System.Threading.Interlocked.Increment(ref ErrorCount);
+                modInfo?.Logger.Error(message);
+            }
+            else
+                modInfo?.Logger.Log(message);
         }
 
         private static bool OnUnload(UnityModManager.ModEntry modEntry)
         {
-            harmony.UnpatchAll();
+            harmony.UnpatchAll(modInfo.Info.Id);
             return true;
         }
 

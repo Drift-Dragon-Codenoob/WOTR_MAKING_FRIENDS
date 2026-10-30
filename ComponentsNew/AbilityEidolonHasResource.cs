@@ -8,6 +8,8 @@ using Kingmaker.UnitLogic.Abilities.Components.Base;
 using Kingmaker.UnitLogic.Parts;
 using System;
 using WOTR_MAKING_FRIENDS.Enums;
+using BlueprintCore.Utils;
+using WOTR_MAKING_FRIENDS.GUIDs;
 
 namespace WOTR_MAKING_FRIENDS.ComponentsNew
 {
@@ -22,6 +24,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
         public int resourceAmount = 1;
         public bool useCostMultiplier = false;
         public int costMultiplierByRank = 0;
+        public bool doubleForLargePhysicalIncrease;
         public bool IsCasterRestrictionPassed(UnitEntityData caster)
         {
             int costBonus = 0;
@@ -49,10 +52,15 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
             foreach (EntityPartRef<UnitEntityData, UnitPartPet> pet in caster.Pets)
             {
                 UnitPartPet entityPart = pet.EntityPart;
-                bool flag = entityPart != null && entityPart.Type == PetTypeExtensions.Eidolon;
+                bool flag = entityPart != null && pet.Entity != null && entityPart.Type == PetTypeExtensions.Eidolon;
                 if (flag)
                 {
-                    return pet.Entity.Descriptor.Resources.HasEnoughResource(m_Resource, resourceAmount + costBonus);
+                    int required = resourceAmount + costBonus;
+                    if (doubleForLargePhysicalIncrease && PhysicalEvolutionCost.IsDoubled(caster))
+                        required *= 2;
+                    if (caster.Progression.Features.HasFact(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("SummonerAspectGreaterFeature"))))
+                        required = (required + 1) / 2;
+                    return pet.Entity.Descriptor.Resources.HasEnoughResource(m_Resource, required);
                 }
             }
             return false;

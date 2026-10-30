@@ -12,7 +12,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
     [AllowMultipleComponents]
     [ComponentName("Add secondary attacks")]
     [AllowedOn(typeof(BlueprintUnit), false)]
-    [TypeId("21fd1f974a29beb40bcce671b17b7de4")]
+    [TypeId("935ada18b3bd4c8e8df2721ef751c135")]
     [AllowedOn(typeof(BlueprintUnitFact), false)]
     public class AddSecondaryAttacksItemsByRank : UnitFactComponentDelegate<AddSecondaryAttacksData>
     {

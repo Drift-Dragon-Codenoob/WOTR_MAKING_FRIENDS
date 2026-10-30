@@ -22,7 +22,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
                     evt.Result.PrimaryHand.PenalizedAttacks++;
                 }
             }
-            if (evt.Initiator.Body.SecondaryHand.HasWeapon && (!evt.Initiator.Body.SecondaryHand.Weapon.Blueprint.IsNatural || evt.Initiator.Body.PrimaryHand.Weapon.Blueprint.IsUnarmed))
+            if (evt.Initiator.Body.SecondaryHand.HasWeapon && (!evt.Initiator.Body.SecondaryHand.Weapon.Blueprint.IsNatural || evt.Initiator.Body.SecondaryHand.Weapon.Blueprint.IsUnarmed))
             {
                 for (var i = rankStart; i <= base.Fact.GetRank(); i++)
                 {

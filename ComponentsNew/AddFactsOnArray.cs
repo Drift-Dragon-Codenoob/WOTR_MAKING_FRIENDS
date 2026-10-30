@@ -19,7 +19,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
 
         public override void RunAction()
         {
-            if (originalBlueprints.Length != newBlueprints.Length)
+            if (Target.Unit == null || originalBlueprints == null || newBlueprints == null || originalBlueprints.Length != newBlueprints.Length)
             {
                 return;
             }
@@ -36,14 +36,14 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
                 }
             }
 
-            if (affectCaster)
+            if (affectCaster && AbilityContext?.Caster != null && AbilityContext.Caster != Target.Unit)
             {
                 FeatureCollection casterFeatures = base.AbilityContext.Caster.Descriptor.Progression.Features;
                 for (var i = 0; i < originalBlueprints.Length; i++)
                 {
                     if (base.AbilityContext.Caster.Progression.Features.HasFact(originalBlueprints[i]))
                     {
-                        if (!base.Target.Unit.Progression.Features.HasFact(newBlueprints[i]))
+                        if (!casterFeatures.HasFact(newBlueprints[i]))
                         {
                             casterFeatures.AddFeature(newBlueprints[i]);
                         }

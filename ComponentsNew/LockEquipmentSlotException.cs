@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace WOTR_MAKING_FRIENDS.ComponentsNew
 {
-    [TypeId("537c8f834c094964db16dd2ba24fdb69")]
+    [TypeId("ea145184e8da4fb5a46c5ab91ca7d07d")]
     [AllowedOn(typeof(BlueprintUnitFact), false)]
     [AllowMultipleComponents]
     public class LockEquipmentSlotFactException : UnitFactComponentDelegate<LockEquipmentSlotData>

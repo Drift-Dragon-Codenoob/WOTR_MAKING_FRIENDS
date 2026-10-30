@@ -12,7 +12,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
 {
 
     [AllowedOn(typeof(BlueprintUnitFact), false)]
-    [TypeId("90a4c1ac8a96d3f4482fb894883d7649")]
+    [TypeId("0521700b41034fe8979cb29e59c983a54")]
     [AllowMultipleComponents]
     [ComponentName("Melee weapon size change")]
     public class WeaponSizeChangeWeaponGroup : UnitFactComponentDelegate, IInitiatorRulebookHandler<RuleCalculateWeaponStats>, IRulebookHandler<RuleCalculateWeaponStats>, ISubscriber, IInitiatorRulebookSubscriber

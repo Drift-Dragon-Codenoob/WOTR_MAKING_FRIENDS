@@ -3,9 +3,11 @@
   <PropertyGroup>
 	<LangVersion>latest</LangVersion>
 	<TargetFramework>net48</TargetFramework>
+    <ModMenuPath Condition="'$(ModMenuPath)' == ''">$(WrathPath)\Mods\ModMenu\ModMenu.dll</ModMenuPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="tests\**" />
     <Compile Remove="bin\Debug\WOTR_MAKING_FRIENDS\net472\Assets\**" />
     <Compile Remove="GetClasses\**" />
     <EmbeddedResource Remove="bin\Debug\WOTR_MAKING_FRIENDS\net472\Assets\**" />
@@ -41,8 +43,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
+    <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" GeneratePathProperty="true" />
     <PackageReference Include="WW-Blueprint-Core" Version="2.8.4" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
   
 <ItemGroup>
@@ -75,7 +78,7 @@
  		  <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
  	  </Reference>
     <Reference Include="ModMenu">
-      <HintPath>$(WrathPath)\Mods\ModMenu\ModMenu.dll</HintPath>
+      <HintPath>$(ModMenuPath)</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
@@ -99,27 +102,28 @@
   <Folder Include="Output\Assets\Settings\" />
 </ItemGroup>
    <!-- DLL Merging -->
-	<Target Name="ILRepack" AfterTargets="Build">
+	<Target Name="ILRepack" AfterTargets="Build" Condition="'$(MergeModAssembly)' != 'false'">
 	  <ItemGroup>
 		<InputAssemblies Include="BlueprintCore.dll" />
-		<InputAssemblies Include="WOTR_MAKING_FRIENDS.dll" />
 		<OutputAssembly Include="WOTR_MAKING_FRIENDS.dll" />
 	  </ItemGroup>
 
 	  <Message Text="Merging: @(InputAssemblies) into @(OutputAssembly)" Importance="High" />
 
-	  <ILRepack OutputType="Dll" MainAssembly="WOTR_MAKING_FRIENDS.dll" OutputAssembly="@(OutputAssembly)" InputAssemblies="@(InputAssemblies)" WorkingDirectory="$(OutputPath)" />
+      <!-- The bundled CLI runs under .NET Framework; the old MSBuild task fails under modern SDKs. -->
+      <Exec Command="&quot;$(PkgILRepack_MSBuild_Task)\tools\ilrepack.exe&quot; /target:library /internalize /lib:&quot;$(TargetDir).&quot; /out:&quot;$(TargetPath)&quot; &quot;$(MSBuildProjectDirectory)\$(IntermediateOutputPath)$(TargetName).dll&quot; &quot;$(TargetDir)BlueprintCore.dll&quot;" />
 	</Target>
 
   <!-- Generates Assembly-CSharp_public.dll -->
-  <Target Name="Publicize" AfterTargets="Clean">
+  <Target Name="Publicize" BeforeTargets="ResolveAssemblyReferences" Condition="'$(SkipPublicize)' != 'true'"
+          Inputs="$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp.dll" Outputs="$(SolutionDir)lib\Assembly-CSharp.dll">
     <ItemGroup>
       <Assemblies Include="$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp.dll" />
       <PublicAssembly Include="$(SolutionDir)lib\Assembly-CSharp_public.dll" />
       <RenamedAssembly Include="$(SolutionDir)lib\Assembly-CSharp.dll" />
     </ItemGroup>
 
-    <RemoveDir Directories="$(SolutionDir)lib/" />
+    <MakeDir Directories="$(SolutionDir)lib" />
     <PublicizeTask InputAssemblies="@(Assemblies)" OutputDir="$(SolutionDir)lib\" />
     <!-- ILRepack requires the assembly name match the reference so remove _public -->
     <Move SourceFiles="@(PublicAssembly)" DestinationFiles="@(RenamedAssembly)" />
@@ -136,7 +140,7 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
   
-  <Target Name="Deploy" AfterTargets="ILRepack">
+  <Target Name="Deploy" AfterTargets="ILRepack" Condition="'$(DeployToGame)' == 'true'">
     <ItemGroup>
       <Assembly Include="$(OutputPath)\$(AssemblyName).dll" />
       <ModConfig Include="$(SolutionDir)\Output\Info.json" />

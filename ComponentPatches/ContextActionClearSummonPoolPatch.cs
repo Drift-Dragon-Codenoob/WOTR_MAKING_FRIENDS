@@ -7,47 +7,39 @@ using Kingmaker.UnitLogic;
 using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using System;
+using System.Linq;
+using WOTR_MAKING_FRIENDS.GUIDs;
 
 namespace WOTR_MAKING_FRIENDS.ComponentAndPatches
 {
     [HarmonyPatch(typeof(ContextActionClearSummonPool), "RunAction")]
     public class ContextActionClearSummonPoolPatch
     {
-        [HarmonyReversePatch]
-        [HarmonyPatch(typeof(ContextActionClearSummonPool), "RunAction")]
-        private static void OriginalRunAction(ContextActionClearSummonPool __instance)
-        {
-            // The original method is empty because it is being replaced by the Prefix method.
-        }
-
         private static bool Prefix(ContextActionClearSummonPool __instance)
         {
+            var blueprint = __instance.SummonPool;
+            if (blueprint == null)
+                return true;
+            var id = blueprint.AssetGuid.m_Guid;
+            if (id != Guid.Parse(GetGUID.GUIDByName("SummonerPool")) &&
+                id != Guid.Parse(GetGUID.GUIDByName("DraconicAllyPool")))
+                return true;
 
-            ISummonPool pool = Game.Instance.SummonPools.GetPool(__instance.SummonPool);
+            var caster = __instance.AbilityContext?.MaybeCaster;
+            if (caster == null)
+                return true;
+
+            ISummonPool pool = Game.Instance.SummonPools.GetPool(blueprint);
             if (pool == null)
             {
                 return false;
             }
 
-            foreach (UnitEntityData unit in pool.Units)
+            foreach (UnitEntityData unit in pool.Units.ToArray())
             {
-                try
-                {
-                    UnitEntityData caster = unit.Descriptor.GetFact(BlueprintRoot.Instance.SystemMechanics.SummonedUnitBuff) is Buff fact ? fact.Context.MaybeCaster : null;
-                    Main.Log(caster.CharacterName);
-                    Main.Log(__instance.AbilityContext.MaybeCaster.CharacterName);
-                    Main.Log((__instance.AbilityContext.MaybeCaster == caster) ? "True" : "False");
-                    Main.Log(pool.Blueprint.AssetGuid.m_Guid.ToString());
-
-                    if (__instance.AbilityContext.MaybeCaster == caster)
-                    {
-                        unit.Descriptor.RemoveFact(Game.Instance.BlueprintRoot.SystemMechanics.SummonedUnitBuff);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Main.Log("", e);
-                }
+                var summon = unit?.Descriptor.GetFact(BlueprintRoot.Instance.SystemMechanics.SummonedUnitBuff) as Buff;
+                if (summon?.Context?.MaybeCaster == caster)
+                    unit.Descriptor.RemoveFact(BlueprintRoot.Instance.SystemMechanics.SummonedUnitBuff);
             }
 
             return false; // Skip the original method.

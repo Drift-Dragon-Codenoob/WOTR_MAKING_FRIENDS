@@ -12,7 +12,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
 {
     [AllowedOn(typeof(BlueprintUnitFact), false)]
     [AllowMultipleComponents]
-    [TypeId("537c8f834c094964db16dd2ba24fdb69")]
+    [TypeId("79d45f2855ac46ae96c7694f69e8d116")]
     public class UnlockEquipmentSlot : UnitFactComponentDelegate<LockEquipmentSlotData>
     {
         public enum SlotType

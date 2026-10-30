@@ -27,6 +27,8 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
 
         public override void RunAction()
         {
+            if (Target.Unit == null)
+                return;
             var features = new List<Feature>();
 
             foreach (var feature in base.Target.Unit.Progression.Features)
@@ -49,7 +51,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
                 }
             }
 
-            if (affectCaster)
+            if (affectCaster && AbilityContext?.Caster != null && AbilityContext.Caster != Target.Unit)
             {
                 var casterFeatures = new List<Feature>();
                 foreach (var feature in base.AbilityContext.Caster.Progression.Features)
@@ -60,7 +62,7 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
                     }
                 }
 
-                foreach (var fact in features)
+                foreach (var fact in casterFeatures)
                 {
                     Main.Log($"Fact: {fact.Blueprint.name}");
                     if (fact.Blueprint.HasGroup(featureGroup))

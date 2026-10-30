@@ -7,6 +7,7 @@ using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
+using WOTR_MAKING_FRIENDS.Enums;
 
 namespace WOTR_MAKING_FRIENDS.ComponentsNew
 {
@@ -39,16 +40,17 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
             if (unit == null)
             {
                 PFLog.Default.Error("Target is missing");
+                return;
             }
             foreach (var pet in unit.Pets)
             {
-                if (m_IsFullRestoreAllResources)
+                if (pet.EntityPart?.Type != PetTypeExtensions.Eidolon || pet.Entity == null || Resource == null)
+                    continue;
+
+                // Even legacy actions requesting a full restore must only touch the selected resource.
+                if (!ContextValueRestoration)
                 {
-                    pet.Entity.Descriptor.Resources.FullRestoreAll();
-                }
-                else if (!ContextValueRestoration)
-                {
-                    pet.Entity.Descriptor.Resources.Restore(Resource, 1);
+                    pet.Entity.Descriptor.Resources.Restore(Resource);
                 }
                 else
                 {
