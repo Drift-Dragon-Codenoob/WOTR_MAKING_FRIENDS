@@ -6,6 +6,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
     // Component facts only; primary references and retrieval date are in docs/research/PF1E_SPELL_COMPONENTS.json.
     internal static class PfSpellComponents
     {
+        // David's compatibility decision: unknown mod/mythic spells remain usable until
+        // their components are verified. Unknown must not be recorded as a factual "no".
+        internal static bool CanCastWithoutArms(string blueprintName) => RequiresSomatic(blueprintName) != true;
         private static readonly Dictionary<string, bool> somatic = new(StringComparer.Ordinal)
         {
             { "AcidPit", true },

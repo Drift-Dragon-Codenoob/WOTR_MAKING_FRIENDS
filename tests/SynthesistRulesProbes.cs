@@ -42,6 +42,17 @@ internal static class SynthesistRulesProbes
         }
 
         int[] hd = [1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15, 15];
+        Check(ManagedEvolutionRules.MaximumRanks("EvolutionNaturalArmor") == 5 &&
+            Enumerable.Range(0, 5).Select(r => ManagedEvolutionRules.RequiredLevel("EvolutionNaturalArmor", r)).SequenceEqual(new[] { 1, 5, 10, 15, 20 }),
+            "Five natural armour purchases at the original Summoner gates");
+        Check(Enumerable.Range(0, 4).Select(r => ManagedEvolutionRules.RequiredLevel("EvolutionAbilityIncreaseConstitution", r)).SequenceEqual(new[] { 1, 6, 12, 18 }),
+            "Ability evolution purchases differ from HD advancement choices");
+        Check(ManagedEvolutionRules.RequiredLevel("EvolutionLarge", 0) == 8 && ManagedEvolutionRules.RequiredLevel("EvolutionLarge", 1) == 13,
+            "Large and Huge gates");
+        Check(ManagedEvolutionRules.MaximumRanks("EvolutionFastHealing") == 5 && ManagedEvolutionRules.RequiredLevel("EvolutionFastHealing", 4) == 11,
+            "Fast healing upgrades are limited to five ranks and require level eleven");
+        Check(!PfSpellComponents.CanCastWithoutArms("MageArmor") && PfSpellComponents.CanCastWithoutArms("DimensionDoorBase") &&
+            PfSpellComponents.CanCastWithoutArms("UnknownModSpell"), "Approved somatic compatibility policy allows unknown spells until verified");
         Check(AspectBudget.Allowance(9) == 0 && AspectBudget.Allowance(10) == 2 && AspectBudget.Allowance(18) == 6, "Aspect allowance boundaries");
         Check(AspectBudget.AdditionalDiversion(10, 0, 1) == 1 && AspectBudget.AdditionalDiversion(10, 1, 1) == 1, "Ordinary Aspect charges each point");
         Check(AspectBudget.AdditionalDiversion(18, 0, 1) == 1 && AspectBudget.AdditionalDiversion(18, 1, 1) == 0, "Greater Aspect rounds the aggregate, not each purchase");
