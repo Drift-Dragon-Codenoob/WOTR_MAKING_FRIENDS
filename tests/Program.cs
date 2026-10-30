@@ -259,3 +259,4 @@ typeof(WOTR_MAKING_FRIENDS.MechanicsPatches.LifeTransferDamagePatch)
 Check((int)deathArgs[1] == 110 && donor.HPLeft == 100, "Non-damage death or stat effects are not intercepted");
 
 Console.WriteLine($"PASS: {checks} offline regression assertions. Production component logic linked directly; Unity integration not exercised.");
+SynthesistRulesProbes.Run();

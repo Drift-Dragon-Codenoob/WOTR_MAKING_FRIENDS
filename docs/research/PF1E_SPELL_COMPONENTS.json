@@ -1,0 +1,579 @@
+{
+  "retrieved": "2026-10-31",
+  "scope": "Component facts for supported original Summoner spells; unknown is deliberately distinct from no somatic component.",
+  "spells": [
+    {
+      "name": "Acid Pit",
+      "key": "acidpit",
+      "components": "V, S, F (miniature shovel costing 10 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Acid Pit"
+    },
+    {
+      "name": "Acid Splash",
+      "key": "acidsplash",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Acid Splash"
+    },
+    {
+      "name": "Baleful Polymorph",
+      "key": "balefulpolymorph",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Baleful Polymorph"
+    },
+    {
+      "name": "Banishment",
+      "key": "banishment",
+      "components": "V, S, F (see text)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Banishment"
+    },
+    {
+      "name": "Barkskin",
+      "key": "barkskin",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Barkskin"
+    },
+    {
+      "name": "Bear's Endurance",
+      "key": "bearsendurance",
+      "components": "V, S, M/DF (a few hairs, or a pinch of dung, from a bear)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Bear's Endurance"
+    },
+    {
+      "name": "Bear's Endurance, Mass",
+      "key": "bearsendurancemass",
+      "components": "V, S, M/DF (a few hairs, or a pinch of dung, from a bear)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Bear's Endurance, Mass"
+    },
+    {
+      "name": "Blur",
+      "key": "blur",
+      "components": "V",
+      "somatic": false,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Blur"
+    },
+    {
+      "name": "Bull's Strength",
+      "key": "bullsstrength",
+      "components": "V, S, M/DF (a few hairs, or a pinch of dung, from a bull)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Bull's Strength"
+    },
+    {
+      "name": "Bull's Strength, Mass",
+      "key": "bullsstrengthmass",
+      "components": "V, S, M/DF (a few hairs, or a pinch of dung, from a bull)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Bull's Strength, Mass"
+    },
+    {
+      "name": "Cat's Grace",
+      "key": "catsgrace",
+      "components": "V, S, M (pinch of cat fur)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Cat's Grace"
+    },
+    {
+      "name": "Cat's Grace, Mass",
+      "key": "catsgracemass",
+      "components": "V, S, M (pinch of cat fur)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Cat's Grace, Mass"
+    },
+    {
+      "name": "Create Pit",
+      "key": "createpit",
+      "components": "V, S, F (miniature shovel costing 10 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Create Pit"
+    },
+    {
+      "name": "Creeping Doom",
+      "key": "creepingdoom",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Creeping Doom"
+    },
+    {
+      "name": "Daze",
+      "key": "daze",
+      "components": "V, S, M (a pinch of wool or similar substance)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Daze"
+    },
+    {
+      "name": "Dimension Door",
+      "key": "dimensiondoor",
+      "components": "V",
+      "somatic": false,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Dimension Door"
+    },
+    {
+      "name": "Dismissal",
+      "key": "dismissal",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Dismissal"
+    },
+    {
+      "name": "Dispel Magic",
+      "key": "dispelmagic",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Dispel Magic"
+    },
+    {
+      "name": "Dispel Magic, Greater",
+      "key": "dispelmagicgreater",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Dispel Magic, Greater"
+    },
+    {
+      "name": "Displacement",
+      "key": "displacement",
+      "components": "V, M (a small loop of leather)",
+      "somatic": false,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Displacement"
+    },
+    {
+      "name": "Eagle's Splendor",
+      "key": "eaglessplendor",
+      "components": "V, S, M/DF (feathers or droppings from an eagle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Eagle's Splendor"
+    },
+    {
+      "name": "Eagle's Splendor, Mass",
+      "key": "eaglessplendormass",
+      "components": "V, S, M/DF (feathers or droppings from an eagle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Eagle's Splendor, Mass"
+    },
+    {
+      "name": "Eaglesoul",
+      "key": "eaglesoul",
+      "components": "V, S, M (vellum inscribed with good outsider\u2019s name)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Eaglesoul"
+    },
+    {
+      "name": "Enlarge Person",
+      "key": "enlargeperson",
+      "components": "V, S, M (powdered iron)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Enlarge Person"
+    },
+    {
+      "name": "Enlarge Person, Mass",
+      "key": "enlargepersonmass",
+      "components": "V, S, M (powdered iron)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Enlarge Person, Mass"
+    },
+    {
+      "name": "Expeditious Retreat",
+      "key": "expeditiousretreat",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Expeditious Retreat"
+    },
+    {
+      "name": "Fox's Cunning, Mass",
+      "key": "foxscunningmass",
+      "components": "V, S, M/DF (hairs or dung from a fox)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Fox's Cunning, Mass"
+    },
+    {
+      "name": "Geniekind",
+      "key": "geniekind",
+      "components": "V, S, M (a pinch of dust, embers, wind-blown sand or drops of water, depending on the genie type)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Geniekind"
+    },
+    {
+      "name": "Glitterdust",
+      "key": "glitterdust",
+      "components": "V, S, M (ground mica)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Glitterdust"
+    },
+    {
+      "name": "Grease",
+      "key": "grease",
+      "components": "V, S, M (butter)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Grease"
+    },
+    {
+      "name": "Guidance",
+      "key": "guidance",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Guidance"
+    },
+    {
+      "name": "Haste",
+      "key": "haste",
+      "components": "V, S, M (a shaving of licorice root)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Haste"
+    },
+    {
+      "name": "Heroism",
+      "key": "heroism",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Heroism"
+    },
+    {
+      "name": "Heroism, Greater",
+      "key": "heroismgreater",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Heroism, Greater"
+    },
+    {
+      "name": "Hungry Pit",
+      "key": "hungrypit",
+      "components": "V, S, F (miniature shovel costing 10 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Hungry Pit"
+    },
+    {
+      "name": "Invisibility",
+      "key": "invisibility",
+      "components": "V, S, M/DF (an eyelash encased in gum arabic)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Invisibility"
+    },
+    {
+      "name": "Invisibility, Greater",
+      "key": "invisibilitygreater",
+      "components": "V, S, M/DF (an eyelash encased in gum arabic)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Invisibility, Greater"
+    },
+    {
+      "name": "Invisibility, Mass",
+      "key": "invisibilitymass",
+      "components": "V, S, M/DF (an eyelash encased in gum arabic)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Invisibility, Mass"
+    },
+    {
+      "name": "Light",
+      "key": "light",
+      "components": "V, M/DF (a firefly)",
+      "somatic": false,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Light"
+    },
+    {
+      "name": "Mage Armor",
+      "key": "magearmor",
+      "components": "V, S, F (a piece of cured leather)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Mage Armor"
+    },
+    {
+      "name": "Magic Fang",
+      "key": "magicfang",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Magic Fang"
+    },
+    {
+      "name": "Magic Fang, Greater",
+      "key": "magicfanggreater",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Magic Fang, Greater"
+    },
+    {
+      "name": "Obsidian Flow",
+      "key": "obsidianflow",
+      "components": "V, S, M/DF (a small piece of obsidian)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Obsidian Flow"
+    },
+    {
+      "name": "Owl's Wisdom",
+      "key": "owlswisdom",
+      "components": "V, S, M/DF (feathers or droppings from an owl)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Owl's Wisdom"
+    },
+    {
+      "name": "Owl's Wisdom, Mass",
+      "key": "owlswisdommass",
+      "components": "V, S, M/DF (feathers or droppings from an owl)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Owl's Wisdom, Mass"
+    },
+    {
+      "name": "Protection from Arrows",
+      "key": "protectionfromarrows",
+      "components": "V, S, F (a piece of tortoiseshell or turtle shell)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Protection from Arrows"
+    },
+    {
+      "name": "Protection from Arrows, Communal",
+      "key": "protectionfromarrowscommunal",
+      "components": "V, S, F (a piece of tortoiseshell or turtle shell)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Protection from Arrows, Communal"
+    },
+    {
+      "name": "Protection from Energy",
+      "key": "protectionfromenergy",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Protection from Energy"
+    },
+    {
+      "name": "Protection from Energy, Communal",
+      "key": "protectionfromenergycommunal",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Protection from Energy, Communal"
+    },
+    {
+      "name": "Protection from Evil",
+      "key": "protectionfromevil",
+      "components": "V, S, M/DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Protection from Evil"
+    },
+    {
+      "name": "Protection from Evil, Communal",
+      "key": "protectionfromevilcommunal",
+      "components": "V, S, M/DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Protection from Evil, Communal"
+    },
+    {
+      "name": "Rage",
+      "key": "rage",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Rage"
+    },
+    {
+      "name": "Ray of Sickening",
+      "key": "rayofsickening",
+      "components": "V, S, M (a drop of sweat)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Ray of Sickening"
+    },
+    {
+      "name": "Reduce Person",
+      "key": "reduceperson",
+      "components": "V, S, M (a pinch of powdered iron)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Reduce Person"
+    },
+    {
+      "name": "Reduce Person, Mass",
+      "key": "reducepersonmass",
+      "components": "V, S, M (a pinch of powdered iron)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Reduce Person, Mass"
+    },
+    {
+      "name": "Resist Energy",
+      "key": "resistenergy",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Resist Energy"
+    },
+    {
+      "name": "Resist Energy, Communal",
+      "key": "resistenergycommunal",
+      "components": "V, S, DF",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Resist Energy, Communal"
+    },
+    {
+      "name": "Resistance",
+      "key": "resistance",
+      "components": "V, S, M/DF (a miniature cloak)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Resistance"
+    },
+    {
+      "name": "See Invisibility",
+      "key": "seeinvisibility",
+      "components": "V, S, M (talc and powdered silver)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=See Invisibility"
+    },
+    {
+      "name": "Shield",
+      "key": "shield",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Shield"
+    },
+    {
+      "name": "Slow",
+      "key": "slow",
+      "components": "V, S, M (a drop of molasses)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Slow"
+    },
+    {
+      "name": "Snowball",
+      "key": "snowball",
+      "components": "V, S",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Snowball"
+    },
+    {
+      "name": "Spiked Pit",
+      "key": "spikedpit",
+      "components": "V, S, F (miniature shovel costing 10 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Spiked Pit"
+    },
+    {
+      "name": "Stoneskin",
+      "key": "stoneskin",
+      "components": "V, S, M (granite and diamond dust worth 250 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Stoneskin"
+    },
+    {
+      "name": "Stoneskin, Communal",
+      "key": "stoneskincommunal",
+      "components": "V, S, M (granite and diamond dust worth 250 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Stoneskin, Communal"
+    },
+    {
+      "name": "Summon Monster 1",
+      "key": "summonmonster1",
+      "components": "V, S, F/DF (a tiny bag and a small candle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Summon Monster 1"
+    },
+    {
+      "name": "Summon Monster 2",
+      "key": "summonmonster2",
+      "components": "V, S, F/DF (a tiny bag and a small candle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Summon Monster 2"
+    },
+    {
+      "name": "Summon Monster 4",
+      "key": "summonmonster4",
+      "components": "V, S, F/DF (a tiny bag and a small candle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Summon Monster 4"
+    },
+    {
+      "name": "Summon Monster 5",
+      "key": "summonmonster5",
+      "components": "V, S, F/DF (a tiny bag and a small candle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Summon Monster 5"
+    },
+    {
+      "name": "Summon Monster 7",
+      "key": "summonmonster7",
+      "components": "V, S, F/DF (a tiny bag and a small candle)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=Summon Monster 7"
+    },
+    {
+      "name": "True Seeing",
+      "key": "trueseeing",
+      "components": "V, S, M (an eye ointment that costs 250 gp)",
+      "somatic": true,
+      "url": "https://www.aonprd.com/SpellDisplay.aspx?ItemName=True Seeing"
+    }
+  ],
+  "nativeBlueprintSomatic": {
+    "EaglesSplendor": true,
+    "EnlargePerson": true,
+    "Daze": true,
+    "SummonMonsterISingle": true,
+    "SeeInvisibility": true,
+    "BullsStrength": true,
+    "BalefulPolymorph": true,
+    "ReducePersonMass": true,
+    "Heroism": true,
+    "Blur": false,
+    "HeroismGreater": true,
+    "Guidance": true,
+    "Rage": true,
+    "MagicFang": true,
+    "Glitterdust": true,
+    "SummonMonsterVIIBase": true,
+    "AcidPit": true,
+    "ProtectionFromArrows": true,
+    "Resistance": true,
+    "MageArmor": true,
+    "CatsGraceMass": true,
+    "ResistEnergyCommunal": true,
+    "ProtectionFromArrowsCommunal": true,
+    "Eaglesoul": true,
+    "DimensionDoorBase": false,
+    "EnlargePersonMass": true,
+    "ReducePerson": true,
+    "CreatePit": true,
+    "SummonMonsterVBase": true,
+    "MageShield": true,
+    "SpikedPit": true,
+    "ProtectionFromEnergyCommunal": true,
+    "EaglesSplendorMass": true,
+    "ProtectionFromAlignment": true,
+    "DispelMagicGreater": true,
+    "TrueSeeing": true,
+    "ResistEnergy": true,
+    "Geniekind": true,
+    "ProtectionFromEnergy": true,
+    "Barkskin": true,
+    "MagicFangGreater": true,
+    "Snowball": true,
+    "ExpeditiousRetreat": true,
+    "InvisibilityGreater": true,
+    "CreepingDoom": true,
+    "ProtectionFromAlignmentCommunal": true,
+    "MageLight": false,
+    "Stoneskin": true,
+    "Grease": true,
+    "SummonMonsterIVBase": true,
+    "AcidSplash": true,
+    "InvisibilityMass": true,
+    "Displacement": false,
+    "SummonMonsterIIBase": true,
+    "BearsEnduranceMass": true,
+    "OwlsWisdomMass": true,
+    "FoxsCunningMass": true,
+    "HungryPit": true,
+    "Invisibility": true,
+    "RayOfSickening": true,
+    "ObsidianFlow": true,
+    "Dismissal": true,
+    "OwlsWisdom": true,
+    "BearsEndurance": true,
+    "CatsGrace": true,
+    "StoneskinCommunal": true,
+    "BullsStrengthMass": true,
+    "Banishment": true,
+    "Haste": true,
+    "Slow": true,
+    "DispelMagic": true,
+    "SynthesistRejuvenate1Spell": true,
+    "SynthesistRejuvenate2Spell": true,
+    "SynthesistRejuvenate3Spell": true
+  }
+}

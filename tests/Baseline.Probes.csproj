@@ -4,8 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <WrathPath Condition="'$(WrathPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure</WrathPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(WrathPath)\Wrath_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Compile Include="../Synthesist/Rules/*.cs" Link="Actual/Synthesist/%(Filename)%(Extension)" />
     <Compile Include="../Utilities/BaselineRules.cs" Link="Actual/BaselineRules.cs" />
     <Compile Include="../ComponentsNew/AbilityCasterFactRank.cs" Link="Actual/AbilityCasterFactRank.cs" />
     <Compile Include="../ComponentsNew/PrimaryAttackBudget.cs" Link="Actual/PrimaryAttackBudget.cs" />

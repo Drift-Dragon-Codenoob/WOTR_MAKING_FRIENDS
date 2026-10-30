@@ -13,7 +13,7 @@ $env:DOTNET_NOLOGO = '1'
 
 & $DotNet build (Join-Path $projectRoot 'WOTR_MAKING_FRIENDS.sln') -c Release "-p:WrathPath=$GamePath" "-p:ModMenuPath=$ModMenuDll" -p:DeployToGame=false -v:minimal
 if ($LASTEXITCODE -ne 0) { throw 'Production build failed.' }
-& $DotNet run --project (Join-Path $projectRoot 'tests\Baseline.Probes.csproj') -c Release
+& $DotNet run --project (Join-Path $projectRoot 'tests\Baseline.Probes.csproj') -c Release "-p:WrathPath=$GamePath"
 if ($LASTEXITCODE -ne 0) { throw 'Offline regression checks failed.' }
 & (Join-Path $projectRoot 'tests\Verify-AssemblyAndSource.ps1') -GamePath $GamePath
 
