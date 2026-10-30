@@ -16,6 +16,9 @@ $game = [dnlib.DotNet.ModuleDefMD]::Load((Join-Path $managed 'Assembly-CSharp.dl
 try {
     Check (@($mod.GetAssemblyRefs() | Where-Object { $_.Name -eq 'BlueprintCore' }).Count -eq 0) 'BlueprintCore is embedded rather than an external runtime dependency'
     Check (@($mod.GetTypes() | Where-Object { $_.FullName -eq 'BlueprintCore.Utils.BlueprintTool' }).Count -eq 1) 'Merged output contains exactly one BlueprintTool'
+    Check (@($mod.CustomAttributes | Where-Object TypeFullName -eq 'System.Security.UnverifiableCodeAttribute').Count -eq 1) 'Release module preserves the metadata required by publicised game access'
+    $skipVerification = @($mod.Assembly.DeclSecurities | ForEach-Object SecurityAttributes | ForEach-Object NamedArguments | Where-Object { $_.Name -eq 'SkipVerification' -and $_.Argument.Value -eq $true })
+    Check ($skipVerification.Count -gt 0) 'Release assembly includes the compiler-generated SkipVerification permission'
     $hook = $mod.Find('WOTR_MAKING_FRIENDS.MechanicsPatches.LifeTransferDamagePatch', $false)
     Check ($null -ne $hook) 'HP adapter is present in the compiled mod'
     $prefix = $hook.Methods | Where-Object { $_.Name -eq 'Prefix' }
@@ -46,6 +49,8 @@ try {
     foreach ($type in $mod.GetTypes() | Where-Object { $_.FullName -like 'WOTR_MAKING_FRIENDS.*' }) {
         foreach ($attribute in $type.CustomAttributes | Where-Object { $_.TypeFullName -eq 'Kingmaker.Blueprints.JsonSystem.TypeIdAttribute' }) {
             $id = $attribute.ConstructorArguments[0].Value.ToString().Replace('-', '').ToLowerInvariant()
+            $parsedId = [Guid]::Empty
+            Check ([Guid]::TryParse($id, [ref]$parsedId)) "Valid component GUID format for $($type.FullName)"
             Check (!$customIds.ContainsKey($id)) "Unique custom TypeId for $($type.FullName)"
             $customIds[$id] = $type.FullName
         }

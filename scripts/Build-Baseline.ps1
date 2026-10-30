@@ -1,7 +1,8 @@
 param(
     [string]$GamePath = 'C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure',
-    [string]$ModMenuDll = "$env:LOCALAPPDATA\CodexTooling\WotrBaseline\ModMenu\ModMenu.dll",
-    [string]$DotNet = "$env:LOCALAPPDATA\CodexTooling\WotrBaseline\dotnet\dotnet.exe"
+    [string]$ModMenuDll = "$env:LOCALAPPDATA\CodexTooling\WotrBaseline\ModMenu-2.0.14\ModMenu.dll",
+    [string]$DotNet = "$env:LOCALAPPDATA\CodexTooling\WotrBaseline\dotnet\dotnet.exe",
+    [string]$InstallerZipDll = ''
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
@@ -29,7 +30,12 @@ Copy-Item -LiteralPath (Join-Path $projectRoot 'LICENSE') -Destination $stage
 Copy-Item -LiteralPath (Join-Path $projectRoot 'licenses\BlueprintCore-LICENSE') -Destination $stage
 Copy-Item -LiteralPath (Join-Path $projectRoot 'MESSAGE_TO_BALKOTH.md') -Destination $stage
 $archive = Join-Path $artifactRoot ("WOTR_MAKING_FRIENDS-$($info.Version)-baseline.zip")
-Compress-Archive -LiteralPath $stage -DestinationPath $archive -Force
+& (Join-Path $PSScriptRoot 'New-ModArchive.ps1') -StageDirectory $stage -ArchivePath $archive
+if (!$InstallerZipDll) {
+    $candidate = Join-Path (Split-Path -Parent (Split-Path -Parent $projectRoot)) 'UnityModManagerInstaller\Ionic.Zip.dll'
+    if (Test-Path -LiteralPath $candidate) { $InstallerZipDll = $candidate }
+}
+& (Join-Path $projectRoot 'tests\Verify-Package.ps1') -ArchivePath $archive -StageDirectory $stage -InstallerZipDll $InstallerZipDll
 $hash = Get-FileHash -LiteralPath $archive -Algorithm SHA256
 $hash.Hash + '  ' + (Split-Path -Leaf $archive) | Set-Content -LiteralPath ($archive + '.sha256') -Encoding ASCII
 $hash

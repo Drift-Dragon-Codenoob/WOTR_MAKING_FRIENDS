@@ -3,6 +3,8 @@
   <PropertyGroup>
 	<LangVersion>latest</LangVersion>
 	<TargetFramework>net48</TargetFramework>
+    <!-- Required by merged BlueprintCore when accessing publicised game members at runtime. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ModMenuPath Condition="'$(ModMenuPath)' == ''">$(WrathPath)\Mods\ModMenu\ModMenu.dll</ModMenuPath>
   </PropertyGroup>
 
@@ -131,7 +133,6 @@
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\Debug\WOTR_MAKING_FRIENDS</OutputPath>
     <DebugType>portable</DebugType>
   </PropertyGroup>

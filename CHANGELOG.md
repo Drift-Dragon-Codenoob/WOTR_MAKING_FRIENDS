@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.4.2 — Installer archive repair — 30 October 2026
+
+- Replace Windows PowerShell `Compress-Archive` with explicit ZIP creation using forward-slash paths and root-level `Info.json` and DLL.
+- Omit malformed directory entries. The installed Unity Mod Manager's Ionic.Zip library interpreted the original `Assets\` entry as a file and installation stopped with only empty directories created.
+- Add package validation that rejects backslashes and wrapper folders, then extracts and compares file hashes using both .NET ZIP and the installer's own Ionic.Zip library when available.
+- Gameplay rules are unchanged from 0.2.4.1. The previous package's hash check normalised paths and missed this installer failure.
+- ModMenu remains a required separate dependency; the game installation was missing it during the first test.
+- Correct the weapon-size component's 33-character TypeId found during the first successful extraction and actual game launch. Validate GUID syntax as well as uniqueness before packaging.
+- Build against and require the maintained ModMenu 2.0.14. The archived 1.3.2 release failed during blueprint-cache initialisation on the installed WotR 2.7.0x build.
+- Enable the publicised-member compilation metadata in Release as well as Debug. The merged Release DLL previously omitted BlueprintCore's required module/assembly metadata and failed when accessing the localisation pack. Add verification for both markers.
+- Verified actual startup on WotR 2.7.0x with ModMenu 2.0.14: all four mods active, 832 Making Friends blueprints registered without initialisation exceptions, and Summoner visible with its description and level-one features in character creation. Broader gameplay and save migration remain unverified.
+
 ## 0.2.4.1 — Summoner baseline repairs — 30 October 2026
 
 Source repair checkpoint: `2e801a9`, on `baseline-cleanup`, based on Balkoth's upstream commit `34c2940bc1d3a01b68008d96b35764cee1679b64`.

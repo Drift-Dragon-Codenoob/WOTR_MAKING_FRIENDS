@@ -1,10 +1,10 @@
 # Making Friends baseline repairs
 
-30 October 2026. Fork version **0.2.4.1**, branch `baseline-cleanup`.
+30 October 2026. Fork version **0.2.4.2**, branch `baseline-cleanup`. Gameplay repair checkpoint: 0.2.4.1; 0.2.4.2 repairs the installer archive and a malformed component identifier discovered during startup testing.
 
 This is a repair of Balkoth's existing Summoner mod, based on upstream commit `34c2940bc1d3a01b68008d96b35764cee1679b64`. It does not implement the Synthesist archetype yet. Balkoth's authorship and MIT licence are retained. The message in `MESSAGE_TO_BALKOTH.md` remains a draft; it has not been sent.
 
-The source repairs and offline verification are complete. **In-game acceptance is pending.** Successful compilation and isolated tests do not certify Unity lifecycle behaviour, existing-save migration or compatibility with other mods.
+The source repairs, offline verification, startup and class-list checks are complete. **Broader gameplay acceptance is pending.** Successful startup and isolated tests do not certify Unity lifecycle behaviour, existing-save migration or compatibility with other mods.
 
 ## Agreed rules
 
@@ -41,10 +41,20 @@ The HP adapter checks the active `RuleDealDamage` and the target's `LastHandledD
 
 - Production builds target .NET Framework 4.8 and the installed WotR 2.7.0x assemblies. Debug and merged Release builds succeeded with zero warnings and errors.
 - **863 offline regression assertions passed**, linking production components directly to small engine stand-ins. They cover rank boundaries, resource isolation, target/caster resets, primary alternatives, arms thresholds, Growth size/cost/reach rules and HP transfers including overkill, temporary HP, missing/dead masters, insufficient donors, reciprocal links, fake damage and difficulty scaling. Four hundred deterministic allocation samples contribute 800 of these assertions; this is not a count of distinct game scenarios.
-- The release verification script passed 3,687 assembly/source consistency assertions covering embedded BlueprintCore, HP hook presence and native damage order, custom/native TypeId uniqueness, registry uniqueness, literal identifier references, base-group copy order and spell-list destinations. This count includes individual registry and native-type entries; it is not a count of gameplay tests.
+- The release verification script passed 3,723 assembly/source consistency assertions covering embedded BlueprintCore and required publicised-access metadata, HP hook presence and native damage order, custom/native TypeId validity and uniqueness, registry uniqueness, literal identifier references, base-group copy order and spell-list destinations. This count includes individual registry and native-type entries; it is not a count of gameplay tests.
 - The original 865-entry blueprint GUID registry is preserved. No original game assemblies are distributed in the mod ZIP.
 
-The release package contains the merged mod DLL, upstream assets and localisation, stable GUID registry, Info.json, this report, the upstream README, licence and developer-message draft. It requires Unity Mod Manager and **ModMenu 1.3.0 or newer**. ModMenu was used as a build reference outside the game installation; it has not been installed into the game.
+The release package contains the merged mod DLL, upstream assets and localisation, stable GUID registry, Info.json, this report, the upstream README, licence and developer-message draft. It requires Unity Mod Manager and **ModMenu 2.0.14 or newer**. It is built against the maintained [CasDragon release](https://github.com/CasDragon/ModMenu/releases/tag/2.0.14). ModMenu is a separate dependency and is not bundled in this ZIP.
+
+The first 0.2.4.1 installation failed before loading gameplay code: the game mod folder contained only empty directories and ModMenu was absent. The original ZIP used Windows backslashes, and the installer's Ionic.Zip library misidentified its `Assets\` directory entry as a file. Version 0.2.4.2 writes portable paths, places metadata and the DLL directly at the ZIP root and checks actual extraction with both ZIP libraries. The earlier file-hash comparison normalised entry names and therefore missed the malformed path.
+
+After extraction was corrected, actual startup found a 33-character weapon-size component TypeId introduced in the initial repairs. Its malformed format caused Harmony's attribute scan to throw before patching. The identifier is corrected and format validation is now part of the assembly checks.
+
+The archived ModMenu 1.3.2 release then failed during blueprint-cache initialisation with `TypeLoadException: VTable setup of type ModMenu.Settings.Fix failed`. It could report Active before reaching that failure, demonstrating why mod-loader status alone was insufficient. The original maintainer's README redirects to CasDragon's maintained fork. ModMenu 2.0.14 was downloaded from that fork, its published SHA-256 digest checked, installed and used to rebuild Making Friends. The manifest now enforces that version. The earlier ModMenu files and failed startup logs are preserved under the ignored local `artifacts/installation-backups` directory. Existing saves were not changed.
+
+A further Release-only build defect caused `FieldAccessException` when embedded BlueprintCore accessed `LocalizationPack.m_Strings`. The original project enabled the necessary compiler metadata only in Debug; the merge therefore omitted it from Release. `AllowUnsafeBlocks` is now enabled in both configurations so the primary module carries the `UnverifiableCode` marker and compiler-generated `SkipVerification` declaration. Both are checked in the merged assembly. This changes the mod build, not Windows security settings or the installed game assemblies.
+
+**Successful runtime check on WotR 2.7.0x:** the repaired Release DLL and ModMenu 2.0.14 reached the main menu. Both the external installer and in-game manager recognised Making Friends; the in-game manager displayed all four mods active. The startup log reported 832 new Making Friends blueprints, with no initialisation exceptions. In a new custom-character preview, Summoner appeared between Sorcerer and Warpriest and its description and level-one class features loaded. The preview was left open for David; no character was completed and no campaign save was loaded or overwritten. This check does not validate combat, progression or old saves.
 
 ## Build and package
 
@@ -54,13 +64,13 @@ On this workstation:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Build-Baseline.ps1
 ```
 
-The process-specific execution-policy option does not change Windows' saved execution policy. The script accepts `-GamePath`, `-ModMenuDll` and `-DotNet` overrides. It builds Release, runs the probes and assembly/source checks, then creates `artifacts/WOTR_MAKING_FRIENDS-0.2.4.1-baseline.zip` and a SHA-256 file. Build-only tooling is under `%LOCALAPPDATA%\CodexTooling\WotrBaseline`; it is not part of the game or package.
+The process-specific execution-policy option does not change Windows' saved execution policy. The script accepts `-GamePath`, `-ModMenuDll`, `-DotNet` and optional `-InstallerZipDll` overrides. It builds Release, runs the probes, assembly/source and extraction checks, then creates `artifacts/WOTR_MAKING_FRIENDS-0.2.4.2-baseline.zip` and a SHA-256 file. It automatically uses the local Unity Mod Manager installer ZIP library when found. Build-only tooling is under `%LOCALAPPDATA%\CodexTooling\WotrBaseline`; it is not part of the game or package.
 
 Normal builds do not deploy to the game. Any publicised game assembly is generated only under the ignored local `lib` directory. The old deployment target requires explicit `DeployToGame=true`.
 
 ## In-game acceptance still required
 
-Use a disposable test character and separate test saves. The repaired package has not been installed or launched; existing game files, mods and saves were left unchanged.
+Use a disposable test character and separate test saves. The original source repair checkpoint did not install or launch the mod. The subsequent installation diagnosis and package correction are described above; full gameplay acceptance remains pending.
 
 1. Confirm Unity Mod Manager reports both ModMenu and Making Friends loaded, the settings page appears, and registration completes without errors in `Player.log` and the UMM log.
 2. Test a normal Summoner and each intended body form at levels 1, 4, 8, 12, 13, 14 and 20. Check level-one armour, progression and the absence of Summoner from pet class choices.
