@@ -35,6 +35,7 @@ namespace WOTR_MAKING_FRIENDS
                 GetGUID.ModEntry = modEntry;
                 Helpers.ModEntry = modEntry;
                 harmony.PatchAll();
+                modEntry.OnUpdate += Synthesist.Runtime.SynthesistLifecycle.Update;
 
                 Log("Finished patching.");
             }

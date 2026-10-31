@@ -63,6 +63,11 @@ try {
     }
 
     $registry = Get-Content -LiteralPath (Join-Path $projectRoot 'Output\GUIDs\GUIDs.json') -Raw | ConvertFrom-Json
+    foreach ($entry in $registry) {
+        Check ($entry.name -is [string] -and ![string]::IsNullOrWhiteSpace($entry.name)) 'Every blueprint registry row has a plain non-empty name'
+        $blueprintId = [Guid]::Empty
+        Check ($entry.guid -is [string] -and [Guid]::TryParse($entry.guid, [ref]$blueprintId)) "Valid blueprint GUID for $($entry.name)"
+    }
     Check (@($registry | Group-Object name -CaseSensitive | Where-Object Count -gt 1).Count -eq 0) 'Blueprint registry names are unique with the production ordinal comparison'
     Check (@($registry | Group-Object { ([Guid]$_.guid).ToString('N') } | Where-Object Count -gt 1).Count -eq 0) 'Blueprint identifiers are unique'
     $names = New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::Ordinal)

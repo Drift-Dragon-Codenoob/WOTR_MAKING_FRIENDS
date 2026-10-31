@@ -7,9 +7,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ModMenuPath Condition="'$(ModMenuPath)' == ''">$(WrathPath)\Mods\ModMenu\ModMenu.dll</ModMenuPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(SynthesistAcceptance)' == 'true'">
+    <DefineConstants>$(DefineConstants);SYNTHESIST_ACCEPTANCE</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="tests\**" />
+    <Compile Remove="artifacts\**" />
     <Compile Remove="bin\Debug\WOTR_MAKING_FRIENDS\net472\Assets\**" />
     <Compile Remove="GetClasses\**" />
     <EmbeddedResource Remove="bin\Debug\WOTR_MAKING_FRIENDS\net472\Assets\**" />
@@ -30,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Output\Localizations\Synthesist.json" />
     <EmbeddedResource Include="Output\Localizations\CharacterClasses.json" />
     <EmbeddedResource Include="Output\Localizations\Features.json" />
     <EmbeddedResource Include="Output\Localizations\Other.json" />
@@ -132,7 +137,7 @@
   </Target>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <OutputPath>bin\Debug\WOTR_MAKING_FRIENDS</OutputPath>
     <DebugType>portable</DebugType>
   </PropertyGroup>

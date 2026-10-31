@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased - Synthesist runtime candidate - 31 October 2026
+
+- Add isolated original-PF1e progression, native archetype/form registration, canonical cross-scene eidolon storage, preparation/allocation controls and reversible fusion adapters.
+- Connect native daily resources, eidolon temporary HP, Fused Link payments, Rejuvenate healing, Jump delivery and initial Split/Twin/lifecycle/compatibility systems. Full gameplay acceptance remains in progress.
+- Isolate blueprint components and spell-list storage from ordinary Summoners; retain existing blueprint identifiers.
+- Keep climb, swim and underwater-breathing evolutions unavailable following David's decision.
+- Add offline rules probes and development-only native integration checks restricted to separate test characters. Record actual passes, failures and remaining release gates in `docs/SYNTHESIST_IMPLEMENTATION.md`.
+- Internal candidates have been installed with backups for testing. No accepted 0.3.0 package or release-version change yet.
+
 ## 0.2.4.2 — Installer archive repair — 30 October 2026
 
 - Replace Windows PowerShell `Compress-Archive` with explicit ZIP creation using forward-slash paths and root-level `Info.json` and DLL.

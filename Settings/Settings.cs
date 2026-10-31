@@ -99,6 +99,8 @@ namespace WOTR_MAKING_FRIENDS.Settings
             CreateSummonPools.CreateAllSummonPools();
             CreateSpells.CreateAllSpells();
             CreatePortraits.CreateAllPortraits();
+            if (WOTR_MAKING_FRIENDS.Synthesist.Blueprints.SynthesistBlueprints.EnableDevelopmentGraph)
+                WOTR_MAKING_FRIENDS.Synthesist.Blueprints.SynthesistBlueprints.Create();
             Main.Log("Total number of new blueprints: " + RootConfiguratorExtensions.numberOfBlueprints);
             if (Main.ErrorCount != errorsBefore)
                 throw new InvalidOperationException("Making Friends blueprint registration reported errors. See the preceding log entries.");
@@ -122,6 +124,17 @@ namespace WOTR_MAKING_FRIENDS.Settings
 
                 CreateSubHeader("rulechangesheader");
                 CreateToggle("sharespellspatch", true);
+                sb.AddSliderInt(SliderInt.New(Settings.RootKey + ".fusedlinkminimumhp", 1,
+                    WOTR_MAKING_FRIENDS.Synthesist.Blueprints.SynthesistBlueprints.Text("link.limit", "Fused Link: minimum personal HP"), 0, 1000)
+                    .OnValueChanged(value =>
+                    {
+                        if (Kingmaker.Game.Instance?.Player == null) return;
+                        foreach (var unit in Kingmaker.Game.Instance.Player.Party)
+                        {
+                            var part = unit.Get<WOTR_MAKING_FRIENDS.Synthesist.Runtime.UnitPartSynthesist>();
+                            if (part?.State != null) part.State.PersonalHpLimit = value;
+                        }
+                    }));
                 ModMenu.ModMenu.AddSettings(sb);
             }
             private static void CreateSubHeader(string key)
