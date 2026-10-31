@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using Kingmaker.Blueprints;
 using Kingmaker.UnitLogic;
@@ -12,6 +13,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
     [HarmonyPatch(typeof(SelectFeature), nameof(SelectFeature.Apply))]
     internal static class CharacterBuildSelectionHook
     {
+        private static readonly HashSet<BuildAction> reportedTransitions = new();
         private static void Postfix(SelectFeature __instance, LevelUpState __0, UnitDescriptor __1)
         {
             if (!SynthesistBlueprints.Ready || __instance.Item?.Feature == null ||
@@ -47,17 +49,21 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     part.Confirm();
                     break;
             }
-            // Native action replay rebuilds this dependent chain when an earlier choice
-            // is changed or unselected. Only a purchase creates another purchase slot.
+            // CharGenVM filters normal pages to Parent == null. Our choice items
+            // are plain features, not nested BlueprintFeatureSelections, so a child
+            // cannot be rendered as a nested picker even with its Next link set.
             if (next != null)
             {
-                var child = __0.AddSelection(selection, selection.Source, next, selection.Level);
-                // Native SelectFeature.Apply does both operations for nested
-                // selections. Merely appending a state leaves the UI's Next chain
-                // empty, so the new purchase/appearance step never opens.
-                selection.Select(__instance.Item, child);
+                var page = AddVisibleStep(__0, selection, next);
+                if (reportedTransitions.Add(choice.Action))
+                    Main.Log("Synthesist build page: " + choice.Action + " -> " + next.name +
+                        "; root=" + (page.Parent == null) + "; selections=" + __0.Selections.Count);
             }
         }
+
+        private static FeatureSelectionState AddVisibleStep(LevelUpState state, FeatureSelectionState previous,
+            Kingmaker.Blueprints.Classes.Selection.BlueprintFeatureSelection next)
+            => state.AddSelection(null, previous.Source, next, previous.Level);
     }
 
     [HarmonyPatch(typeof(LevelUpController), nameof(LevelUpController.Commit))]

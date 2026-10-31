@@ -4,7 +4,7 @@ Updated 1 November 2026. Branch: `synthesist`. **Development candidate; the comp
 
 ## Character-build flow checkpoint - 1 November
 
-**First player test failed:** creation displayed the acquired build-start feature but no evolution/appearance steps. Inspection identified a missing native `FeatureSelectionState.Next` link: appending a dependent selection is insufficient for navigation. The repair calls the same `Select(item, child)` linking API used by native nested selections. Two assembly checks now cover the call and the native pointer setter. David's retest is pending; the character-build UI is not accepted yet.
+**Two player attempts failed:** creation displayed the acquired build-start feature but no evolution/appearance steps. The first repair linked `Next`, which was insufficient. Further inspection found the actual presentation mismatch: CharGenVM creates normal pages only for `Parent == null`, while its nested picker requires an item that supports nesting. Our choice items are plain features, so parented states remain hidden. The replacement adapter appends normal root selection pages instead. Assembly checks cover the null parent argument and the installed native page filter. A bounded passive log records the first transition of each kind. David's retest is pending; the character-build UI is not accepted yet.
 
 David now performs all in-game tests. This checkpoint uses source inspection, compilation, pure rules checks, installed-assembly metadata inspection and archive extraction only. It does not install, launch, control or exercise WotR.
 

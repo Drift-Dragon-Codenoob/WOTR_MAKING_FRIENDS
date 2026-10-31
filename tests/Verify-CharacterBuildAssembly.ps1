@@ -26,11 +26,15 @@ try {
     Check (@($nativeSelect.Methods | Where-Object {$_.Name -eq 'Apply' -and $_.Parameters.Count -eq 3}).Count -eq 1) 'Native selection Apply signature matches the scoped hook'
     $hook = $module.Find('WOTR_MAKING_FRIENDS.Synthesist.Runtime.CharacterBuildSelectionHook', $false)
     $hookBody = $hook.Methods | Where-Object Name -eq 'Postfix'
-    Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*LevelUpState::AddSelection*'}).Count -eq 1) 'Build flow appends native dependent selections'
-    Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*FeatureSelectionState::Select*'}).Count -eq 1) 'Build flow links the appended child to the native Next chain'
-    $nativeState = $native.Find('Kingmaker.UnitLogic.Class.LevelUp.FeatureSelectionState', $false)
-    $nativeLink = $nativeState.Methods | Where-Object Name -eq 'Select'
-    Check (@($nativeLink.Body.Instructions | Where-Object {$_.Operand -like '*FeatureSelectionState::set_Next*'}).Count -eq 1) 'The native linking API sets the Next pointer consumed by navigation'
+    Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*CharacterBuildSelectionHook::AddVisibleStep*'}).Count -eq 1) 'Build transitions use the visible-page adapter'
+    $visibleStep = $hook.Methods | Where-Object Name -eq 'AddVisibleStep'
+    Check (@($visibleStep.Body.Instructions | Where-Object {$_.Operand -like '*LevelUpState::AddSelection*'}).Count -eq 1) 'Visible-page adapter uses the native selection API'
+    Check ($visibleStep.Body.Instructions[1].OpCode.Code.ToString() -eq 'Ldnull') 'The parent argument is null, creating a normal page rather than an unrenderable child'
+    Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*FeatureSelectionState::Select*'}).Count -eq 0) 'Plain feature choices are not misrepresented as nested selections'
+    $pageFilter = $native.Find('Kingmaker.UI.MVVM._VM.CharGen.CharGenVM/<>c', $false).Methods |
+        Where-Object {$_.Name.String -eq '<UpdateAllFeatureSelectorPhases>b__58_0'}
+    Check (@($pageFilter.Body.Instructions | Where-Object {$_.Operand -like '*FeatureSelectionState::get_Parent*'}).Count -eq 1 -and
+        @($pageFilter.Body.Instructions | Where-Object {$_.OpCode.Code.ToString() -eq 'Ldnull'}).Count -eq 1) 'Installed CharGen page filter explicitly checks the null parent required by the adapter'
     Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*SpawnUnit*' -or $_.Operand -like '*ApplyCharacterBuild*'}).Count -eq 0) 'Selection edits do not spawn or apply a canonical entity'
     $part = $module.Find('WOTR_MAKING_FRIENDS.Synthesist.Runtime.UnitPartSynthesistBuild', $false)
     foreach ($field in 'Current','Draft','Revision','AppearanceOverride') {
