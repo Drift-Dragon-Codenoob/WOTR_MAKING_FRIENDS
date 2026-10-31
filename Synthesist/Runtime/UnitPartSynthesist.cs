@@ -219,12 +219,10 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             if (Level < 10) return;
             var controls = SynthesistBlueprints.ExistingFeature("SynthesistEvolutionControlsFeature");
             if (!Owner.Descriptor.HasFact(controls)) Owner.AddFact(controls);
-            foreach (string cost in new[] { "One", "Two", "Three", "Four" })
-            {
-                var blueprint = BlueprintCore.Utils.BlueprintTool.Get<Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility>(SynthesistBlueprints.Id("Evolution" + cost + "AbilityBase"));
-                var fact = Owner.Facts.Get(blueprint);
-                if (fact != null) Owner.RemoveFact(fact);
-            }
+            // Aspect owns its inherited menu facts. Repeatedly trying to remove those
+            // retained facts raises native ability-removal notifications every frame,
+            // rebuilding the entire action bar. Keep their ownership intact; the
+            // archetype-scoped availability guard blocks both roots and all variants.
         }
 
         private void RemovePetPreparation()
@@ -351,6 +349,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         internal void Tick()
         {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = RuntimePerformance.Measure("UnitPart.Tick");
+#endif
             if (State == null || Eidolon == null || Changing) return;
             if (Eidolon.Descriptor.Faction != Owner.Descriptor.Faction)
             {
@@ -451,6 +452,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         private void ReconcileSummonSpellbook()
         {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = RuntimePerformance.Measure("ReconcileSummonSpellbook");
+#endif
             // The inherited AddSpellbook component caches its initial context rank.
             // Advance the existing native SLA book for this archetype only. Native
             // spellbook advancement supplies the original spell tiers and slot limits.

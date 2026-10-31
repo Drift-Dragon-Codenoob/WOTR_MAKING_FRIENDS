@@ -29,6 +29,13 @@ namespace WOTR_MAKING_FRIENDS.Settings
     {
         public static readonly string RootKey = "wotr-making-friends.settings";
         public static readonly string PartialKey = "wotr-making-friends";
+        // These keys are queried from global ability/target hooks. Cache their names,
+        // not their values: ModMenu must still supply the user's live preferences.
+        private static readonly Dictionary<string, string> hotKeys = new(StringComparer.Ordinal)
+        {
+            { "sharespellspatch", RootKey + ".sharespellspatch" },
+            { "fusedlinkminimumhp", RootKey + ".fusedlinkminimumhp" }
+        };
         public static T GetSetting<T>(string key)
         {
             try
@@ -43,6 +50,10 @@ namespace WOTR_MAKING_FRIENDS.Settings
         }
         private static string GetKey(string partialKey)
         {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = Synthesist.Runtime.RuntimePerformance.Measure("Settings.GetKey");
+#endif
+            if (hotKeys.TryGetValue(partialKey, out string key)) return key;
          Regex rgx = new("[^a-z0-9-.]");
         partialKey = rgx.Replace(partialKey.ToLower(), "");
             return $"{RootKey}.{partialKey}";

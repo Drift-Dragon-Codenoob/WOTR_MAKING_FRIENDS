@@ -36,8 +36,16 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             foreach (var group in FeatureCreateAllEvolutions.Evolutions.Values)
             {
                 category++;
-                foreach (string key in group) Costs[key] = category;
+                foreach (string key in group)
+                {
+                    Costs[key] = category;
+                    // Include excluded evolutions too: inherited Aspect menus must
+                    // never bypass this archetype's original-rules allocation path.
+                    SynthesistBlueprints.LegacyEvolutionAbilities.Add(BlueprintTool.Get<Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility>(SynthesistBlueprints.Id(key + "Ability")));
+                }
             }
+            foreach (string cost in new[] { "One", "Two", "Three", "Four" })
+                SynthesistBlueprints.LegacyEvolutionAbilities.Add(BlueprintTool.Get<Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility>(SynthesistBlueprints.Id("Evolution" + cost + "AbilityBase")));
             Costs["EvolutionGore"] = 2;
             Costs["EvolutionPounce"] = 1;
             Costs["EvolutionReach"] = 1;

@@ -1,7 +1,7 @@
 param(
-    [ValidateSet('inspect','prepare','confirm','fuse','dismiss','split','rejoin','twin','end-twin','link',
+    [ValidateSet('inspect','performance','prepare','confirm','fuse','dismiss','split','rejoin','twin','end-twin','link',
         'advance','damage','heal-personal','damage-pet','heal-pet','purchase-managed','purchase-aspect-managed',
-        'retrain-evolution-probe','combat-probe')]
+        'retrain-evolution-probe','combat-probe','end-combat-probe')]
     [string]$Command = 'inspect',
     [int]$Amount = 0,
     [string]$GamePath = 'C:\Program Files (x86)\Steam\steamapps\common\Pathfinder Second Adventure',

@@ -42,6 +42,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         internal static string Reason(AbilityData ability)
         {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = RuntimePerformance.Measure("AbilityGuards.Reason");
+#endif
             var caster = ability.Caster.Unit;
             var part = caster.Get<UnitPartSynthesist>();
             if (part == null)
@@ -54,8 +57,10 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 return null;
             }
             if (part.State == null) return null;
-            foreach (string key in SynthesistBlueprints.EvolutionAbilities.Keys)
-                if (ability.Blueprint.name == key + "Ability") return "Use the Synthesist preparation controls to allocate evolutions.";
+            // Combat AI and action bars query availability frequently. Comparing the
+            // registered blueprints avoids creating one string per evolution per query.
+            if (SynthesistBlueprints.LegacyEvolutionAbilities.Contains(ability.Blueprint))
+                return "Use the Synthesist preparation controls to allocate evolutions.";
             if ((part.IsFused || part.IsSplit) && ability.Blueprint.name.StartsWith("SummonerSummonMonster", StringComparison.Ordinal))
                 return "Dismiss the eidolon before using Summon Monster.";
             if ((part.IsFused || part.IsSplit || part.TwinActive) && IsTransformation(ability.Blueprint))
@@ -86,9 +91,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
     {
         private static void Postfix(AbilityData __instance, TargetWrapper __0, ref bool __result)
         {
-            if (!__result || !AbilityGuards.IsTransformation(__instance.Blueprint)) return;
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = RuntimePerformance.Measure("TransformationTargetGuard");
+#endif
+            if (!__result) return;
             var part = __0?.Unit?.Get<UnitPartSynthesist>();
-            if (part != null && (part.IsFused || part.IsSplit || part.TwinActive)) __result = false;
+            if (part == null || (!part.IsFused && !part.IsSplit && !part.TwinActive)) return;
+            if (AbilityGuards.IsTransformation(__instance.Blueprint)) __result = false;
         }
     }
 }

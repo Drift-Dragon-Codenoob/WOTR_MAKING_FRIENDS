@@ -20,8 +20,14 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         internal static bool IsManaged(string key) => key == "EvolutionLarge" || key == "EvolutionNaturalArmor" || key.StartsWith("EvolutionAbilityIncrease", StringComparison.Ordinal);
         internal static int Rank(UnitEntityData unit, string key) => unit.Progression.Features.GetRank(SynthesistBlueprints.BuildFeature(key + "Feature")) +
             unit.Progression.Features.GetRank(SynthesistBlueprints.ExistingFeature(key + "BaseFeature"));
-        internal static string Signature(UnitPartSynthesist part) => part.Level + ":" + string.Join(",", new[] { part.Owner, part.Eidolon }
-            .SelectMany(unit => new[] { Rank(unit, "EvolutionLarge"), Rank(unit, "EvolutionNaturalArmor") }.Concat(Attributes.Select(a => Rank(unit, "EvolutionAbilityIncrease" + a)))));
+        internal static string Signature(UnitPartSynthesist part)
+        {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = RuntimePerformance.Measure("EvolutionStatistics.Signature");
+#endif
+            return part.Level + ":" + string.Join(",", new[] { part.Owner, part.Eidolon }
+                .SelectMany(unit => new[] { Rank(unit, "EvolutionLarge"), Rank(unit, "EvolutionNaturalArmor") }.Concat(Attributes.Select(a => Rank(unit, "EvolutionAbilityIncrease" + a)))));
+        }
 
         internal static int AttributeBonus(UnitEntityData unit, int attribute)
         {

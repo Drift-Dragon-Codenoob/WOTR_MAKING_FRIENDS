@@ -9,6 +9,7 @@ using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.RuleSystem;
 using Kingmaker.RuleSystem.Rules.Damage;
+using Kingmaker.UnitLogic.Abilities;
 using Newtonsoft.Json;
 using WOTR_MAKING_FRIENDS.Synthesist.Blueprints;
 using WOTR_MAKING_FRIENDS.Synthesist.Rules;
@@ -22,6 +23,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         private sealed class Request { public string Id; public string Command; public int Amount; }
         private static DateTime nextPoll;
         private static Kingmaker.UnitLogic.Commands.Base.UnitCommand lastPurchase;
+        private static UnitEntityData lastOpponent;
         internal static void Poll()
         {
             if (DateTime.UtcNow < nextPoll || Game.Instance?.Player == null || Game.Instance.Player.MainCharacter.Value == null) return;
@@ -40,6 +42,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 switch (request.Command)
                 {
                     case "inspect": break;
+                    case "performance": RuntimePerformance.Start(request.Id); break;
                     case "prepare": part.BeginPreparation(); break;
                     case "confirm": part.ConfirmPreparation(); break;
                     case "fuse": part.EnterFusion(); break;
@@ -56,11 +59,21 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                         var enemyBlueprint = BlueprintCore.Utils.BlueprintTool.Get<BlueprintUnit>("fbd199907bdc8b948a5afc7313ac29f5");
                         var enemy = Game.Instance.EntityCreator.SpawnUnit(enemyBlueprint,
                             unit.Position + new UnityEngine.Vector3(3, 0, 0), UnityEngine.Quaternion.identity, Game.Instance.LoadedAreaState.MainState);
+                        lastOpponent = enemy;
+                        if (request.Amount != 0)
+                        {
+                            if (request.Amount < 100 || request.Amount > 1000) throw new ArgumentOutOfRangeException("Amount");
+                            enemy.Stats.HitPoints.BaseValue = request.Amount;
+                        }
                         enemy.CombatState.Engage(unit);
                         unit.CombatState.Engage(enemy);
                         enemy.CombatState.JoinCombat(false);
                         unit.CombatState.JoinCombat(false);
                         unit.Commands.Run(new Kingmaker.UnitLogic.Commands.UnitAttack(enemy, null));
+                        break;
+                    case "end-combat-probe":
+                        if (lastOpponent == null || lastOpponent.State.IsDead) throw new InvalidOperationException("No living fixed test opponent.");
+                        Rulebook.Trigger(new RuleDealDamage(unit, lastOpponent, new DirectDamage(DiceFormula.Zero, 100000)));
                         break;
                     case "retrain-evolution-probe":
                         // Adapter probe only: this deliberately does not claim to test
@@ -154,6 +167,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     EvolutionPoints = part.Eidolon?.Descriptor.Resources.GetResourceAmount(BlueprintCore.Utils.BlueprintTool.Get<BlueprintAbilityResource>(SynthesistBlueprints.Id("SummonerEvolutionPointsResource"))),
                     AspectPoints = unit.Descriptor.Resources.GetResourceAmount(BlueprintCore.Utils.BlueprintTool.Get<BlueprintAbilityResource>(SynthesistBlueprints.Id("SummonerEvolutionPointsResource"))),
                     Purchased = SynthesistBlueprints.PurchasedFeatures.Select(p => new { Name = p.Key, Rank = part.Eidolon.Progression.Features.GetRank(p.Value) }).ToArray(),
+                    LegacyEvolutionGuards = SynthesistBlueprints.LegacyEvolutionAbilities.Select(blueprint => new
+                    {
+                        blueprint.name,
+                        BlockedForSynthesist = AbilityGuards.Reason(new AbilityData(blueprint, unit.Descriptor)) != null,
+                        BlockedForOrdinaryCompanion = Game.Instance.Player.Party.Where(other => other != unit && other.Get<UnitPartSynthesist>() == null)
+                            .Any(other => AbilityGuards.Reason(new AbilityData(blueprint, other.Descriptor)) != null)
+                    }).ToArray(),
                     PetStrength = part.Eidolon?.Stats.Strength.BaseValue, PetDexterity = part.Eidolon?.Stats.Dexterity.BaseValue,
                     Facts = unit.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),
                     PetFacts = part.Eidolon?.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),

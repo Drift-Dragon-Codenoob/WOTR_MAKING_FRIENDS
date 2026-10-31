@@ -47,6 +47,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         internal static readonly Dictionary<string, BlueprintFeature> ProjectionFeatures = new();
         internal static readonly Dictionary<string, BlueprintFeature> PurchasedFeatures = new();
         internal static readonly Dictionary<string, BlueprintAbility> EvolutionAbilities = new();
+        internal static readonly HashSet<BlueprintAbility> LegacyEvolutionAbilities = new();
         internal static string Id(string name) => GetGUID.GUIDByName(name);
         internal static BlueprintFeature ExistingFeature(string name) => BlueprintTool.Get<BlueprintFeature>(Id(name));
         internal static BlueprintFeature BuildFeature(string name) => PurchasedFeatures.TryGetValue(name, out var feature) ? feature : ExistingFeature(name);

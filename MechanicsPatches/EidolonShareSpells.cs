@@ -18,6 +18,9 @@ namespace WOTR_MAKING_FRIENDS.MechanicsPatches
         [HarmonyPrefix, HarmonyPatch(nameof(AbilityData.CanTarget))]
         static bool CanTarget_patch(AbilityData __instance, TargetWrapper target, ref bool __result)
         {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = Synthesist.Runtime.RuntimePerformance.Measure("ShareSpells.CanTargetPrefix");
+#endif
             if (!Settings.Settings.GetSetting<bool>("sharespellspatch"))
             {
                 return true;
@@ -50,6 +53,9 @@ namespace WOTR_MAKING_FRIENDS.MechanicsPatches
         [HarmonyPrefix, HarmonyPatch(nameof(AbilityData.TargetAnchor), MethodType.Getter)]
         static bool TargetAnchor_getter_patch(AbilityData __instance, ref AbilityTargetAnchor __result)
         {
+#if SYNTHESIST_ACCEPTANCE
+            using var timing = Synthesist.Runtime.RuntimePerformance.Measure("ShareSpells.TargetAnchorPrefix");
+#endif
             if (!Settings.Settings.GetSetting<bool>("sharespellspatch"))
             {
                 return true;

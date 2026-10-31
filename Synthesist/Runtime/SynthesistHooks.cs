@@ -48,6 +48,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             }
 #if SYNTHESIST_ACCEPTANCE
             RuntimeAcceptance.Poll();
+            var timing = RuntimePerformance.Measure("Lifecycle.Update");
 #endif
             foreach (var unit in Game.Instance.Player.AllCrossSceneUnits.Concat(Game.Instance.Player.PartyAndPets).Distinct().ToArray())
             {
@@ -69,6 +70,11 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 }
             }
             ToyBoxAfterCombatCompatibility.ProcessPending();
+#if SYNTHESIST_ACCEPTANCE
+            // Dispose before writing the sample so this frame's callback is included.
+            timing.Dispose();
+            RuntimePerformance.EndFrame();
+#endif
         }
     }
 
