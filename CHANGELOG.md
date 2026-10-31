@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased - Character-build player candidate - 1 November 2026
+
+- Add native eidolon evolution, compatible appearance and review selections during Summoner creation, every Summoner level and respec. Keep paid costs in a saved build ledger, preserve free evolutions, show point balances and require explicit confirmation of unspent eidolon points.
+- Keep native preview drafts separate from the canonical entity; apply committed builds once per revision and retain runtime retraining purchases in the ledger. Preserve existing blueprint IDs and canonical ownership.
+- Offer ten cosmetic model candidates, source the same appearance for fusion and the independent eidolon, and add a preparation-only cosmetic menu. Models grant no subtype powers or mechanical limbs. Animations and the native selection/respec flow await David's gameplay testing.
+- Include the pending isolated alignment-based DR choice/upgrade repair. No new in-game acceptance is claimed for it.
+- Add a player-preview build flag with automated acceptance/profiling code excluded, offline build/identifier checks and a verified player-test ZIP process. No game installation, launch or computer-use test is performed. The complete archetype remains unreleased.
+
 ## Unreleased - Synthesist runtime candidate - 31 October 2026
 
 - Add isolated original-PF1e progression, native archetype/form registration, canonical cross-scene eidolon storage, preparation/allocation controls and reversible fusion adapters.

@@ -62,6 +62,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             foreach (var grant in ArchetypeProgression.Additions)
                 builder.AddToAddFeatures(grant.Level,
                     features[grant.Feature].ToReference<BlueprintFeatureBaseReference>());
+            for (int level = 1; level <= 20; level++)
+                builder.AddToAddFeatures(level, CharacterBuildIntegration.Root.ToReference<BlueprintFeatureBaseReference>());
 
             // The spellbook clone adds Synthesist healing without modifying ordinary Summoners.
             // No permanent BAB override: replacement BAB is active only in fusion.

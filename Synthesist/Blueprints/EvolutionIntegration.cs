@@ -70,7 +70,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                         .SetRanks(ManagedEvolutionRules.OwnsRank(key) ? ManagedEvolutionRules.MaximumRanks(key) : source.Ranks)
                         .ConfigureWithLogging();
                     var projection = SynthesistBlueprints.ProjectionFeatures[name];
-                    projection.AddComponents(IsolatedCopy.Components(source, c => key != "EvolutionFastHealing" && !IsBudgetComponent(c) &&
+                    projection.AddComponents(IsolatedCopy.Components(source, c => key != "EvolutionFastHealing" && key != "EvolutionDamageReduction" && !IsBudgetComponent(c) &&
                         !(EvolutionStatistics.IsManaged(key) && (c is AddStatBonus || c.GetType().Name == "AddContextStatBonus" || c is GrowthReachBonus))));
                     if (source.ComponentsArray.Any(c => projection.ComponentsArray.Any(p => ReferenceEquals(c, p))))
                         throw new InvalidOperationException("Evolution projection shares mutable source components: " + name);
@@ -112,17 +112,20 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                     .GetComponent<AbilityCasterHasFactRank>();
                 if (rankGate != null) ability.AddComponents(new EvolutionMasterRankRestriction
                 {
-                    Key = key, Feature = rankGate.m_UnitFact, Start = key is "EvolutionPounce" or "EvolutionReach" or "EvolutionImprovedDamage" ? 1 : rankGate.startLevel,
-                    Interval = rankGate.numLevelsBetweenRanks, Maximum = rankGate.maxRank
+                    Key = key, Feature = rankGate.m_UnitFact ?? SynthesistBlueprints.BuildFeature(key + "Feature").ToReference<BlueprintUnitFactReference>(),
+                    Start = key is "EvolutionPounce" or "EvolutionReach" or "EvolutionImprovedDamage" ? 1 : rankGate.startLevel,
+                    Interval = rankGate.numLevelsBetweenRanks, Maximum = rankGate.maxRank > 0 ? rankGate.maxRank : SynthesistBlueprints.BuildFeature(key + "Feature").Ranks
                 });
                 SynthesistBlueprints.EvolutionAbilities[key] = ability;
             }
+            DamageReductionIntegration.Create();
             var roots = new List<Blueprint<BlueprintUnitFactReference>>();
             for (int cost = 1; cost <= 4; cost++)
             {
                 string name = "SynthesistEvolution" + cost + "Menu";
                 var variants = SynthesistBlueprints.EvolutionAbilities.Where(p => Costs[p.Key] == cost)
-                    .Select(p => (Blueprint<BlueprintAbilityReference>)p.Value.ToReference<BlueprintAbilityReference>()).ToList();
+                    .SelectMany(p => p.Key == DamageReductionIntegration.Key ? DamageReductionIntegration.Purchases.Values : new[] { p.Value }.AsEnumerable())
+                    .Select(a => (Blueprint<BlueprintAbilityReference>)a.ToReference<BlueprintAbilityReference>()).ToList();
                 var menu = AbilityConfigurator.New(name, SynthesistBlueprints.Id(name))
                     .SetDisplayName(SynthesistBlueprints.Text(name + ".name", cost + "-point evolutions"))
                     .SetDescription(SynthesistBlueprints.Text(name + ".description", "Allocate original Summoner evolutions during preparation. Climb, swim and underwater breathing are unavailable in this version."))
@@ -148,6 +151,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         {
             if (key == "EvolutionLarge") return unit.Progression.Features.GetRank(SynthesistBlueprints.BuildFeature(key + "Feature")) == 0 ? 4 : 6;
             if (key == "EvolutionFastHealing" && unit.Progression.Features.HasFact(SynthesistBlueprints.BuildFeature(key + "Feature"))) return 2;
+            if (key == "EvolutionDamageReduction" && unit.Progression.Features.HasFact(SynthesistBlueprints.BuildFeature(key + "Feature"))) return 2;
             if (key is "EvolutionAbilityIncreaseStrength" or "EvolutionAbilityIncreaseConstitution" && unit.State.Size >= Kingmaker.Enums.Size.Large) return 4;
             return Costs[key];
         }
@@ -159,6 +163,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             "EvolutionNaturalArmor" => "Each purchase improves natural armour by 2. Costs 1 evolution point; available once at Summoner level 1, and again at levels 5, 10, 15 and 20.",
             "EvolutionLarge" => "Large costs 4 points at level 8: +8 Strength, +4 Constitution, -2 Dexterity and +2 natural armour. Huge costs 6 additional points at level 13: total +16 Strength, +8 Constitution, -4 Dexterity and +5 natural armour. Size penalties and body-form reach apply. Strength and Constitution evolution purchases cost twice as much while Large or Huge.",
             "EvolutionFastHealing" => "Fast healing 1 costs 4 points and requires Summoner level 11. Each additional 2 points increases healing by 1, to a maximum of 5. While fused, fast healing restores personal HP; it does not restore eidolon temporary HP.",
+            "EvolutionDamageReduction" => DamageReductionIntegration.Description,
             _ => "Increase this ability score by 2 for 2 evolution points. Available once at level 1, plus once more for every six Summoner levels. Strength and Constitution purchases cost 4 points while Large or Huge. Aspect cannot grant ability increases."
         };
     }
@@ -174,6 +179,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
     public sealed class PurchaseEvolution : ContextAction
     {
         public string Key;
+        public string Option;
         public override string GetCaption() => "Purchase " + Key;
         public override void RunAction()
         {
@@ -185,7 +191,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                 ? AspectBudget.AdditionalDiversion(part.Level, EvolutionIntegration.AspectSpent(unit), cost) : 0;
             if (unit == part.Owner && Key.StartsWith("EvolutionAbilityIncrease", StringComparison.Ordinal))
                 throw new InvalidOperationException("Aspect cannot grant the ability increase evolution.");
+            if (Key == DamageReductionIntegration.Key) DamageReductionIntegration.ValidatePurchase(unit, Option);
             unit.AddFact(SynthesistBlueprints.BuildFeature(Key + "Feature"));
+            if (Key == DamageReductionIntegration.Key) unit.AddFact(DamageReductionIntegration.Choices[Option]);
             for (int i = 0; i < cost; i++) unit.AddFact(SynthesistBlueprints.ExistingFeature("EvolutionCost1Feature"));
             if (unit == part.Owner)
             {
@@ -197,6 +205,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             // Apply size and allowance changes before another free purchase can be
             // evaluated, including doubled Strength/Constitution costs after Growth.
             part.SyncProgression();
+            part.Owner.Get<UnitPartSynthesistBuild>()?.RecordPurchase(new EvolutionPurchase
+                { Key = Key, Option = Option, Cost = cost, Aspect = unit == part.Owner });
         }
     }
 

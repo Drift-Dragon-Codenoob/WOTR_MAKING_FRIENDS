@@ -51,6 +51,18 @@ internal static class SynthesistRulesProbes
             "Large and Huge gates");
         Check(ManagedEvolutionRules.MaximumRanks("EvolutionFastHealing") == 5 && ManagedEvolutionRules.RequiredLevel("EvolutionFastHealing", 4) == 11,
             "Fast healing upgrades are limited to five ranks and require level eleven");
+        Check(ManagedEvolutionRules.MaximumRanks("EvolutionDamageReduction") == 2 &&
+            ManagedEvolutionRules.RequiredLevel("EvolutionDamageReduction", 0) == 9 &&
+            ManagedEvolutionRules.RequiredLevel("EvolutionDamageReduction", 1) == 12, "Original DR purchase and upgrade gates");
+        foreach (string bypass in new[] { "Good", "Evil", "Lawful", "Chaotic" })
+        {
+            Check(!DamageReductionRules.OpposesAlignment(bypass, false, false, false, false), "True neutral has no opposing DR choice: " + bypass);
+            Check(DamageReductionRules.OpposesAlignment(bypass, bypass == "Evil", bypass == "Good", bypass == "Chaotic", bypass == "Lawful"),
+                "Opposing alignment permits DR: " + bypass);
+            Check(!DamageReductionRules.OpposesAlignment(bypass, bypass == "Good", bypass == "Evil", bypass == "Lawful", bypass == "Chaotic"),
+                "Matching alignment does not permit DR: " + bypass);
+        }
+        Check(!DamageReductionRules.OpposesAlignment("None", true, true, true, true), "DR cannot select an unaligned bypass");
         Check(!PfSpellComponents.CanCastWithoutArms("MageArmor") && PfSpellComponents.CanCastWithoutArms("DimensionDoorBase") &&
             PfSpellComponents.CanCastWithoutArms("UnknownModSpell"), "Approved somatic compatibility policy allows unknown spells until verified");
         Check(AspectBudget.Allowance(9) == 0 && AspectBudget.Allowance(10) == 2 && AspectBudget.Allowance(18) == 6, "Aspect allowance boundaries");

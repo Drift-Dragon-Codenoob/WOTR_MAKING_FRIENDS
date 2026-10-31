@@ -64,17 +64,19 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             return Action switch
             {
                 SynthAction.Prepare => part.State.Mode == FusionMode.Unfused && !part.TwinActive && !caster.IsInCombat,
-                SynthAction.Confirm => part.IsPreparing,
+                SynthAction.Confirm => part.IsPreparing && AppearanceIntegration.Compatible(part),
                 SynthAction.Reset => part.IsPreparing && part.State.EvolutionEditsOpen,
                 SynthAction.Fuse => part.State.Mode == FusionMode.Unfused && !part.TwinActive && !part.State.EvolutionEditsOpen &&
-                    part.State.Durability.CanReturn(UnitPartSynthesist.Day) && !caster.Body.IsPolymorphed,
+                    part.State.Durability.CanReturn(UnitPartSynthesist.Day) && !caster.Body.IsPolymorphed &&
+                    part.Eidolon.Progression.CharacterLevel == EidolonProgression.At(part.Level).HitDice && AppearanceIntegration.Compatible(part),
                 SynthAction.Dismiss => part.IsFused || part.TwinActive,
                 SynthAction.Link => true,
                 SynthAction.Jump => part.IsFused && caster.Descriptor.Resources.GetResourceAmount(SynthesistBlueprints.Resource(DailyAbility.MakersJump)) > 0,
                 SynthAction.Split => part.IsFused && caster.Descriptor.Resources.GetResourceAmount(SynthesistBlueprints.Resource(DailyAbility.SplitForms)) > 0,
                 SynthAction.Rejoin => part.IsSplit,
                 SynthAction.Twin => part.State.Mode == FusionMode.Unfused && !part.TwinActive &&
-                    !part.State.EvolutionEditsOpen && !caster.Body.IsPolymorphed &&
+                    !part.State.EvolutionEditsOpen && !caster.Body.IsPolymorphed && AppearanceIntegration.Compatible(part) &&
+                    part.Eidolon.Progression.CharacterLevel == EidolonProgression.At(part.Level).HitDice &&
                     caster.Descriptor.Resources.GetResourceAmount(SynthesistBlueprints.Resource(DailyAbility.TwinEidolon)) > 0,
                 SynthAction.EndTwin => part.TwinActive,
                 SynthAction.Rejuvenate => part.IsFused || part.IsSplit,

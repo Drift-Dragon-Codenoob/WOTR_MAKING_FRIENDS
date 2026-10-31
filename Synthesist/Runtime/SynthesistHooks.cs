@@ -205,7 +205,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         private static bool Prefix(UnitEntityData __0)
         {
             var part = __0?.Get<UnitPartSynthesist>();
-            return part == null || (!part.IsFused && !part.IsSplit && !part.TwinActive && !part.IsRitualActive);
+            return part == null || (!part.IsFused && !part.IsSplit && !part.TwinActive && !part.IsPreparing && !part.IsRitualActive);
         }
     }
 

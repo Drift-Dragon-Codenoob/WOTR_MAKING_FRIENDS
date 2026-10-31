@@ -36,7 +36,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         internal static bool Ready { get; private set; }
         // Registration in ordinary builds remains closed until the complete gameplay
         // graph passes acceptance. Internal native-test builds explicitly opt in.
-#if SYNTHESIST_ACCEPTANCE
+#if SYNTHESIST_ACCEPTANCE || SYNTHESIST_PREVIEW
         internal static bool EnableDevelopmentGraph => true;
 #else
         internal static bool EnableDevelopmentGraph => false;
@@ -94,6 +94,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
 
             CreateProjectionFeatures();
             foreach (EidolonForm form in Enum.GetValues(typeof(EidolonForm))) CreateForm(form, petClass);
+            AppearanceIntegration.Create();
+            CharacterBuildIntegration.Create();
             CreateActionAbilities();
 
             var features = new Dictionary<string, BlueprintFeatureBase>();
@@ -216,7 +218,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
 
         private static IEnumerable<string> AbilitiesFor(string feature) => feature switch
         {
-            "SynthesistFusedEidolonFeature" => new[] { "SynthesistPrepareAbility", "SynthesistConfirmAbility", "SynthesistResetAbility", "SynthesistFuseAbility", "SynthesistDismissAbility" },
+            "SynthesistFusedEidolonFeature" => new[] { "SynthesistPrepareAbility", "SynthesistConfirmAbility", "SynthesistResetAbility", "SynthesistFuseAbility", "SynthesistDismissAbility", "SynthesistAppearanceAbility" },
             "SynthesistFusedLinkFeature" => new[] { "SynthesistLinkAbility" },
             "SynthesistMakersJumpFeature" => new[] { "SynthesistJumpAbility" },
             "SynthesistSplitFormsFeature" => new[] { "SynthesistSplitAbility", "SynthesistRejoinAbility" },
@@ -266,7 +268,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                     SynthAction.Link => "Toggle Fused Link", SynthAction.Jump => "Maker's Jump",
                     SynthAction.Split => "Split Forms", SynthAction.Rejoin => "Rejoin Forms", _ => "Twin Eidolon"
                 })).SetDescription(Text(name + ".description", "Use the Synthesist's " + action + " ability."))
-                    .SetType(AbilityType.Supernatural).SetRange(AbilityRange.Personal)
+                    .SetType(AbilityType.Supernatural).SetRange(AbilityRange.Personal).SetCanTargetSelf(true)
                     .SetActionType(action == SynthAction.Split ? CommandType.Swift : action is SynthAction.Link or SynthAction.Prepare or SynthAction.Confirm or SynthAction.Reset or SynthAction.EndTwin ? CommandType.Free : CommandType.Standard)
                     .AddComponent<SynthesistRestriction>(c => c.Action = action);
                 cfg.SetIcon(ExistingFeature("SummonerMakersCallFeature").m_Icon);

@@ -75,6 +75,12 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
             EvolutionEditsOpen = false;
         }
 
+        internal void CloseCharacterBuild()
+        {
+            Require(Mode == FusionMode.Unfused, "Apply the character build while unfused.");
+            EvolutionEditsOpen = false;
+        }
+
         public void OpenEvolutionRetraining()
         {
             Require(Mode == FusionMode.Preparation, "Retraining requires preparation mode.");

@@ -28,6 +28,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         [JsonProperty] private int appliedPhysicalBonus;
         [JsonProperty] private int appliedEvolutionPoints;
         [JsonProperty] private int appliedAttackSteps;
+        [JsonProperty] private int appliedBuildRevision = -1;
         [JsonProperty] internal List<EntityFact> ProjectionFacts = new();
         [JsonProperty] internal List<ModifiableValue.Modifier> ProjectionModifiers = new();
         [JsonProperty] internal List<ModifiableValue.Modifier> CanonicalStatModifiers = new();
@@ -66,6 +67,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             {
                 var controls = unit.Progression.Features.GetFact(SynthesistBlueprints.ExistingFeature("SynthesistEvolutionControlsFeature"));
                 if (controls != null) unit.RemoveFact(controls);
+                unit.Remove<UnitPartSynthesistBuild>();
                 unit.Remove<UnitPartSynthesist>();
                 return;
             }
@@ -73,6 +75,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             replacement.State = null;
             replacement.CanonicalEidolon = default;
             replacement.appliedPhysicalBonus = replacement.appliedEvolutionPoints = replacement.appliedAttackSteps = 0;
+            replacement.appliedBuildRevision = -1;
             replacement.respecSuspended = false;
             foreach (EidolonForm form in Enum.GetValues(typeof(EidolonForm)))
             {
@@ -125,6 +128,16 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             if (form == EidolonForm.Biped)
                 pet.Buffs.AddBuff(SynthesistBlueprints.Buff("EvolutionClawsBuff"), Owner.Descriptor, null);
             pet.IsInGame = false;
+            ApplyCharacterBuild();
+        }
+
+        internal void ApplyCharacterBuild()
+        {
+            if (State == null || Eidolon == null || !Owner.PreviewOf.IsEmpty) return;
+            var build = Owner.Get<UnitPartSynthesistBuild>();
+            if (build?.Current == null || build.Revision == appliedBuildRevision) return;
+            EvolutionBuildAdapter.Apply(this, build.Current);
+            appliedBuildRevision = build.Revision;
         }
 
         internal void SyncProgression()
@@ -151,6 +164,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 if (Level >= 10) RestoreAllocationResources(Owner);
             }
             EvolutionStatistics.Refresh(this);
+            Eidolon.Body.HandsAreEnabled = Projection.HasArms(this);
             evolutionStatisticsSignature = EvolutionStatistics.Signature(this);
             State.Durability.ChangeMaximum(Math.Max(1, Eidolon.MaxHP));
         }
@@ -188,10 +202,12 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         internal void ConfirmPreparation()
         {
+            if (!AppearanceIntegration.Compatible(this)) throw new InvalidOperationException("Choose an appearance compatible with the eidolon's arms before confirming.");
             SyncProgression();
             if (Eidolon.Progression.CharacterLevel != EidolonProgression.At(Level).HitDice)
                 throw new InvalidOperationException("Finish the eidolon's native level-up before confirming its build.");
             State.ConfirmEvolutions();
+            Owner.Get<UnitPartSynthesistBuild>()?.ConfirmPreparation();
             State.LeavePreparation();
             RemovePetPreparation();
             Eidolon.IsInGame = false;
@@ -200,6 +216,12 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         internal void ResetEvolutions()
         {
             if (!IsPreparing || !State.EvolutionEditsOpen) throw new InvalidOperationException("Evolution allocation is closed.");
+            ClearPurchasedEvolutions();
+            Owner.Get<UnitPartSynthesistBuild>()?.RecordReset();
+        }
+
+        internal void ClearPurchasedEvolutions()
+        {
             foreach (var unit in new[] { Owner, Eidolon })
             {
                 foreach (string key in SynthesistBlueprints.EvolutionAbilities.Keys)
@@ -207,6 +229,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     var fact = unit.Progression.Features.GetFact(SynthesistBlueprints.BuildFeature(key + "Feature"));
                     if (fact != null) unit.RemoveFact(fact);
                 }
+                DamageReductionIntegration.Reset(unit);
                 for (int i = 1; i <= 4; i++)
                 {
                     var fact = unit.Progression.Features.GetFact(SynthesistBlueprints.ExistingFeature("EvolutionCost" + i + "Feature"));
@@ -356,6 +379,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             using var timing = RuntimePerformance.Measure("UnitPart.Tick");
 #endif
             if (State == null || Eidolon == null || Changing) return;
+            if (!IsFused && !IsSplit && !IsPreparing && !TwinActive) ApplyCharacterBuild();
             if (Eidolon.Descriptor.Faction != Owner.Descriptor.Faction)
             {
                 Eidolon.Descriptor.Faction = Owner.Descriptor.Faction;
@@ -388,6 +412,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             if (NeedsReconcile)
             {
                 if (Owner.View == null) return;
+                AppearanceIntegration.ApplyCanonical(this);
+                Eidolon.Body.HandsAreEnabled = Projection.HasArms(this);
                 Eidolon.Progression.RecalculateHP();
                 ReconcileDurabilityMaximum();
                 if (IsFused || TwinActive) { RemoveProjection(); ApplyProjection(TwinActive); }

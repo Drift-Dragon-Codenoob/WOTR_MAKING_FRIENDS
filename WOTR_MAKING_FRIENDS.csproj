@@ -10,6 +10,9 @@
   <PropertyGroup Condition="'$(SynthesistAcceptance)' == 'true'">
     <DefineConstants>$(DefineConstants);SYNTHESIST_ACCEPTANCE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(SynthesistPreview)' == 'true'">
+    <DefineConstants>$(DefineConstants);SYNTHESIST_PREVIEW</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="tests\**" />

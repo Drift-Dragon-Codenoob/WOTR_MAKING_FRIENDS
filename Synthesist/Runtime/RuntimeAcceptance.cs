@@ -45,6 +45,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     case "performance": RuntimePerformance.Start(request.Id); break;
                     case "prepare": part.BeginPreparation(); break;
                     case "confirm": part.ConfirmPreparation(); break;
+                    case "reset-evolutions": part.ResetEvolutions(); part.SyncProgression(); break;
                     case "fuse": part.EnterFusion(); break;
                     case "dismiss": part.Dismiss(); break;
                     case "split": part.BeginSplit(); break;
@@ -100,6 +101,20 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                         lastPurchase = new Kingmaker.UnitLogic.Commands.UnitUseAbility(purchase, purchaser);
                         purchaser.Commands.Run(lastPurchase);
                         break;
+                    case "purchase-dr":
+                    case "purchase-aspect-dr":
+                        var drOptions = new[] { "Good", "Evil", "Lawful", "Chaotic" };
+                        if (request.Amount < 0 || request.Amount >= drOptions.Length || !part.IsPreparing)
+                            throw new InvalidOperationException("Choose a damage-reduction alignment during preparation.");
+                        var drPurchaser = request.Command == "purchase-aspect-dr" ? unit : part.Eidolon;
+                        var drMenu = BlueprintCore.Utils.BlueprintTool.Get<Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility>(SynthesistBlueprints.Id("SynthesistEvolution3Menu"));
+                        var drMenuFact = drPurchaser.Descriptor.Abilities.GetAbility(drMenu) ?? throw new InvalidOperationException("The native evolution menu is not granted.");
+                        var drPurchase = new AbilityData(new AbilityData(drMenuFact), DamageReductionIntegration.Purchases[drOptions[request.Amount]]);
+                        if (!drPurchase.CanBeCastByCaster) throw new InvalidOperationException(drPurchase.GetUnavailableReason());
+                        if (!drPurchase.CanTarget(drPurchaser)) throw new InvalidOperationException("The native DR purchase cannot target its build owner.");
+                        lastPurchase = new Kingmaker.UnitLogic.Commands.UnitUseAbility(drPurchase, drPurchaser);
+                        drPurchaser.Commands.Run(lastPurchase);
+                        break;
                     case "advance":
                         if (part.IsFused || part.IsSplit || part.TwinActive || part.IsPreparing) throw new InvalidOperationException("Dismiss before accelerated advancement.");
                         if (request.Amount < part.Level || request.Amount > 20) throw new ArgumentOutOfRangeException("Amount");
@@ -127,6 +142,15 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                             throw new InvalidOperationException("Native eidolon advancement did not reach the original HD target.");
                         break;
                     case "damage": Rulebook.Trigger(new RuleDealDamage(unit, unit, new DirectDamage(new DiceFormula(0, DiceType.Zero), request.Amount))); break;
+                    case "physical-damage":
+                    case "physical-damage-pet":
+                        if (request.Amount is not (0 or 1 or 2 or 4 or 8)) throw new ArgumentOutOfRangeException("Amount");
+                        if (request.Command == "physical-damage-pet" && !part.IsSplit)
+                            throw new InvalidOperationException("Independent eidolon damage requires Split Forms.");
+                        var physical = new PhysicalDamage(new Kingmaker.RuleSystem.Rules.ModifiableDiceFormula(DiceFormula.Zero), 20, Kingmaker.Enums.Damage.PhysicalDamageForm.Slashing);
+                        physical.AddAlignment((Kingmaker.Enums.Damage.DamageAlignment)request.Amount);
+                        Rulebook.Trigger(new RuleDealDamage(unit, request.Command == "physical-damage-pet" ? part.Eidolon : unit, physical));
+                        break;
                     case "heal-personal": Rulebook.Trigger(new RuleHealDamage(unit, unit, request.Amount)); break;
                     case "damage-pet":
                         if (!part.IsSplit) throw new InvalidOperationException("Independent eidolon damage requires Split Forms.");
@@ -181,6 +205,15 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     PetStrength = part.Eidolon?.Stats.Strength.BaseValue, PetDexterity = part.Eidolon?.Stats.Dexterity.BaseValue,
                     PetIntelligence = part.Eidolon?.Stats.Intelligence.ModifiedValue,
                     PetWisdom = part.Eidolon?.Stats.Wisdom.ModifiedValue, PetCharisma = part.Eidolon?.Stats.Charisma.ModifiedValue,
+                    Alignment = unit.Descriptor.Alignment.ValueRaw.ToString(),
+                    DamageReductionChoices = DamageReductionIntegration.Purchases.Select(p => new
+                    {
+                        Alignment = p.Key,
+                        CanonicalRank = part.Eidolon.Progression.Features.GetRank(DamageReductionIntegration.Choices[p.Key]),
+                        PersonalRank = unit.Progression.Features.GetRank(DamageReductionIntegration.Choices[p.Key]),
+                        AvailableForCanonical = DamageReductionIntegration.CanPurchase(part.Eidolon, p.Key),
+                        AvailableForPersonal = DamageReductionIntegration.CanPurchase(unit, p.Key)
+                    }).ToArray(),
                     PetSize = part.Eidolon?.State.Size.ToString(), PetReachBonus = part.Eidolon?.Stats.GetStat(StatType.Reach).ModifiedValue,
                     Facts = unit.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),
                     PetFacts = part.Eidolon?.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),

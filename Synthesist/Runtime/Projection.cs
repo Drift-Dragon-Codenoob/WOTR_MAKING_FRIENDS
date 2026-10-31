@@ -22,7 +22,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             var owner = part.Owner;
             var eidolon = part.Eidolon;
             var state = part.State;
-            var source = owner.Buffs.AddBuff(SynthesistBlueprints.Buff("SynthesistFusion" + state.Form + "Buff"), owner.Descriptor, null);
+            var source = owner.Buffs.AddBuff(AppearanceIntegration.FusionBuff(part), owner.Descriptor, null);
             Delta(owner.Stats.Strength, eidolon.Stats.Strength.BaseValue - owner.Stats.Strength.BaseValue);
             Delta(owner.Stats.Dexterity, eidolon.Stats.Dexterity.BaseValue - owner.Stats.Dexterity.BaseValue);
             Delta(owner.Stats.Constitution, eidolon.Stats.Constitution.BaseValue - owner.Stats.Constitution.BaseValue);
@@ -76,7 +76,12 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 var original = SynthesistBlueprints.BuildFeature(pair.Key);
                 int ranks = part.Eidolon.Progression.Features.GetRank(original);
                 // Aspect already gives personal evolutions. Do not add a second identical root.
-                ranks -= part.Owner.Progression.Features.GetRank(original);
+                int personalRanks = part.Owner.Progression.Features.GetRank(original);
+                // DR sources overlap rather than adding. A projected upgrade needs
+                // its complete value (10), not only the rank above Aspect's DR 5.
+                ranks = DamageReductionIntegration.IsChoice(pair.Key)
+                    ? ranks > personalRanks ? ranks : 0
+                    : ranks - personalRanks;
                 for (int i = 0; i < ranks; i++) part.ProjectionFacts.Add(part.Owner.AddFact(pair.Value));
             }
             EvolutionStatistics.ProjectSizeAndReach(part);
