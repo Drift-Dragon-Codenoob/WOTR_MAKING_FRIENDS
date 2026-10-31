@@ -83,7 +83,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                         break;
                     case "purchase-managed":
                     case "purchase-aspect-managed":
-                        string[] managed = { "EvolutionNaturalArmor", "EvolutionLarge", "EvolutionFastHealing", "EvolutionAbilityIncreaseStrength", "EvolutionAbilityIncreaseConstitution" };
+                        string[] managed = { "EvolutionNaturalArmor", "EvolutionLarge", "EvolutionFastHealing", "EvolutionAbilityIncreaseStrength", "EvolutionAbilityIncreaseConstitution",
+                            "EvolutionAbilityIncreaseIntelligence", "EvolutionAbilityIncreaseWisdom", "EvolutionAbilityIncreaseCharisma" };
                         if (request.Amount < 0 || request.Amount >= managed.Length || !part.IsPreparing)
                             throw new InvalidOperationException("Choose a supported managed evolution during preparation.");
                         var purchaser = request.Command == "purchase-aspect-managed" ? unit : part.Eidolon;
@@ -178,6 +179,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                             .Any(other => AbilityGuards.Reason(new AbilityData(blueprint, other.Descriptor)) != null)
                     }).ToArray(),
                     PetStrength = part.Eidolon?.Stats.Strength.BaseValue, PetDexterity = part.Eidolon?.Stats.Dexterity.BaseValue,
+                    PetIntelligence = part.Eidolon?.Stats.Intelligence.ModifiedValue,
+                    PetWisdom = part.Eidolon?.Stats.Wisdom.ModifiedValue, PetCharisma = part.Eidolon?.Stats.Charisma.ModifiedValue,
                     PetSize = part.Eidolon?.State.Size.ToString(), PetReachBonus = part.Eidolon?.Stats.GetStat(StatType.Reach).ModifiedValue,
                     Facts = unit.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),
                     PetFacts = part.Eidolon?.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),

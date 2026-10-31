@@ -103,7 +103,10 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         internal static void Project(UnitPartSynthesist part, EntityFact source)
         {
-            for (int i = 0; i < Attributes.Length; i++)
+            // Fusion retains the Summoner's own mental scores. During Split Forms
+            // both independent creatures have the evolutions; Twin also copies them.
+            int attributeCount = part.IsFused ? 3 : Attributes.Length;
+            for (int i = 0; i < attributeCount; i++)
             {
                 int amount = AttributeBonus(part.Eidolon, i) - AttributeBonus(part.Owner, i);
                 if (amount != 0) part.ProjectionModifiers.Add(part.Owner.Stats.GetStat((StatType)(i + 1)).AddModifier(amount, source, ModifierDescriptor.UntypedStackable));
