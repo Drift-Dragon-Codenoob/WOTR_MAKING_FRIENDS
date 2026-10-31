@@ -178,6 +178,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             State.EnterPreparation(Owner.IsInCombat);
             RestoreAllocationResources(Eidolon);
             if (Level >= 10) RestoreAllocationResources(Owner);
+            // The fused pool owns wounds while this entity is dormant. Present the
+            // same injuries in preparation instead of the entity's older HP snapshot.
+            Eidolon.Damage = State.Durability.Wounds;
             Eidolon.Position = Owner.Position;
             Eidolon.IsInGame = true;
             Eidolon.Buffs.AddBuff(SynthesistBlueprints.PreparationBuff, Owner.Descriptor, null);

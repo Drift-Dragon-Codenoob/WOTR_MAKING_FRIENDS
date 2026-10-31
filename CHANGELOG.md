@@ -9,6 +9,7 @@
 - Add offline rules probes and development-only native integration checks restricted to separate test characters. Record actual passes, failures and remaining release gates in `docs/SYNTHESIST_IMPLEMENTATION.md`.
 - Internal candidates have been installed with backups for testing. No accepted 0.3.0 package or release-version change yet.
 - Repair severe combat slowdown caused by repeatedly trying to remove action-bar-retained Aspect abilities. Preserve their native ownership and block legacy evolution menus/variants through the archetype guard. Add bounded development timing and a native action-bar notification regression check; see `docs/SYNTHESIST_PERFORMANCE.md`.
+- Repair the Synthesist Huge purchase's isolated rank lookup and compensate Growth reach for native size changes. Synchronise preparation's displayed eidolon injuries with its retained wound ledger. Add a repeatable native purchase/Aspect/Growth/Split/restoration sequence; broader release acceptance remains open.
 
 ## 0.2.4.2 — Installer archive repair — 30 October 2026
 

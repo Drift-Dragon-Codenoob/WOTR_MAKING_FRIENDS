@@ -25,10 +25,14 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
     [TypeId("1d780cfc456149ae9c73e5e1c170359e")]
     public class AbilityGrowthSizeRestriction : BlueprintComponent, IAbilityCasterRestriction
     {
+        // Unset on existing Summoner blueprints. Isolated archetype copies can own
+        // a different rank feature without changing the ordinary purchase rules.
+        public BlueprintFeatureReference m_GrowthFeature;
         public bool IsCasterRestrictionPassed(UnitEntityData caster)
         {
             if (caster == null) return false;
-            int rank = caster.Progression.Features.GetRank(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionLargeFeature")));
+            int rank = caster.Progression.Features.GetRank(m_GrowthFeature ??
+                BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EvolutionLargeFeature")));
             if (rank >= 2) return false;
             return caster.State.Size == (rank == 0 ? Size.Medium : Size.Large);
         }

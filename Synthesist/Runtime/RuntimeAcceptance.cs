@@ -148,6 +148,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     PersonalHP = unit.HPLeft, MaximumHP = unit.MaxHP, Damage = unit.Damage,
                     Strength = unit.Stats.Strength.ModifiedValue, Dexterity = unit.Stats.Dexterity.ModifiedValue,
                     Constitution = unit.Stats.Constitution.ModifiedValue, BAB = unit.Stats.BaseAttackBonus.ModifiedValue,
+                    Intelligence = unit.Stats.Intelligence.ModifiedValue, Wisdom = unit.Stats.Wisdom.ModifiedValue,
+                    Charisma = unit.Stats.Charisma.ModifiedValue,
+                    Size = unit.State.Size.ToString(), ReachBonus = unit.Stats.GetStat(StatType.Reach).ModifiedValue,
                     TemporaryHP = unit.Stats.TemporaryHitPoints.ModifiedValue,
                     ArmourClass = unit.Stats.AC.ModifiedValue,
                     ArmourModifiers = unit.Stats.AC.Modifiers.Select(m => new { Descriptor = m.ModDescriptor.ToString(), m.ModValue, Source = m.Source?.Blueprint?.name }).ToArray(),
@@ -175,6 +178,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                             .Any(other => AbilityGuards.Reason(new AbilityData(blueprint, other.Descriptor)) != null)
                     }).ToArray(),
                     PetStrength = part.Eidolon?.Stats.Strength.BaseValue, PetDexterity = part.Eidolon?.Stats.Dexterity.BaseValue,
+                    PetSize = part.Eidolon?.State.Size.ToString(), PetReachBonus = part.Eidolon?.Stats.GetStat(StatType.Reach).ModifiedValue,
                     Facts = unit.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),
                     PetFacts = part.Eidolon?.Progression.Features.Enumerable.Select(f => new { f.Blueprint.name, f.Rank }).ToArray(),
                     ProjectionFacts = part.ProjectionFacts.Count, ProjectionModifiers = part.ProjectionModifiers.Count };

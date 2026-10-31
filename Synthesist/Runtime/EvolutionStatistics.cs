@@ -59,11 +59,11 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 EidolonProgression.At(part.Level).ArmourBonus + 2);
             Apply(part.Owner, part.AspectStatModifiers, part.Owner.Progression.Features.GetFact(SynthesistBlueprints.ExistingFeature("SummonerAspectFeature")), 0);
             var petSource = part.Eidolon.Descriptor.MainFact;
-            int petReach = Utilities.BaselineRules.GrowthReachBonus(Rank(part.Eidolon, "EvolutionLarge"), part.State.Form == EidolonForm.Biped);
-            if (petReach > 0) part.CanonicalStatModifiers.Add(part.Eidolon.Stats.GetStat(StatType.Reach).AddModifier(petReach, petSource, ModifierDescriptor.Other));
+            int petReach = GrowthReachAdjustment(Rank(part.Eidolon, "EvolutionLarge"), part.State.Form == EidolonForm.Biped);
+            if (petReach != 0) part.CanonicalStatModifiers.Add(part.Eidolon.Stats.GetStat(StatType.Reach).AddModifier(petReach, petSource, ModifierDescriptor.Other));
             var aspectSource = part.Owner.Progression.Features.GetFact(SynthesistBlueprints.ExistingFeature("SummonerAspectFeature"));
-            int aspectReach = Utilities.BaselineRules.GrowthReachBonus(Rank(part.Owner, "EvolutionLarge"), true);
-            if (aspectReach > 0 && aspectSource != null) part.AspectStatModifiers.Add(part.Owner.Stats.GetStat(StatType.Reach).AddModifier(aspectReach, aspectSource, ModifierDescriptor.Other));
+            int aspectReach = GrowthReachAdjustment(Rank(part.Owner, "EvolutionLarge"), true);
+            if (aspectReach != 0 && aspectSource != null) part.AspectStatModifiers.Add(part.Owner.Stats.GetStat(StatType.Reach).AddModifier(aspectReach, aspectSource, ModifierDescriptor.Other));
             UpdateGrowthSize(part.Eidolon);
             UpdateGrowthSize(part.Owner);
         }
@@ -121,9 +121,14 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 fact = part.Owner.AddFact(blueprint);
                 part.ProjectionFacts.Add(fact);
             }
-            int reach = Utilities.BaselineRules.GrowthReachBonus(growth, part.IsSplit || part.State.Form == EidolonForm.Biped);
-            reach -= Utilities.BaselineRules.GrowthReachBonus(Rank(part.Owner, "EvolutionLarge"), true);
-            if (reach > 0) part.ProjectionModifiers.Add(part.Owner.Stats.GetStat(StatType.Reach).AddModifier(reach, fact, ModifierDescriptor.Other));
+            int reach = GrowthReachAdjustment(growth, part.IsSplit || part.State.Form == EidolonForm.Biped);
+            reach -= GrowthReachAdjustment(Rank(part.Owner, "EvolutionLarge"), true);
+            if (reach != 0) part.ProjectionModifiers.Add(part.Owner.Stats.GetStat(StatType.Reach).AddModifier(reach, fact, ModifierDescriptor.Other));
         }
+
+        private static int GrowthReachAdjustment(int rank, bool biped)
+            => Utilities.BaselineRules.GrowthReachAdjustment(rank, biped,
+                rank < 1 ? 0 : WeaponSizeExtension.GetModifiers(rank == 1 ? Size.Large : Size.Huge).Reach -
+                    WeaponSizeExtension.GetModifiers(Size.Medium).Reach);
     }
 }

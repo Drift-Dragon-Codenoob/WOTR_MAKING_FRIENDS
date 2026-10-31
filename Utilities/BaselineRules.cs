@@ -30,5 +30,10 @@ namespace WOTR_MAKING_FRIENDS.Utilities
         internal static int GrowthReachBonus(int rank, bool biped)
             => rank < 1 ? 0 : biped ? 5 * Math.Min(2, rank) : rank >= 2 ? 5 : 0;
 
+        // Native size already contributes reach. Replace only Growth's contribution;
+        // independent reach modifiers and later size effects remain additive.
+        internal static int GrowthReachAdjustment(int rank, bool biped, int nativeGrowthReach)
+            => rank < 1 ? 0 : GrowthReachBonus(rank, biped) - nativeGrowthReach;
+
     }
 }

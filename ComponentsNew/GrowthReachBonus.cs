@@ -22,8 +22,12 @@ namespace WOTR_MAKING_FRIENDS.ComponentsNew
             reach.RemoveModifiersFrom(Runtime);
             bool biped = (!Owner.IsPet && !Owner.IsReallyInFactPet) ||
                 Owner.Progression.Features.HasFact(BlueprintTool.GetRef<BlueprintFeatureReference>(GetGUID.GUIDByName("EidolonBipedBaseFormFeature")));
-            int bonus = BaselineRules.GrowthReachBonus(Fact.GetRank(), biped);
-            if (bonus > 0) reach.AddModifier(bonus, Runtime, ModifierDescriptor.Other);
+            int rank = Fact.GetRank();
+            // The native table stores total reach, including Medium's five feet.
+            int native = rank < 1 ? 0 : WeaponSizeExtension.GetModifiers(rank == 1 ? Size.Large : Size.Huge).Reach -
+                WeaponSizeExtension.GetModifiers(Size.Medium).Reach;
+            int bonus = BaselineRules.GrowthReachAdjustment(rank, biped, native);
+            if (bonus != 0) reach.AddModifier(bonus, Runtime, ModifierDescriptor.Other);
         }
     }
 }

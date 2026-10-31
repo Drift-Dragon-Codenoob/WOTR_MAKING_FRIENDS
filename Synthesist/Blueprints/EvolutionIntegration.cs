@@ -106,6 +106,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                 ability.AddComponents(IsolatedCopy.Components(sourceAbility, c => c is not AbilityCasterHasFactRank &&
                     c is not AbilityEffectRunAction && c is not AbilityResourceLogic && c is not AbilityEidolonHasResource && c is not AbilityOwnerOrPetHasFacts &&
                     (c is not AbilityCasterHasResource resourceGate || resourceGate.m_Resource?.Get()?.name == "EidolonMaxAttacksResource")));
+                foreach (var growthGate in ability.ComponentsArray.OfType<AbilityGrowthSizeRestriction>())
+                    growthGate.m_GrowthFeature = SynthesistBlueprints.BuildFeature("EvolutionLargeFeature").ToReference<BlueprintFeatureReference>();
                 var rankGate = BlueprintTool.Get<Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility>(SynthesistBlueprints.Id(key + "Ability"))
                     .GetComponent<AbilityCasterHasFactRank>();
                 if (rankGate != null) ability.AddComponents(new EvolutionMasterRankRestriction
