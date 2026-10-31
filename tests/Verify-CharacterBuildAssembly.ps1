@@ -27,6 +27,10 @@ try {
     $hook = $module.Find('WOTR_MAKING_FRIENDS.Synthesist.Runtime.CharacterBuildSelectionHook', $false)
     $hookBody = $hook.Methods | Where-Object Name -eq 'Postfix'
     Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*LevelUpState::AddSelection*'}).Count -eq 1) 'Build flow appends native dependent selections'
+    Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*FeatureSelectionState::Select*'}).Count -eq 1) 'Build flow links the appended child to the native Next chain'
+    $nativeState = $native.Find('Kingmaker.UnitLogic.Class.LevelUp.FeatureSelectionState', $false)
+    $nativeLink = $nativeState.Methods | Where-Object Name -eq 'Select'
+    Check (@($nativeLink.Body.Instructions | Where-Object {$_.Operand -like '*FeatureSelectionState::set_Next*'}).Count -eq 1) 'The native linking API sets the Next pointer consumed by navigation'
     Check (@($hookBody.Body.Instructions | Where-Object {$_.Operand -like '*SpawnUnit*' -or $_.Operand -like '*ApplyCharacterBuild*'}).Count -eq 0) 'Selection edits do not spawn or apply a canonical entity'
     $part = $module.Find('WOTR_MAKING_FRIENDS.Synthesist.Runtime.UnitPartSynthesistBuild', $false)
     foreach ($field in 'Current','Draft','Revision','AppearanceOverride') {

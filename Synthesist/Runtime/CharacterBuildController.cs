@@ -49,7 +49,14 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             }
             // Native action replay rebuilds this dependent chain when an earlier choice
             // is changed or unselected. Only a purchase creates another purchase slot.
-            if (next != null) __0.AddSelection(selection, selection.Source, next, selection.Level);
+            if (next != null)
+            {
+                var child = __0.AddSelection(selection, selection.Source, next, selection.Level);
+                // Native SelectFeature.Apply does both operations for nested
+                // selections. Merely appending a state leaves the UI's Next chain
+                // empty, so the new purchase/appearance step never opens.
+                selection.Select(__instance.Item, child);
+            }
         }
     }
 

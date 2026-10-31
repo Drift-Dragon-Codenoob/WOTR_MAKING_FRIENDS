@@ -2,6 +2,8 @@
 
 1 November 2026. **Development candidate, not version 0.3.0 or an accepted release.** David performs the in-game tests. No automated game control, native probes or profiling interface is included in this player candidate.
 
+**Navigation repair:** David's first creation test reached the acquired build-start choice but displayed no purchase steps. The first package appended dependent selection states without linking the native `Next` pointer. The updated package supplies that link. Retest this transition first; a successful native retest has not yet been reported.
+
 ## Installation
 
 Close WotR normally. Back up the installed `Mods/WOTR_MAKING_FRIENDS` folder and your saves. Install `WOTR_MAKING_FRIENDS-build-flow-player-test.zip` using Unity Mod Manager. It retains the existing mod ID and baseline version metadata, with a distinct **Synthesist build-flow player test** display name. Its ZIP has `Info.json` and the DLL at the root. This package has not been installed or launched by Codex.

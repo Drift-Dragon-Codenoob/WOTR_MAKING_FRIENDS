@@ -4,6 +4,8 @@ Updated 1 November 2026. Branch: `synthesist`. **Development candidate; the comp
 
 ## Character-build flow checkpoint - 1 November
 
+**First player test failed:** creation displayed the acquired build-start feature but no evolution/appearance steps. Inspection identified a missing native `FeatureSelectionState.Next` link: appending a dependent selection is insufficient for navigation. The repair calls the same `Select(item, child)` linking API used by native nested selections. Two assembly checks now cover the call and the native pointer setter. David's retest is pending; the character-build UI is not accepted yet.
+
 David now performs all in-game tests. This checkpoint uses source inspection, compilation, pure rules checks, installed-assembly metadata inspection and archive extraction only. It does not install, launch, control or exercise WotR.
 
 The candidate adds **Build your eidolon** native selections at every Summoner level, including creation and respec. Players can rebuild their evolution allocation or retain an existing saved allocation and spend remaining points. Aspect allocation precedes eidolon allocation when available, so its aggregate diversion is visible before spending the eidolon's balance. Native dependent selections continue after each purchase, then require appearance and a final review. Finishing with unspent eidolon points requires a separately labelled confirmation. Selected choices stay valid in their original slots after consuming their points; later slots still enforce current costs and prerequisites.
