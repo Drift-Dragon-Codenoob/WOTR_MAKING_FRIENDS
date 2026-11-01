@@ -2,7 +2,7 @@
 
 1 November 2026. **Development candidate, not version 0.3.0 or an accepted release.** David performs the in-game tests. No automated game control, native probes or profiling interface is included in this player candidate.
 
-**Navigation repair:** Both earlier player attempts acquired the build-start choice without displaying purchase steps. Linking `Next` alone was insufficient: the CharGen page builder filters to selections whose parent is null, and our plain feature choices cannot display nested pickers. The updated package creates normal, separate creation pages for the following steps. Retest this transition first; a successful native retest has not yet been reported. A bounded passive `Synthesist build page:` log records the first transition of each kind.
+**Latest player feedback:** David reached evolution choices and entered preparation. The creation log also records purchase, appearance and review transitions. Ability increases now name their affected stat and +2 benefit; energy and skill variants have distinct labels. These label changes await his retest. A bounded passive `Synthesist build page:` log records the first transition of each kind. The broader advancement/respec matrix remains pending.
 
 ## Installation
 
@@ -17,9 +17,9 @@ Please start with this short test before the remaining cases.
 1. Create a separate Summoner/Synthesist and choose **Biped**.
 2. Find **Build your eidolon** in its native feature selections. Choose **Allocate or rebuild eidolon evolutions**.
    Continue to the next creation page: **Eidolon evolutions** should appear as its own page/tab. It is not an expanding list inside the acquired build-start feature. Each purchase adds the next allocation page; finishing purchases leads to appearance and review pages.
-3. Buy **Improved Natural Armor** once and **Ability Increase, Strength** once. The cost/balance information appears in the selected choice's requirements panel. Expect three initial points, then two, then zero. Free claws/arms/legs must not consume those three points. Another natural-armour purchase should be unavailable at level one.
+3. Buy **Improved Natural Armor** once and **Ability Increase: Strength (+2)** once. Check that all six ability-increase choices name different stats. The cost/balance information appears in the selected choice's requirements panel. Expect three initial points, then two, then zero. Free claws/arms/legs must not consume those three points. Another natural-armour purchase should be unavailable at level one.
 4. Choose **Finish eidolon evolutions**, choose an appearance, then review and confirm. Expect biped appearances; quadruped/serpentine appearances must be unavailable. The summary should retain both purchases and zero remaining points.
-5. Complete creation. Enter **Prepare Eidolon** and finish the canonical pet's native level-up if its portrait shows an advancement. Skills/feats still use that native pet interface. Confirm preparation, then summon the fused eidolon. Expect the selected appearance and purchased evolutions; fusion remains unavailable until the pet reaches its required HD.
+5. Complete creation. Use **Prepare Eidolon (build only)** and finish the canonical pet's native level-up if its portrait shows an advancement. Preparation intentionally displays a separate eidolon; skills/feats still use that native pet interface. Use **Confirm Eidolon Build**: the separate eidolon should disappear. Then use **Summon Fused Eidolon** and allow one minute of unpaused game time. Expect your existing character to take the selected appearance and purchased evolutions, with no separate eidolon combatant. Fusion remains unavailable until the pet reaches its required HD. Report whether confirmation removes the pet and whether the full ritual transforms your character.
 
 Report: whether the build selections appeared, whether each point balance was correct, whether completion worked, and any error text. If a selection fails to appear or advance, stop there; further gameplay tests are not useful until that is repaired.
 

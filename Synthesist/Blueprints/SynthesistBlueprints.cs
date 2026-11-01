@@ -261,13 +261,19 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                 }
                 var cfg = AbilityConfigurator.New(name, Id(name)).SetDisplayName(Text(name + ".name", action switch
                 {
-                    SynthAction.Prepare => "Prepare Eidolon", SynthAction.Confirm => "Confirm Eidolon Build",
+                    SynthAction.Prepare => "Prepare Eidolon (build only)", SynthAction.Confirm => "Confirm Eidolon Build",
                     SynthAction.Reset => "Reallocate Evolutions",
                     SynthAction.EndTwin => "End Twin Eidolon",
                     SynthAction.Fuse => "Summon Fused Eidolon", SynthAction.Dismiss => "Dismiss Eidolon Form",
                     SynthAction.Link => "Toggle Fused Link", SynthAction.Jump => "Maker's Jump",
                     SynthAction.Split => "Split Forms", SynthAction.Rejoin => "Rejoin Forms", _ => "Twin Eidolon"
-                })).SetDescription(Text(name + ".description", "Use the Synthesist's " + action + " ability."))
+                })).SetDescription(Text(name + ".description", action switch
+                {
+                    SynthAction.Prepare => "Outside combat, bring out your separate eidolon for preparation: finish its native level-up and manage permitted build choices. This does not fuse you and grants no independent combatant. When ready, use Confirm Eidolon Build, then Summon Fused Eidolon. Preparation ends if combat begins.",
+                    SynthAction.Confirm => "Finish preparation and put the eidolon away. Complete its required native level-up first. This confirms the build; it does not start fusion. Next use Summon Fused Eidolon to begin the one-minute ritual.",
+                    SynthAction.Fuse => "Begin a one-minute fusion ritual. Allow 60 seconds of unpaused game time for it to finish. The eidolon's appearance, physical statistics and permitted evolutions then apply to your existing character; it does not become a separate combatant. If preparation is open, finish the eidolon's level-up and use Confirm Eidolon Build first.",
+                    _ => "Use the Synthesist's " + action + " ability."
+                }))
                     .SetType(AbilityType.Supernatural).SetRange(AbilityRange.Personal).SetCanTargetSelf(true)
                     .SetActionType(action == SynthAction.Split ? CommandType.Swift : action is SynthAction.Link or SynthAction.Prepare or SynthAction.Confirm or SynthAction.Reset or SynthAction.EndTwin ? CommandType.Free : CommandType.Standard)
                     .AddComponent<SynthesistRestriction>(c => c.Action = action);

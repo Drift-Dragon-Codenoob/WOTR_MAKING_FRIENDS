@@ -57,6 +57,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                     string name = "SynthesistPurchased" + key + "Feature";
                     SynthesistBlueprints.PurchasedFeatures[key + "Feature"] = FeatureConfigurator.New(name, SynthesistBlueprints.Id(name))
                         .CopyFrom(SynthesistBlueprints.ExistingFeature(key + "Feature"), c => false)
+                        .SetDisplayName(SynthesistBlueprints.Text(name + ".name", DisplayName(key, SynthesistBlueprints.ExistingFeature(key + "Feature").Name)))
                         .SetDescription(SynthesistBlueprints.Text(name + ".description", ManagedDescription(key)))
                         .SetRanks(ManagedEvolutionRules.MaximumRanks(key)).ConfigureWithLogging();
                 }
@@ -70,6 +71,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                         .SetRanks(ManagedEvolutionRules.OwnsRank(key) ? ManagedEvolutionRules.MaximumRanks(key) : source.Ranks)
                         .ConfigureWithLogging();
                     var projection = SynthesistBlueprints.ProjectionFeatures[name];
+                    projection.m_DisplayName = SynthesistBlueprints.Text(projectionName + ".name", DisplayName(key, source.Name));
                     projection.AddComponents(IsolatedCopy.Components(source, c => key != "EvolutionFastHealing" && key != "EvolutionDamageReduction" && !IsBudgetComponent(c) &&
                         !(EvolutionStatistics.IsManaged(key) && (c is AddStatBonus || c.GetType().Name == "AddContextStatBonus" || c is GrowthReachBonus))));
                     if (source.ComponentsArray.Any(c => projection.ComponentsArray.Any(p => ReferenceEquals(c, p))))
@@ -92,6 +94,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                 var sourceAbility = BlueprintTool.Get<Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility>(SynthesistBlueprints.Id(key + "Ability"));
                 var ability = AbilityConfigurator.New(purchaseName, SynthesistBlueprints.Id(purchaseName))
                     .CopyFrom(sourceAbility, c => false)
+                    .SetDisplayName(SynthesistBlueprints.Text(purchaseName + ".name", DisplayName(key, sourceAbility.Name)))
                     .AddComponent<EvolutionPreparationRestriction>()
                     .AddComponent<EvolutionBudgetRestriction>(c => c.Key = key)
                     .AddComponent<SynthEvolutionResourceLogic>(c =>
@@ -158,13 +161,31 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
 
         internal static int AspectSpent(UnitEntityData owner) => owner.Progression.Features.GetRank(SynthesistBlueprints.ExistingFeature("EvolutionCost1Feature"));
 
+        internal static string DisplayName(string key, string fallback)
+        {
+            const string ability = "EvolutionAbilityIncrease";
+            if (key.StartsWith(ability, StringComparison.Ordinal))
+                return "Ability Increase: " + key.Substring(ability.Length) + " (+2)";
+            foreach (var category in new[] { "EnergyAttacks", "Resistance", "Immunity", "BreathWeapon" })
+                if (key.StartsWith("Evolution" + category, StringComparison.Ordinal))
+                    return (category == "EnergyAttacks" ? "Energy Attacks" : category == "BreathWeapon" ? "Breath Weapon" : category) +
+                        ": " + key.Substring(("Evolution" + category).Length);
+            return key switch
+            {
+                "EvolutionSkilledSkillPerception" => "Skilled: Perception (+8)",
+                "EvolutionSkilledSkillThievery" => "Skilled: Trickery (+8)",
+                "EvolutionSkilledSkillUseMagicDevice" => "Skilled: Use Magic Device (+8)",
+                _ => fallback
+            };
+        }
+
         private static string ManagedDescription(string key) => key switch
         {
             "EvolutionNaturalArmor" => "Each purchase improves natural armour by 2. Costs 1 evolution point; available once at Summoner level 1, and again at levels 5, 10, 15 and 20.",
             "EvolutionLarge" => "Large costs 4 points at level 8: +8 Strength, +4 Constitution, -2 Dexterity and +2 natural armour. Huge costs 6 additional points at level 13: total +16 Strength, +8 Constitution, -4 Dexterity and +5 natural armour. Size penalties and body-form reach apply. Strength and Constitution evolution purchases cost twice as much while Large or Huge.",
             "EvolutionFastHealing" => "Fast healing 1 costs 4 points and requires Summoner level 11. Each additional 2 points increases healing by 1, to a maximum of 5. While fused, fast healing restores personal HP; it does not restore eidolon temporary HP.",
             "EvolutionDamageReduction" => DamageReductionIntegration.Description,
-            _ => "Increase this ability score by 2 for 2 evolution points. Available once at level 1, plus once more for every six Summoner levels. Strength and Constitution purchases cost 4 points while Large or Huge. Aspect cannot grant ability increases."
+            _ => "Increase " + key.Substring("EvolutionAbilityIncrease".Length) + " by 2 for 2 evolution points. Available once at level 1, plus once more for every six Summoner levels. Strength and Constitution purchases cost 4 points while Large or Huge. Aspect cannot grant ability increases."
         };
     }
 

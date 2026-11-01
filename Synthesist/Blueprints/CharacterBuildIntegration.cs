@@ -56,7 +56,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                     foreach (string option in pair.Key == DamageReductionIntegration.Key ? DamageReductionIntegration.Choices.Keys : new[] { "" }.AsEnumerable())
                     {
                         string name = ChoiceName(pair.Key, personal, option);
-                        var choice = NewChoice(name, feature.Name + (option.Length > 0 ? " / " + option.ToLowerInvariant() : ""),
+                        var choice = NewChoice(name, EvolutionIntegration.DisplayName(pair.Key, feature.Name) + (option.Length > 0 ? " / " + option.ToLowerInvariant() : ""),
                             feature.Description + "\n\nEvolution costs, remaining points and prerequisites are shown below.",
                             new BuildChoice { Action = BuildAction.Buy, Key = pair.Key, Aspect = personal, Option = option });
                         choice.m_Icon = feature.m_Icon;
@@ -156,7 +156,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             var build = part?.Draft ?? part?.Current;
             if (build == null) return "Choose a base form and start an eidolon build.";
             string purchases = !detail ? "" : string.Join("\n", build.Purchases.Select(p => (p.Aspect ? "Aspect: " : "Eidolon: ") +
-                SynthesistBlueprints.BuildFeature(p.Key + "Feature").Name + (string.IsNullOrEmpty(p.Option) ? "" : " / " + p.Option) + " (" + p.Cost + ")"));
+                EvolutionIntegration.DisplayName(p.Key, SynthesistBlueprints.BuildFeature(p.Key + "Feature").Name) + (string.IsNullOrEmpty(p.Option) ? "" : " / " + p.Option) + " (" + p.Cost + " points)"));
             return $"{build.Form}; appearance: {AppearanceIntegration.Find(build.Appearance)?.Name ?? "not chosen"}\n" +
                 $"Eidolon points remaining: {build.Remaining}/{EidolonProgression.At(build.Level).EvolutionPoints}. Aspect remaining: {build.AspectRemaining}.\n" +
                 $"Natural attacks: {build.NaturalAttacks(false)}/{EidolonProgression.At(build.Level).MaximumNaturalAttacks}.\n" + purchases;
