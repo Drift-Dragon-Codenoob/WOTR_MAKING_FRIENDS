@@ -68,9 +68,29 @@ internal static class CharacterBuildProbes
         Check(aspect.Remaining == afterOne && aspect.AspectRemaining == 4, "Greater Aspect rounds aggregate diversion rather than each purchase");
         Check(CharacterBuildRules.Reason(aspect, strength, "", true, "LawfulGood") != null, "Aspect cannot purchase ability increases");
         Reject(() => aspect.Buy("EvolutionFlight", "", 5, true), "Aspect cannot exceed its separate allowance");
-        Check(aspect.CanUseAppearance(EidolonForm.Quadruped, false) && !aspect.CanUseAppearance(EidolonForm.Biped, true), "Appearance is filtered by mechanical form");
+        aspect.Appearance = "Nabasu";
+        int appearancePoints = aspect.Remaining;
+        Check(aspect.Form == EidolonForm.Quadruped && !aspect.HasArms(), "A biped appearance preserves an armless quadruped build");
         aspect.Buy("EvolutionLimbsArms", "", 2, false);
-        Check(!aspect.CanUseAppearance(EidolonForm.Quadruped, false) && aspect.CanUseAppearance(EidolonForm.Quadruped, true), "Purchased arms require a compatible appearance without changing base form");
+        Check(aspect.Appearance == "Nabasu" && aspect.Remaining == appearancePoints - 2, "Purchasing arms keeps the chosen appearance and charges only for the evolution");
+        Check(EidolonAppearances.All.Length == 59 && EidolonAppearances.All.Select(m => m.Key).Distinct(StringComparer.Ordinal).Count() == 59,
+            "The expanded catalogue has 59 unique models");
+        foreach (var category in Enum.GetValues<EidolonForm>())
+        {
+            Check(EidolonAppearances.All.Any(m => m.Category == category), "Each of the three browsing groups has models");
+            foreach (var model in EidolonAppearances.All)
+            {
+                var cosmetic = CharacterBuild.Begin(1, category, null, false);
+                int points = cosmetic.Remaining, attacksBefore = cosmetic.NaturalAttacks(false);
+                bool armsBefore = cosmetic.HasArms();
+                cosmetic.Appearance = model.Key;
+                cosmetic.Validate();
+                var restored = JsonConvert.DeserializeObject<CharacterBuild>(JsonConvert.SerializeObject(cosmetic))!;
+                Check(restored.Appearance == model.Key && restored.Form == category && restored.Remaining == points &&
+                    restored.NaturalAttacks(false) == attacksBefore && restored.HasArms() == armsBefore,
+                    "Appearance persists without changing mechanics: " + category + " / " + model.Key);
+            }
+        }
         var attacks = CharacterBuild.Begin(4, EidolonForm.Biped, null, false);
         attacks.Buy("EvolutionPincers", "", 1, false);
         Check(attacks.NaturalAttacks(false) == 2, "Switchable primary sets are counted once");

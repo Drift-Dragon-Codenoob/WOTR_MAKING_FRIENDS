@@ -41,6 +41,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 case BuildAction.FinishPurchases:
                     next = choice.Aspect ? CharacterBuildIntegration.EidolonPurchases : CharacterBuildIntegration.Appearance;
                     break;
+                case BuildAction.AppearanceGroup:
+                    next = CharacterBuildIntegration.AppearanceGroups[choice.Key];
+                    break;
                 case BuildAction.Appearance:
                     part.Draft.Appearance = choice.Key;
                     next = CharacterBuildIntegration.Summary;

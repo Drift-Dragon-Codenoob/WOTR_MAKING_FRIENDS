@@ -23,6 +23,7 @@ Copy-Item (Join-Path $root 'bin\Release\net48\WOTR_MAKING_FRIENDS.dll') $stage
 foreach ($file in 'LICENSE','MESSAGE_TO_BALKOTH.md') { Copy-Item (Join-Path $root $file) $stage }
 Copy-Item (Join-Path $root 'licenses\BlueprintCore-LICENSE') $stage
 Copy-Item (Join-Path $root 'docs\SYNTHESIST_BUILD_FLOW_TEST.md') (Join-Path $stage 'PLAYER_TEST.md')
+Copy-Item (Join-Path $root 'docs\SYNTHESIST_APPEARANCES.md') $stage
 $infoPath = Join-Path $stage 'Info.json'
 $info = Get-Content $infoPath -Raw | ConvertFrom-Json
 $info.DisplayName = 'MAKING FRIENDS (Synthesist build-flow player test)'

@@ -56,14 +56,33 @@ try {
             foreach ($option in $options) { Check ($ids.ContainsKey("SynthesistBuild${side}${key}${option}Choice")) "Stable ID for $side $key $option" }
         }
     }
-    foreach ($model in 'Incubus','Succubus','MovanicDeva','HellHound','Nightmare','Manticore','Vavakia','Marilith','Lillend','Salamander') {
-        foreach ($name in @("Eidolon$model", "SynthesistBuildAppearance${model}Choice", "SynthesistFusionAppearance${model}Buff", "SynthesistChooseAppearance${model}Ability")) {
+    $catalogue = [IO.File]::ReadAllText((Join-Path $root 'Synthesist\Rules\EidolonAppearances.cs'))
+    $models = @([regex]::Matches($catalogue, 'new\("([^"]+)",') | ForEach-Object {$_.Groups[1].Value})
+    Check ($models.Count -eq 59 -and @($models | Select-Object -Unique).Count -eq 59) 'Expanded catalogue has 59 unique keys'
+    foreach ($model in $models) {
+        if ($model -notin @('Nabasu','Gargoyle')) { Check ($ids.ContainsKey("Eidolon$model")) "Existing source ID: $model" }
+        foreach ($name in @("SynthesistBuildAppearance${model}Choice", "SynthesistFusionAppearance${model}Buff", "SynthesistChooseAppearance${model}Ability")) {
             Check ($ids.ContainsKey($name)) "Model source and runtime ID: $name"
         }
     }
+    foreach ($category in @('Biped','Quadruped','Serpentine')) {
+        foreach ($name in @("SynthesistBuildAppearance${category}GroupChoice", "SynthesistBuildAppearance${category}Selection", "SynthesistAppearance${category}Menu")) {
+            Check ($ids.ContainsKey($name)) "Stable appearance browsing group: $name"
+        }
+    }
+    $appearances = $module.Find('WOTR_MAKING_FRIENDS.Synthesist.Blueprints.AppearanceIntegration', $false)
+    foreach ($method in $appearances.Methods | Where-Object {$_.Name.String -eq 'Compatible'}) {
+        Check (@($method.Body.Instructions | Where-Object {$_.Operand -like '*HasArms*' -or $_.Operand -like '*SupportsWeapons*' -or $_.Operand -like '*get_Form*'}).Count -eq 0) 'Appearance validation does not gate on form or arms'
+    }
+    $equipment = $module.Find('WOTR_MAKING_FRIENDS.Synthesist.Runtime.AppearanceEquipment', $false)
+    Check ($null -ne $equipment) 'Scoped visual equipment guard is present'
+    foreach ($patch in @(@('Kingmaker.View.UnitEntityView','ShouldUpdateEquipment',0), @('Kingmaker.View.UnitEntityView','AddItemEquipment',3), @('Kingmaker.View.Equipment.UnitViewHandsEquipment','UpdateVisibility',1))) {
+        $type = $native.Find($patch[0],$false)
+        Check (@($type.Methods | Where-Object {$_.Name.String -eq $patch[1] -and $_.MethodSig.Params.Count -eq $patch[2]}).Count -eq 1) "Native visual hook signature: $($patch[0]).$($patch[1])"
+    }
     # The registry intentionally has case-distinct names, including dummyBuff and
     # DummyBuff. PowerShell's default hashtable/-eq comparisons conflate them.
-    $baselineJson = (& git -C $root show b49af82:Output/GUIDs/GUIDs.json) -join "`n"
+    $baselineJson = (& git -C $root show 18a81e9:Output/GUIDs/GUIDs.json) -join "`n"
     if ($LASTEXITCODE -ne 0) { throw 'Could not read the pre-build-flow identifier checkpoint.' }
     foreach ($row in ($baselineJson | ConvertFrom-Json)) { Check ($ids[$row.name] -eq $row.guid) "Preserved existing ID: $($row.name)" }
     Write-Host "PASS: $checks offline build-flow assembly/identifier checks. No native UI or gameplay was exercised."

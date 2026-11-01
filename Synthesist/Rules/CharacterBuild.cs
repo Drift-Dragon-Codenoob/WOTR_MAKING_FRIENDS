@@ -29,7 +29,6 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
         public int Rank(string key, bool aspect)
             => PurchasedRank(key, aspect) + (aspect ? 0 : BaseForms.For(Form).FreeEvolutions.Where(e => "Evolution" + (e.Key == "ReachBite" ? "Reach" : e.Key) == key).Sum(e => e.Ranks));
         public bool HasArms(bool aspect = false) => aspect || Rank("EvolutionLimbsArms", false) > 0;
-        public bool CanUseAppearance(EidolonForm form, bool supportsWeapons) => Form == form && (!HasArms() || supportsWeapons);
         public CharacterBuild Copy() => new()
         {
             Version = Version, Level = Level, Form = Form, Appearance = Appearance,

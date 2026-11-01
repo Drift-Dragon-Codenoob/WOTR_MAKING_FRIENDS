@@ -22,11 +22,15 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
     {
         internal readonly string Key;
         internal readonly string Name;
-        internal readonly EidolonForm Form;
-        internal readonly bool SupportsWeapons;
-        internal EidolonAppearance(string key, string name, EidolonForm form, bool weapons)
-        { Key = key; Name = name; Form = form; SupportsWeapons = weapons; }
-        internal BlueprintUnit Source => BlueprintCore.Utils.BlueprintTool.Get<BlueprintUnit>(SynthesistBlueprints.Id("Eidolon" + Key));
+        internal readonly EidolonForm Category;
+        internal EidolonAppearance(EidolonAppearanceDefinition definition)
+        { Key = definition.Key; Name = definition.Name; Category = definition.Category; }
+        internal BlueprintUnit Source => Key switch
+        {
+            "Nabasu" => BlueprintCore.Blueprints.References.UnitRefs.CR12_NabasuAdvancedSummoned.Reference.Get(),
+            "Gargoyle" => BlueprintCore.Blueprints.References.UnitRefs.CR4_GargoyleStandard.Reference.Get(),
+            _ => BlueprintCore.Utils.BlueprintTool.Get<BlueprintUnit>(SynthesistBlueprints.Id("Eidolon" + Key))
+        };
         internal string BuffName => "SynthesistFusionAppearance" + Key + "Buff";
     }
 
@@ -34,42 +38,32 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
     {
         // These are visual templates only, never subtype/progression packages.
         // Animation acceptance belongs to the player test checklist.
-        internal static readonly EidolonAppearance[] Models =
-        {
-            new("Incubus", "Incubus", EidolonForm.Biped, true),
-            new("Succubus", "Succubus", EidolonForm.Biped, true),
-            new("MovanicDeva", "Movanic deva", EidolonForm.Biped, true),
-            new("HellHound", "Hellhound", EidolonForm.Quadruped, false),
-            new("Nightmare", "Nightmare", EidolonForm.Quadruped, false),
-            new("Manticore", "Manticore", EidolonForm.Quadruped, false),
-            new("Vavakia", "Vavakia (armed form)", EidolonForm.Quadruped, true),
-            new("Marilith", "Marilith", EidolonForm.Serpentine, true),
-            new("Lillend", "Lillend", EidolonForm.Serpentine, true),
-            new("Salamander", "Salamander", EidolonForm.Serpentine, true)
-        };
+        internal static readonly EidolonAppearance[] Models = EidolonAppearances.All.Select(d => new EidolonAppearance(d)).ToArray();
         internal static EidolonAppearance Find(string key) => Array.Find(Models, m => m.Key == key);
         internal static bool Compatible(CharacterBuild build, EidolonAppearance model)
-            => model != null && build.CanUseAppearance(model.Form, model.SupportsWeapons);
+            => build != null && model != null;
         internal static bool Compatible(UnitPartSynthesist part)
         {
             var model = Find(part.Owner.Get<UnitPartSynthesistBuild>()?.SelectedAppearance);
-            return model == null || model.Form == part.State.Form && (!Projection.HasArms(part) || model.SupportsWeapons);
+            return part.Owner.Get<UnitPartSynthesistBuild>()?.SelectedAppearance == null || model != null;
         }
         internal static void Create()
         {
             foreach (var model in Models)
             {
                 var buff = BuffConfigurator.New(model.BuffName, SynthesistBlueprints.Id(model.BuffName))
-                    .CopyFrom(SynthesistBlueprints.Buff("SynthesistFusion" + model.Form + "Buff"), c => false)
+                    .CopyFrom(SynthesistBlueprints.Buff("SynthesistFusionBipedBuff"), c => false)
                     .ConfigureWithLogging();
-                buff.AddComponents(IsolatedCopy.Components(SynthesistBlueprints.Buff("SynthesistFusion" + model.Form + "Buff"), c => true));
+                buff.AddComponents(IsolatedCopy.Components(SynthesistBlueprints.Buff("SynthesistFusionBipedBuff"), c => true));
                 var polymorph = buff.GetComponent<Kingmaker.UnitLogic.Buffs.Polymorph>();
+                if (model.Source?.Prefab == null || string.IsNullOrEmpty(model.Source.Prefab.AssetId))
+                    throw new InvalidOperationException("Missing eidolon appearance prefab: " + model.Key);
                 polymorph.m_Prefab = model.Source.Prefab;
                 polymorph.m_PrefabFemale = model.Source.Prefab;
                 string abilityName = "SynthesistChooseAppearance" + model.Key + "Ability";
                 AbilityConfigurator.New(abilityName, SynthesistBlueprints.Id(abilityName))
                     .SetDisplayName(SynthesistBlueprints.Text(abilityName + ".name", model.Name))
-                    .SetDescription(SynthesistBlueprints.Text(abilityName + ".description", "Choose this cosmetic model during preparation. It grants no evolutions or subtype powers."))
+                    .SetDescription(SynthesistBlueprints.Text(abilityName + ".description", Description(model)))
                     .SetType(Kingmaker.UnitLogic.Abilities.Blueprints.AbilityType.Special)
                     .SetRange(Kingmaker.UnitLogic.Abilities.Blueprints.AbilityRange.Personal)
                     .SetCanTargetSelf(true)
@@ -78,16 +72,34 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                     .AddAbilityEffectRunAction(new ActionList { Actions = new GameAction[] { new ChooseAppearance { Model = model.Key } } })
                     .ConfigureWithLogging();
             }
+            var groups = new List<Blueprint<BlueprintAbilityReference>>();
+            foreach (EidolonForm category in Enum.GetValues(typeof(EidolonForm)))
+            {
+                string name = "SynthesistAppearance" + category + "Menu";
+                var menu = AbilityConfigurator.New(name, SynthesistBlueprints.Id(name))
+                    .SetDisplayName(SynthesistBlueprints.Text(name + ".name", category + " appearances"))
+                    .SetDescription(SynthesistBlueprints.Text(name + ".description", "Browse this visual group. Every model can be used with any mechanical base form."))
+                    .SetType(Kingmaker.UnitLogic.Abilities.Blueprints.AbilityType.Special)
+                    .SetRange(Kingmaker.UnitLogic.Abilities.Blueprints.AbilityRange.Personal).SetCanTargetSelf(true)
+                    .SetActionType(Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Free)
+                    .AddAbilityVariants(Models.Where(m => m.Category == category).Select(m =>
+                        (Blueprint<BlueprintAbilityReference>)BlueprintTool.GetRef<BlueprintAbilityReference>(SynthesistBlueprints.Id("SynthesistChooseAppearance" + m.Key + "Ability"))).ToList())
+                    .ConfigureWithLogging();
+                groups.Add(menu.ToReference<BlueprintAbilityReference>());
+            }
             AbilityConfigurator.New("SynthesistAppearanceAbility", SynthesistBlueprints.Id("SynthesistAppearanceAbility"))
                 .SetDisplayName(SynthesistBlueprints.Text("appearance.control.name", "Choose eidolon appearance"))
-                .SetDescription(SynthesistBlueprints.Text("appearance.control.description", "Choose a compatible cosmetic model during preparation. Evolution allocation remains locked except after advancement or applicable retraining."))
+                .SetDescription(SynthesistBlueprints.Text("appearance.control.description", "Browse Biped, Quadruped and Serpentine appearances during preparation. All groups are available to every build. Use the model's built-in visuals; equipped items are not overlaid. Evolution allocation remains locked except after advancement or applicable retraining."))
                 .SetType(Kingmaker.UnitLogic.Abilities.Blueprints.AbilityType.Special)
                 .SetRange(Kingmaker.UnitLogic.Abilities.Blueprints.AbilityRange.Personal)
                 .SetCanTargetSelf(true)
                 .SetActionType(Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Free)
-                .AddAbilityVariants(Models.Select(m => (Blueprint<BlueprintAbilityReference>)BlueprintTool.GetRef<BlueprintAbilityReference>(SynthesistBlueprints.Id("SynthesistChooseAppearance" + m.Key + "Ability"))).ToList())
+                .AddAbilityVariants(groups)
                 .ConfigureWithLogging();
         }
+        internal static string Description(EidolonAppearance model) => model.Category + " browsing group; usable with any base form, with or without arms. " +
+            "Only the model's built-in visual details are used; your equipped items are not overlaid. Visible equipment is cosmetic. " +
+            "Appearance grants no statistics, limbs, attacks, flight or subtype powers. Unusual shapes are grouped approximately. Model animations await player testing.";
         internal static BlueprintBuff FusionBuff(UnitPartSynthesist part)
         {
             var model = Find(part.Owner.Get<UnitPartSynthesistBuild>()?.SelectedAppearance);
@@ -112,10 +124,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         {
             var part = caster.Get<UnitPartSynthesist>();
             var model = AppearanceIntegration.Find(Model);
-            return part?.IsPreparing == true && model != null && model.Form == part.State.Form &&
-                (!Projection.HasArms(part) || model.SupportsWeapons);
+            return part?.IsPreparing == true && model != null;
         }
-        public string GetAbilityCasterRestrictionUIText() => "Enter preparation and choose a model compatible with the eidolon's base form and arms.";
+        public string GetAbilityCasterRestrictionUIText() => "Enter preparation and choose an appearance.";
     }
 
     [TypeId("25c28b70457b4a6ca9e8248ac0ba183d")]
@@ -127,7 +138,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         {
             var caster = Context.MaybeCaster;
             if (!new AppearanceRestriction { Model = Model }.IsCasterRestrictionPassed(caster))
-                throw new InvalidOperationException("The appearance is incompatible or preparation is closed.");
+                throw new InvalidOperationException("The appearance is unknown or preparation is closed.");
             caster.Ensure<UnitPartSynthesistBuild>().AppearanceOverride = Model;
             AppearanceIntegration.ApplyCanonical(caster.Get<UnitPartSynthesist>());
         }

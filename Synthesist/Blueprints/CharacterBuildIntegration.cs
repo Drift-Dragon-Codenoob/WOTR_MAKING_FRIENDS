@@ -16,7 +16,7 @@ using WOTR_MAKING_FRIENDS.Utilities;
 
 namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
 {
-    internal enum BuildAction { Rebuild, Keep, Buy, FinishPurchases, Appearance, Confirm }
+    internal enum BuildAction { Rebuild, Keep, Buy, FinishPurchases, Appearance, Confirm, AppearanceGroup }
     internal sealed class BuildChoice
     {
         internal BuildAction Action;
@@ -30,6 +30,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         internal static readonly Dictionary<string, BuildChoice> Choices = new(StringComparer.Ordinal);
         internal static readonly Dictionary<string, EvolutionDefinition> Definitions = new(StringComparer.Ordinal);
         internal static BlueprintFeatureSelection Root, EidolonPurchases, AspectPurchases, Appearance, Summary;
+        internal static readonly Dictionary<string, BlueprintFeatureSelection> AppearanceGroups = new(StringComparer.Ordinal);
         internal static string ChoiceName(string key, bool aspect, string option = null)
             => "SynthesistBuild" + (aspect ? "Aspect" : "Eidolon") + key + (option ?? "") + "Choice";
 
@@ -74,17 +75,25 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             aspect.Add(finishAspect.ToReference<BlueprintFeatureReference>());
             EidolonPurchases = Selection("SynthesistBuildEidolonSelection", "Eidolon evolutions", eidolon);
             AspectPurchases = Selection("SynthesistBuildAspectSelection", "Aspect evolutions", aspect);
-            var models = new List<BlueprintFeatureReference>();
-            foreach (var model in AppearanceIntegration.Models)
+            var categories = new List<BlueprintFeatureReference>();
+            foreach (EidolonForm category in Enum.GetValues(typeof(EidolonForm)))
             {
-                var choice = NewChoice("SynthesistBuildAppearance" + model.Key + "Choice", model.Name,
-                    model.Form + " appearance. " + (model.SupportsWeapons ? "Can be selected for an armed build." : "Select an armed appearance if arms are purchased.") +
-                    " Appearance grants no evolutions, statistics, attacks or subtype powers. Model animations await gameplay testing.",
-                    new BuildChoice { Action = BuildAction.Appearance, Key = model.Key });
-                choice.m_Icon = model.Source.PortraitSafe?.Data?.SmallPortrait;
-                models.Add(choice.ToReference<BlueprintFeatureReference>());
+                var models = new List<BlueprintFeatureReference>();
+                foreach (var model in AppearanceIntegration.Models.Where(m => m.Category == category))
+                {
+                    var choice = NewChoice("SynthesistBuildAppearance" + model.Key + "Choice", model.Name,
+                        AppearanceIntegration.Description(model), new BuildChoice { Action = BuildAction.Appearance, Key = model.Key });
+                    choice.m_Icon = model.Source.PortraitSafe?.Data?.SmallPortrait;
+                    models.Add(choice.ToReference<BlueprintFeatureReference>());
+                }
+                string key = category.ToString();
+                AppearanceGroups[key] = Selection("SynthesistBuildAppearance" + key + "Selection", key + " appearances", models);
+                var group = NewChoice("SynthesistBuildAppearance" + key + "GroupChoice", key + " appearances (" + models.Count + ")",
+                    "Browse this visual group. All groups are available regardless of your mechanical base form or purchased limbs.",
+                    new BuildChoice { Action = BuildAction.AppearanceGroup, Key = key });
+                categories.Add(group.ToReference<BlueprintFeatureReference>());
             }
-            Appearance = Selection("SynthesistBuildAppearanceSelection", "Eidolon appearance", models);
+            Appearance = Selection("SynthesistBuildAppearanceSelection", "Eidolon appearance group", categories);
             var confirm = NewChoice("SynthesistBuildConfirmChoice", "Confirm eidolon build",
                 "Review your build summary below. Confirming saves these choices, including any deliberately unspent points. Use the level-up screen's back controls to revise a choice.",
                 new BuildChoice { Action = BuildAction.Confirm });
@@ -143,9 +152,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             if (choice.Action == BuildAction.Buy)
                 return CharacterBuildRules.Reason(draft, Definitions[choice.Key], choice.Option, choice.Aspect, unit.Alignment.ValueRaw.ToString());
             if (choice.Action == BuildAction.Appearance && !AppearanceIntegration.Compatible(draft, AppearanceIntegration.Find(choice.Key)))
-                return "Choose an appearance compatible with your base form and arms.";
+                return "Choose a known appearance.";
             if (choice.Action == BuildAction.Confirm && !AppearanceIntegration.Compatible(draft, AppearanceIntegration.Find(draft.Appearance)))
-                return "Select a compatible appearance first.";
+                return "Select an appearance first.";
             if (choice.Action == BuildAction.Confirm && (draft.Remaining > 0) != (choice.Option == "unspent"))
                 return draft.Remaining > 0 ? "Explicitly confirm leaving the remaining points unspent." : "There are no unspent eidolon points.";
             return null;

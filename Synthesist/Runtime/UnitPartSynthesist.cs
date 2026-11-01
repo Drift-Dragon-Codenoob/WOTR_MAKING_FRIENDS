@@ -202,7 +202,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         internal void ConfirmPreparation()
         {
-            if (!AppearanceIntegration.Compatible(this)) throw new InvalidOperationException("Choose an appearance compatible with the eidolon's arms before confirming.");
+            if (!AppearanceIntegration.Compatible(this)) throw new InvalidOperationException("Choose a known eidolon appearance before confirming.");
             SyncProgression();
             if (Eidolon.Progression.CharacterLevel != EidolonProgression.At(Level).HitDice)
                 throw new InvalidOperationException("Finish the eidolon's native level-up before confirming its build.");
