@@ -27,6 +27,8 @@ Report: whether the build selections appeared, whether each point balance was co
 
 Four normal feats are now candidates: **Extra Evolution**, **Expanded Arcana**, **Rending Claws** and **Summoner's Call**. They spend your normal feat picks. Keep an ordinary feat for the three-point baseline creation test above; choosing Extra Evolution instead raises the starting allowance to four. See [feat rules and focused player checks](SYNTHESIST_FEATS.md), also included in the ZIP. Native feat selections, combat effects and respec behaviour still await David's tests.
 
+The review candidate also repairs positive-HP death when rejoining, respec cancellation/ownership, overdue Twin charges, invalid kept/replayed builds and ability-guard failures. For later regression: cancel both before and after the respec screen opens; respec away Extra Evolution and expect **Keep** to be unavailable if its purchases no longer fit; test a dead independent eidolon rejoining without becoming a living shell. These advanced checks follow the basic workflow above.
+
 | Case | Action | Expected result |
 |---|---|---|
 | Deliberately unspent points | On another fresh test, finish purchases early. | Ordinary confirmation is unavailable; **Confirm and leave remaining evolution points unspent** explicitly completes that build. Ordinary play cannot reopen allocation. |

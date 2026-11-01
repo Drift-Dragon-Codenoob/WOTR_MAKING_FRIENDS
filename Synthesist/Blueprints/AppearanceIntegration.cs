@@ -122,7 +122,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
         public string Model;
         public bool IsCasterRestrictionPassed(UnitEntityData caster)
         {
-            var part = caster.Get<UnitPartSynthesist>();
+            var part = caster?.Get<UnitPartSynthesist>();
             var model = AppearanceIntegration.Find(Model);
             return part?.IsPreparing == true && model != null;
         }

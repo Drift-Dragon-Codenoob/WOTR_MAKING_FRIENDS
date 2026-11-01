@@ -46,7 +46,6 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         [JsonIgnore] internal bool NeedsReconcile;
         [JsonIgnore] internal bool CollapsePending;
         [JsonIgnore] private bool respecSuspended;
-        [JsonIgnore] private bool sawRespecController;
 
         public bool ShouldSurviveRespec => true;
 
@@ -55,6 +54,14 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             if (respecSuspended || State == null) return;
             respecSuspended = true;
             if (Eidolon?.Master != null) Eidolon.RemoveMaster();
+        }
+
+        internal void ResumeAfterRespec()
+        {
+            if (!respecSuspended) return;
+            respecSuspended = false;
+            if (Eidolon != null && !Eidolon.IsDisposed && Eidolon.Master == null)
+                Eidolon.SetMaster(Owner, Enums.PetTypeExtensions.Eidolon);
         }
 
         public void CopyAfterRespec(UnitEntityData unit)
@@ -339,8 +346,9 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         internal void EndSplit()
         {
-            State.SetSplitWounds(Eidolon.Damage, Day);
-            State.EndSplit(Day);
+            bool dead = Eidolon.State.IsDead;
+            if (!dead) State.SetSplitWounds(Eidolon.Damage, Day);
+            State.EndSplit(Day, dead);
             FinishSplitTransition();
         }
 
@@ -366,7 +374,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             State.SpendTwinMinute(Budget);
             TwinActive = true;
             TwinPaidUntil = Now + TimeSpan.TicksPerMinute;
-            ApplyProjection(true);
+            try { ApplyProjection(true); }
+            catch
+            {
+                try { RemoveProjection(); }
+                finally { TwinActive = false; TwinPaidUntil = 0; }
+                throw;
+            }
         }
 
         internal void EndTwin()
@@ -381,6 +395,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             using var timing = RuntimePerformance.Measure("UnitPart.Tick");
 #endif
             if (State == null || Eidolon == null || Changing) return;
+            // The live canonical entity must not be reconciled while a respec
+            // preview is changing classes, resources and progression facts.
+            if (respecSuspended)
+            {
+                if (Game.Instance.LevelUpController != null) return;
+                ResumeAfterRespec();
+            }
             if (!IsFused && !IsSplit && !IsPreparing && !TwinActive) ApplyCharacterBuild();
             if (Eidolon.Descriptor.Faction != Owner.Descriptor.Faction)
             {
@@ -402,13 +423,6 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             {
                 EvolutionStatistics.Refresh(this);
                 evolutionStatisticsSignature = signature;
-            }
-            if (respecSuspended)
-            {
-                if (Game.Instance.LevelUpController != null) { sawRespecController = true; return; }
-                if (!sawRespecController) return;
-                respecSuspended = false; sawRespecController = false;
-                if (Eidolon.Master == null) Eidolon.SetMaster(Owner, Enums.PetTypeExtensions.Eidolon);
             }
             if (!IsFused && !IsSplit && !TwinActive && Level != State.SummonerLevel) SyncProgression();
             if (NeedsReconcile)
@@ -446,8 +460,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             }
             if (TwinActive && Now >= TwinPaidUntil)
             {
-                if (!Budget.TrySpend(DailyAbility.TwinEidolon, 1)) { Dismiss(); return; }
-                TwinPaidUntil += TimeSpan.TicksPerMinute;
+                // Area travel/loading can cross several minute boundaries. Charge
+                // all elapsed increments before granting another frame of Twin.
+                int available = Owner.Descriptor.Resources.GetResourceAmount(SynthesistBlueprints.Resource(DailyAbility.TwinEidolon));
+                var charge = new TimedResourceCharge(Now, TwinPaidUntil, TimeSpan.TicksPerMinute, Math.Max(0, available));
+                if ((charge.Units > 0 && !Budget.TrySpend(DailyAbility.TwinEidolon, charge.Units)) || charge.Expired)
+                { Dismiss(); return; }
+                TwinPaidUntil = charge.PaidUntil;
             }
             if (CollapsePending) { CollapsePending = false; Dismiss(); }
         }

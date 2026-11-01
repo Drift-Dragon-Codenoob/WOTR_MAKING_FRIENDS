@@ -30,10 +30,10 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 
         private static bool ContainsTransformation(ActionList list, HashSet<GameAction> visited)
         {
-            foreach (var action in list.Actions ?? Array.Empty<GameAction>())
+            foreach (var action in list?.Actions ?? Array.Empty<GameAction>())
             {
-                if (!visited.Add(action)) continue;
-                if (action is ContextActionApplyBuff apply && apply.m_Buff.Get()?.GetComponent<Polymorph>() != null) return true;
+                if (action == null || !visited.Add(action)) continue;
+                if (action is ContextActionApplyBuff apply && apply.m_Buff?.Get()?.GetComponent<Polymorph>() != null) return true;
                 foreach (var field in action.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
                     if (field.GetValue(action) is ActionList nested && ContainsTransformation(nested, visited)) return true;
             }
@@ -45,7 +45,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
 #if SYNTHESIST_ACCEPTANCE
             using var timing = RuntimePerformance.Measure("AbilityGuards.Reason");
 #endif
-            var caster = ability.Caster.Unit;
+            var caster = ability?.Caster?.Unit;
+            if (caster == null || !SynthesistBlueprints.Ready) return null;
             var part = caster.Get<UnitPartSynthesist>();
             if (part == null)
             {
@@ -54,6 +55,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                     !ability.Blueprint.name.StartsWith("SynthesistPurchase", StringComparison.Ordinal) &&
                     !ability.Blueprint.name.StartsWith("SynthesistEvolution", StringComparison.Ordinal))
                     return "Preparation cannot provide an independent combatant or combat abilities.";
+                if (part?.IsSplit == true && part.Eidolon == caster && IsTransformation(ability.Blueprint))
+                    return "Dismiss the eidolon form before another transformation.";
                 return null;
             }
             if (part.State == null) return null;
@@ -95,7 +98,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             using var timing = RuntimePerformance.Measure("TransformationTargetGuard");
 #endif
             if (!__result) return;
-            var part = __0?.Unit?.Get<UnitPartSynthesist>();
+            var target = __0?.Unit;
+            var part = target?.Get<UnitPartSynthesist>();
+            if (part == null)
+            {
+                var master = target?.Master?.Get<UnitPartSynthesist>();
+                if (master?.Eidolon == target && master?.IsSplit == true) part = master;
+            }
             if (part == null || (!part.IsFused && !part.IsSplit && !part.TwinActive)) return;
             if (AbilityGuards.IsTransformation(__instance.Blueprint)) __result = false;
         }

@@ -146,6 +146,12 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                 if (choice.Action == BuildAction.Keep && part?.Current == null) return "No previous saved build.";
                 if (choice.Action == BuildAction.Keep && (part.Current.Form != form || part.Current.Level > unit.Progression.GetClassLevel(SynthesistBlueprints.SummonerClass)))
                     return "Rebuild evolutions after changing base form or reducing Summoner level.";
+                if (choice.Action == BuildAction.Keep)
+                {
+                    try { CharacterBuild.Begin(unit.Progression.GetClassLevel(SynthesistBlueprints.SummonerClass), form.Value,
+                        part.Current, true, SummonerFeats.ExtraPoints(unit.Unit)); }
+                    catch (InvalidOperationException) { return "The retained purchases exceed the current allowance. Choose Allocate or rebuild eidolon evolutions."; }
+                }
                 return null;
             }
             if (draft == null) return "Start your eidolon build first.";

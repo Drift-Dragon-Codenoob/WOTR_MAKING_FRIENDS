@@ -43,6 +43,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
             var result = keep && previous != null ? previous.Copy() : new CharacterBuild();
             result.Level = level; result.Form = form; result.Confirmed = false; result.BonusEvolutionPoints = bonusEvolutionPoints;
             result.Appearance = previous?.Appearance;
+            result.Validate();
             return result;
         }
         public int Cost(string key, int ordinaryCost, bool aspect)
@@ -74,7 +75,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
         }
         public void Validate()
         {
-            if (Version != 1 || !Enum.IsDefined(typeof(EidolonForm), Form) || Purchases == null ||
+            if (Version != 1 || Level < 1 || Level > 20 || !Enum.IsDefined(typeof(EidolonForm), Form) || Purchases == null ||
                 Purchases.Any(p => p == null || string.IsNullOrEmpty(p.Key) || p.Cost < 1) ||
                 BonusEvolutionPoints < 0 || BonusEvolutionPoints > 5 || AspectSpent > AspectBudget.Allowance(Level) || Remaining < 0)
                 throw new InvalidOperationException("Invalid saved eidolon build.");
@@ -94,6 +95,14 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
 
     internal static class CharacterBuildRules
     {
+        internal static void ValidateSavedPurchases(CharacterBuild build, IReadOnlyDictionary<string, EvolutionDefinition> definitions)
+        {
+            build.Validate();
+            foreach (var purchase in build.Purchases)
+                if (!definitions.TryGetValue(purchase.Key, out var definition) ||
+                    build.PurchasedRank(purchase.Key, purchase.Aspect) > definition.Maximum)
+                    throw new InvalidOperationException("The saved build contains an unknown evolution or too many ranks: " + purchase.Key);
+        }
         public static string Reason(CharacterBuild build, EvolutionDefinition definition, string option, bool aspect, string alignment)
         {
             if (build == null || build.Confirmed) return "Start an eidolon build first.";

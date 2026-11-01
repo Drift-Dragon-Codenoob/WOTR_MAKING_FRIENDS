@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Kingmaker.Blueprints;
+using Kingmaker.Blueprints.Classes;
 using Kingmaker.UnitLogic;
 using Kingmaker.UnitLogic.Class.LevelUp;
 using Kingmaker.UnitLogic.Class.LevelUp.Actions;
@@ -97,20 +98,34 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
     {
         internal static void Apply(UnitPartSynthesist part, CharacterBuild build)
         {
-            build.Validate();
+            CharacterBuildRules.ValidateSavedPurchases(build, CharacterBuildIntegration.Definitions);
             if (!build.Confirmed || build.Form != part.State.Form || build.Level != part.Level || build.BonusEvolutionPoints != SummonerFeats.ExtraPoints(part.Owner) ||
                 !AppearanceIntegration.Compatible(build, AppearanceIntegration.Find(build.Appearance)))
                 throw new InvalidOperationException("The committed eidolon build does not match this character.");
             if (part.IsFused || part.IsSplit || part.TwinActive || part.IsPreparing)
                 throw new InvalidOperationException("Dismiss and close preparation before applying a character build.");
+            // Resolve every native target and alignment choice before removing any
+            // owned facts. A bad ledger must leave the current build intact.
+            var prepared = new System.Collections.Generic.List<(EvolutionPurchase Purchase, BlueprintFeature Feature, BlueprintFeature Alignment)>();
+            foreach (var purchase in build.Purchases)
+            {
+                var feature = SynthesistBlueprints.BuildFeature(purchase.Key + "Feature");
+                if (feature == null) throw new InvalidOperationException("Missing evolution feature: " + purchase.Key);
+                BlueprintFeature alignment = null;
+                if (purchase.Key == DamageReductionIntegration.Key &&
+                    (purchase.Option == null || !DamageReductionIntegration.Choices.TryGetValue(purchase.Option, out alignment)))
+                    throw new InvalidOperationException("Unknown damage-reduction alignment in the saved build.");
+                prepared.Add((purchase, feature, alignment));
+            }
             // Record wounds/resources remain authoritative. Rebuild only purchased
             // evolution facts and allocation accounting, never base-form grants.
             part.ClearPurchasedEvolutions();
-            foreach (var purchase in build.Purchases)
+            foreach (var entry in prepared)
             {
+                var purchase = entry.Purchase;
                 var unit = purchase.Aspect ? part.Owner : part.Eidolon;
-                unit.AddFact(SynthesistBlueprints.BuildFeature(purchase.Key + "Feature"));
-                if (purchase.Key == DamageReductionIntegration.Key) unit.AddFact(DamageReductionIntegration.Choices[purchase.Option]);
+                unit.AddFact(entry.Feature);
+                if (entry.Alignment != null) unit.AddFact(entry.Alignment);
                 for (int i = 0; i < purchase.Cost; i++) unit.AddFact(SynthesistBlueprints.ExistingFeature("EvolutionCost1Feature"));
             }
             for (int i = 0; i < AspectBudget.Diverted(build.Level, build.AspectSpent); i++)

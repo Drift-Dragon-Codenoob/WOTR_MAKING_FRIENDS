@@ -144,6 +144,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             var part = __instance.Target.Get<UnitPartSynthesist>();
             if (part?.CollapsePending == true) { part.CollapsePending = false; part.Dismiss(); }
         }
+        private static Exception Finalizer(RuleDealDamage __instance, Exception __exception)
+        {
+            // A later native/mod rule handler can throw before this postfix runs.
+            // Do not retain its event, target and scene through the thread cache.
+            if (__exception != null) FusionDamageHook.TakePayment(__instance);
+            return __exception;
+        }
     }
 
     [HarmonyPatch(typeof(Kingmaker.UnitLogic.Mechanics.Actions.ContextActionKill), "RunAction")]
@@ -191,9 +198,10 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
         }
         private static bool Prefix(UnitEntityData __0)
         {
-            var part = __0?.Get<UnitPartSynthesist>();
+            var original = __0?.PreviewOf.Entity ?? __0;
+            var part = original?.Get<UnitPartSynthesist>();
             if (part == null) return true;
-            if (!part.IsFused && !part.IsSplit && !part.TwinActive && !part.IsPreparing && !part.IsRitualActive) { part.SuspendForRespec(); return true; }
+            if (!part.IsFused && !part.IsSplit && !part.TwinActive && !part.IsPreparing && !part.IsRitualActive) return true;
             Main.Log("Dismiss the eidolon form and close preparation before starting respec.");
             return false;
         }
@@ -202,10 +210,36 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
     [HarmonyPatch(typeof(Kingmaker.UnitLogic.Class.LevelUp.LevelUpController), "Start")]
     internal static class FusionLevelUpGuard
     {
-        private static bool Prefix(UnitEntityData __0)
+        private static bool Prefix(UnitEntityData __0, Kingmaker.UnitLogic.Class.LevelUp.LevelUpState.CharBuildMode __1, out UnitPartSynthesist __state)
         {
-            var part = __0?.Get<UnitPartSynthesist>();
-            return part == null || (!part.IsFused && !part.IsSplit && !part.TwinActive && !part.IsPreparing && !part.IsRitualActive);
+            __state = null;
+            var original = __0?.PreviewOf.Entity ?? __0;
+            var part = original?.Get<UnitPartSynthesist>();
+            if (part == null) return true;
+            if (part.IsFused || part.IsSplit || part.TwinActive || part.IsPreparing || part.IsRitualActive) return false;
+            // A respec options dialog may be cancelled before any controller is
+            // created. Detach only when the actual respec transaction starts.
+            if (__1 == Kingmaker.UnitLogic.Class.LevelUp.LevelUpState.CharBuildMode.Respec)
+            { __state = part; part.SuspendForRespec(); }
+            return true;
+        }
+        private static void Postfix(Kingmaker.UnitLogic.Class.LevelUp.LevelUpController __result, UnitPartSynthesist __state)
+        {
+            if (__result == null) __state?.ResumeAfterRespec();
+            else if (!__result.Committed) __state?.SuspendForRespec();
+        }
+        private static Exception Finalizer(Exception __exception, UnitPartSynthesist __state)
+        { if (__exception != null) __state?.ResumeAfterRespec(); return __exception; }
+    }
+
+    [HarmonyPatch(typeof(Kingmaker.UnitLogic.Class.LevelUp.LevelUpController), "Stop")]
+    internal static class FusionRespecCancelled
+    {
+        private static void Postfix(Kingmaker.UnitLogic.Class.LevelUp.LevelUpController __instance)
+        {
+            if (__instance.Committed) return;
+            var unit = __instance.Unit;
+            (unit?.PreviewOf.Entity ?? unit)?.Get<UnitPartSynthesist>()?.ResumeAfterRespec();
         }
     }
 

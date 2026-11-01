@@ -277,3 +277,4 @@ Console.WriteLine($"PASS: {checks} offline regression assertions. Production com
 SynthesistRulesProbes.Run();
 CharacterBuildProbes.Run();
 SummonerFeatProbes.Run();
+ReviewRegressionProbes.Run();

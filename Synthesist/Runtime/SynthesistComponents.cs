@@ -68,7 +68,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 SynthAction.Reset => part.IsPreparing && part.State.EvolutionEditsOpen,
                 SynthAction.Fuse => part.State.Mode == FusionMode.Unfused && !part.TwinActive && !part.State.EvolutionEditsOpen &&
                     part.State.Durability.CanReturn(UnitPartSynthesist.Day) && !caster.Body.IsPolymorphed &&
-                    part.Eidolon.Progression.CharacterLevel == EidolonProgression.At(part.Level).HitDice && AppearanceIntegration.Compatible(part),
+                    part.Eidolon.Progression.CharacterLevel == EidolonProgression.At(part.Level).HitDice &&
+                    (int)part.Eidolon.State.Size >= (int)caster.State.Size && AppearanceIntegration.Compatible(part),
                 SynthAction.Dismiss => part.IsFused || part.TwinActive,
                 SynthAction.Link => true,
                 SynthAction.Jump => part.IsFused && caster.Descriptor.Resources.GetResourceAmount(SynthesistBlueprints.Resource(DailyAbility.MakersJump)) > 0,

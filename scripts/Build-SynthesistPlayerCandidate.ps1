@@ -17,6 +17,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Offline rules failed.' }
 & (Join-Path $root 'tests\Verify-AssemblyAndSource.ps1') -GamePath $GamePath
 & (Join-Path $root 'tests\Verify-CharacterBuildAssembly.ps1') -GamePath $GamePath
 & (Join-Path $root 'tests\Verify-SummonerFeats.ps1') -GamePath $GamePath
+& (Join-Path $root 'tests\Verify-ReviewFixes.ps1') -GamePath $GamePath
 $stage = Join-Path $root ('artifacts\player-staging\' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
 Copy-Item (Join-Path $root 'Output\*') $stage -Recurse

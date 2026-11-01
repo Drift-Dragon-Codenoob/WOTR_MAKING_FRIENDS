@@ -170,13 +170,13 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
             return false;
         }
 
-        public void EndSplit(int day)
+        public void EndSplit(int day, bool eidolonDead = false)
         {
             Require(Mode == FusionMode.Split && !Durability.Slain, "No living split eidolon can rejoin.");
             if (day < 0 || day == int.MaxValue) throw new ArgumentOutOfRangeException(nameof(day));
             // David's explicit ruling: zero/negative independent HP becomes a depleted fused
             // pool on rejoining, so apply the slain-eidolon return rule. No personal-HP rescue.
-            if (Durability.Remaining == 0) Durability.MarkSlain(day);
+            if (eidolonDead || Durability.Remaining == 0) Durability.MarkSlain(day);
             Mode = Durability.Slain ? FusionMode.Unfused : FusionMode.Fused;
             SplitPaidUntil = 0;
         }
