@@ -5742,5 +5742,1157 @@
   {
     "name": "SynthesistAppearanceSerpentineMenu",
     "guid": "980b6f69-f541-4aaf-b5f9-d0be1b68d535"
+  },
+  {
+    "name": "SummonerExtraEvolutionFeat",
+    "guid": "4849bf4a-151f-4aed-a78c-5b98c18519f1"
+  },
+  {
+    "name": "SummonerExpandedArcanaFeat",
+    "guid": "f4a132cc-5628-4d91-bb87-dd2c78fe4fcc"
+  },
+  {
+    "name": "SummonerRendingClawsFeat",
+    "guid": "b0140707-62e3-4720-9a31-d6763e67bc70"
+  },
+  {
+    "name": "SummonerCallFeat",
+    "guid": "5f28cf41-629d-44dc-896e-fa9ce167a5d4"
+  },
+  {
+    "name": "SummonerExpandedArcanaModeSelection",
+    "guid": "fb445e64-a065-4390-a716-2ebdd51d9038"
+  },
+  {
+    "name": "SummonerCallPreferenceAbility",
+    "guid": "33da4f5b-f175-4291-a226-9cdc169d92f8"
+  },
+  {
+    "name": "SummonerCallOffAbility",
+    "guid": "fb963b41-610b-4a2d-8d45-2813f792ec4b"
+  },
+  {
+    "name": "SummonerCallStrengthAbility",
+    "guid": "fee26982-a2cb-464f-b727-80f70e376453"
+  },
+  {
+    "name": "SummonerCallDexterityAbility",
+    "guid": "09d39566-8e3a-44ee-aee0-afd3914aaf78"
+  },
+  {
+    "name": "SummonerCallConstitutionAbility",
+    "guid": "6558ebbc-ec23-4e87-b6e0-666562fcfdf0"
+  },
+  {
+    "name": "SynthesistSummonersCallStrengthBuff",
+    "guid": "9ad29008-ebd9-47e7-bef4-58eb1fa52379"
+  },
+  {
+    "name": "SynthesistSummonersCallDexterityBuff",
+    "guid": "e7ceca63-f49d-434b-8966-fcf17fa03d60"
+  },
+  {
+    "name": "SynthesistSummonersCallConstitutionBuff",
+    "guid": "03169d12-f8ee-4a07-9d0d-533ba7f312c5"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneChoice",
+    "guid": "3f130200-45cb-471a-aafa-7cf2b58b1ca0"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel0Feature",
+    "guid": "b34b5d27-0990-4cf8-a022-1676a2837188"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel1Feature",
+    "guid": "ff4682c7-a050-41eb-af8d-9893d4806776"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel2Feature",
+    "guid": "c28de83e-aed4-4372-87e0-df8da5b20cd8"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel3Feature",
+    "guid": "74f9631e-1e44-45d1-93a5-16116d5031a6"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel4Feature",
+    "guid": "80e2459e-a223-4541-b644-f84c810e32d1"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel5Feature",
+    "guid": "fe3b6896-6d41-40fe-8bb6-00cad30e5f11"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel6Feature",
+    "guid": "ec610f26-15f5-497e-a5a4-fe5c1c29e1da"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel7Feature",
+    "guid": "0df0e2a0-a56f-459b-bb65-4c1e2088f8aa"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel8Feature",
+    "guid": "0840a69b-184c-4f4d-b08d-be397e50e22d"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneLevel9Feature",
+    "guid": "da18649b-899c-42c6-a11b-aeb2aa6af974"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerChoice",
+    "guid": "ba395d49-40e3-49e8-ad8a-3b82a918f206"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel0Feature",
+    "guid": "82fef282-3638-4a2b-a2c6-2b44309b2469"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel1Feature",
+    "guid": "efad2d96-f8f3-4ffc-93ff-72fc592b78a5"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel2Feature",
+    "guid": "5b7a5f44-4734-4c1d-be1d-9595dd41657d"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel3Feature",
+    "guid": "56dabc9f-5445-49aa-bf76-ce86c48c68ba"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel4Feature",
+    "guid": "e161e7f4-1147-434f-b3f1-259ff03a32e3"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel5Feature",
+    "guid": "6240a49e-2733-4ae6-8f48-bf5299b6c725"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel6Feature",
+    "guid": "f96b9838-e5e3-4d4f-8a32-0fd0cf54abc7"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel7Feature",
+    "guid": "59913079-0020-445c-9d41-fca0f67e10bf"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel8Feature",
+    "guid": "9667b856-1a21-4701-ae64-09815ef71592"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerLevel9Feature",
+    "guid": "7c52258f-1c5a-4f46-ba55-9f0419b7f5c9"
+  },
+  {
+    "name": "SummonerArcanaBardOneChoice",
+    "guid": "64a87004-63e9-45a2-b0ec-4d9e5eca4da3"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel0Feature",
+    "guid": "dcd47abf-6f28-40e3-988c-309e1ec2af28"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel1Feature",
+    "guid": "19a34da8-fa4e-443e-9d41-df0dfe816a70"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel2Feature",
+    "guid": "ae8831f8-15ff-4688-bebe-1f19ffef5185"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel3Feature",
+    "guid": "ffddeb6c-0b82-43cf-a5b3-22052d9cf69a"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel4Feature",
+    "guid": "32a7c649-c500-47ed-af07-19335bd83642"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel5Feature",
+    "guid": "bb4e1921-a858-4bdc-bb8a-9e768b66a795"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel6Feature",
+    "guid": "18a0e254-7ec3-4b89-b1ef-2cdc998e27f5"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel7Feature",
+    "guid": "79173775-6d3f-476f-8563-118e03d0391c"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel8Feature",
+    "guid": "bb76433a-87e5-4b87-9396-5895ec47b6c2"
+  },
+  {
+    "name": "SummonerArcanaBardOneLevel9Feature",
+    "guid": "ea7e3fc3-45da-4a7e-ad81-e7b23b946000"
+  },
+  {
+    "name": "SummonerArcanaBardLowerChoice",
+    "guid": "540f22ad-11ca-4fc0-954b-526affce26e8"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel0Feature",
+    "guid": "7a13a00e-4c8a-4485-b8e5-311a64c3f275"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel1Feature",
+    "guid": "ea056321-6c9c-45c9-b0ca-292d3928fe09"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel2Feature",
+    "guid": "0bb84089-e6ca-431e-b3bf-6cf20b68cf21"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel3Feature",
+    "guid": "0065bfd5-c7ab-40db-9164-8db1964aa2e3"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel4Feature",
+    "guid": "396de50e-c24c-4af0-92b1-7a660f546cd1"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel5Feature",
+    "guid": "e779440a-8de3-4320-a2ef-72a6cfd92ce6"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel6Feature",
+    "guid": "d8e217e1-733a-4156-b5a6-40f95a4f2f7e"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel7Feature",
+    "guid": "ef0f6a9a-3fd6-4798-b57c-f7629e2d479d"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel8Feature",
+    "guid": "f47a773e-63bc-4186-8e28-9b3118ca4a17"
+  },
+  {
+    "name": "SummonerArcanaBardLowerLevel9Feature",
+    "guid": "107a0afb-a9b0-429c-8cbb-20489ded781e"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneChoice",
+    "guid": "05d482e1-9a56-4757-8818-a398952f7abe"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel0Feature",
+    "guid": "7d146dee-9b78-47d0-b963-bd89a40abc76"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel1Feature",
+    "guid": "81a48f17-0096-482a-8815-3ff47bac18fc"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel2Feature",
+    "guid": "1519e757-6269-4b34-91bb-6c4f5c0370ae"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel3Feature",
+    "guid": "b8310b50-7362-4d5c-a714-043a20789f25"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel4Feature",
+    "guid": "936fb041-9500-4fe7-924e-247f20949671"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel5Feature",
+    "guid": "7d1b73b0-0e61-482f-8a02-80e5819ced5d"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel6Feature",
+    "guid": "d7b02db8-7d58-47ff-9f62-fbe1ab310246"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel7Feature",
+    "guid": "07829130-c60c-4b3a-9f36-3210ce42c850"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel8Feature",
+    "guid": "3c3b710d-0143-40cd-a967-b1c849c2e767"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneLevel9Feature",
+    "guid": "51e899d4-51ea-481e-904a-04a230833760"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerChoice",
+    "guid": "da45a733-a2c0-4b54-b3dd-046c9990eab1"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel0Feature",
+    "guid": "534cb675-65cf-4670-a604-479bc6d4e5f9"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel1Feature",
+    "guid": "913509a1-a144-403a-bbdf-f797af7ec663"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel2Feature",
+    "guid": "41a92c03-4ad1-4c2a-9868-2a629503df01"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel3Feature",
+    "guid": "928b292a-7a3c-44cc-b0dc-fbb92144e47e"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel4Feature",
+    "guid": "bf7823eb-5b5e-4f38-bcd4-77f8001b4357"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel5Feature",
+    "guid": "57758527-571b-4877-a121-6ec912eab886"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel6Feature",
+    "guid": "240335fd-b266-4255-9db4-4c8f87479c31"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel7Feature",
+    "guid": "38d22993-85ae-4efa-9ea4-2ba728f70e34"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel8Feature",
+    "guid": "c6892fbc-c710-41b7-8663-f88dcc91c215"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerLevel9Feature",
+    "guid": "60e39fdd-66de-442d-8105-d7aad1b9b52c"
+  },
+  {
+    "name": "SummonerArcanaHunterOneChoice",
+    "guid": "de065b65-218b-4ee9-baaa-8fc68060d772"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel0Feature",
+    "guid": "61b725a5-4d6c-4968-9152-d29ef1ef4add"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel1Feature",
+    "guid": "b14eabf0-ecbf-4628-bf34-c6eea82e7b4a"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel2Feature",
+    "guid": "f4ae185f-de8b-4627-8c5f-34b30f3f94c2"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel3Feature",
+    "guid": "9e30c127-646d-4451-a42f-716352bf097f"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel4Feature",
+    "guid": "d0fbff0f-678e-41a6-805b-4df98ea32e57"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel5Feature",
+    "guid": "9262e76e-3087-4e35-bd2e-2b5f52bff95d"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel6Feature",
+    "guid": "23062ee2-da6f-46be-83eb-3067d9b46a33"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel7Feature",
+    "guid": "f5d4efc7-2099-44cb-84a1-45a82878276f"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel8Feature",
+    "guid": "903cc336-1f0b-4291-9945-fc9a5c396f03"
+  },
+  {
+    "name": "SummonerArcanaHunterOneLevel9Feature",
+    "guid": "35c24ffb-366c-46d5-8d99-38c4eccc5148"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerChoice",
+    "guid": "acd96fd8-75aa-4c6b-98aa-c6c3509ea5b8"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel0Feature",
+    "guid": "537d9e56-e696-4a2b-ad47-2a7fee008417"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel1Feature",
+    "guid": "9e101843-842e-4c11-83cc-a69cfc46004a"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel2Feature",
+    "guid": "600e12d8-45d4-494c-8a88-5c20eab82cd6"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel3Feature",
+    "guid": "0321f20e-a525-43b8-aded-9d9f86ac669a"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel4Feature",
+    "guid": "a1d3df46-1cf8-42e7-91c1-72cf0eb7c2b7"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel5Feature",
+    "guid": "de689932-031b-490a-9452-f28c8dba0744"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel6Feature",
+    "guid": "37dfb876-b803-47ab-ab89-d7a976cffa56"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel7Feature",
+    "guid": "556e32c4-f6ee-4f8a-9c5e-e0c4dc6df066"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel8Feature",
+    "guid": "5af92a62-65b0-4120-aa5d-7367c596661e"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerLevel9Feature",
+    "guid": "de2d0c2f-c763-4971-b5e2-ee5b29a657f0"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneChoice",
+    "guid": "e6012916-ba52-48d5-97d2-5ca4f5835fc8"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel0Feature",
+    "guid": "b2133237-c5fb-4d99-8b84-4f29315ea142"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel1Feature",
+    "guid": "f833be28-517a-428b-9e49-dfd28e01200c"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel2Feature",
+    "guid": "f2639ed9-440d-48c5-97da-d0941483e53f"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel3Feature",
+    "guid": "22711a14-b08d-42a0-9463-a0782f0ec1fe"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel4Feature",
+    "guid": "ece7bcf6-f375-4d5b-87e8-9332bb54bfe1"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel5Feature",
+    "guid": "f2711994-8c33-4565-8bef-eccb9e73ec00"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel6Feature",
+    "guid": "eddad14e-8d25-45b5-8a98-40c38af94372"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel7Feature",
+    "guid": "bcfb092f-ca2a-4550-ae94-2230f32c1da2"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel8Feature",
+    "guid": "9850adda-679e-4a93-8376-aedeb9648cde"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneLevel9Feature",
+    "guid": "5020ab26-ee83-4a94-a25e-55e7f69897c3"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerChoice",
+    "guid": "264769ce-18f4-4a42-bb75-94d436c7a8e2"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel0Feature",
+    "guid": "7450571e-f8ee-495e-85f8-7bb234fdff22"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel1Feature",
+    "guid": "a90b5943-9274-44c1-82da-ffb7aa4e2af8"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel2Feature",
+    "guid": "03cff134-21b0-4992-9d0b-f8d0157d505e"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel3Feature",
+    "guid": "e8f04776-f11b-4f74-880d-b42d4b847572"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel4Feature",
+    "guid": "bc8338a4-064e-466e-bbf3-6a3dd41767ae"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel5Feature",
+    "guid": "72aa1002-d4d0-4c31-b8cb-572d5f612a00"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel6Feature",
+    "guid": "ca71b6bf-329a-4738-98f1-ec2a4a5f8a6f"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel7Feature",
+    "guid": "bc4ce841-b430-412d-8703-6bf56b3a17a5"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel8Feature",
+    "guid": "6ede3eee-6a26-45fd-8456-ccb8b31ad0d9"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerLevel9Feature",
+    "guid": "73f83d32-f98b-4ae6-8d10-6abe47acbfae"
+  },
+  {
+    "name": "SummonerArcanaOracleOneChoice",
+    "guid": "06153103-9c32-4a5c-a44b-0592e4469234"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel0Feature",
+    "guid": "b4fd0ddd-7f85-48d4-946a-a8c21fd76b8e"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel1Feature",
+    "guid": "8fcff371-89b6-4c7e-bc25-1b39aafc6806"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel2Feature",
+    "guid": "ae043f59-6cab-4015-a3e3-f561c04ec2ab"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel3Feature",
+    "guid": "0fdc52b8-ed7f-4db5-ac5d-b2b0997fa9d7"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel4Feature",
+    "guid": "8cb258a3-22fe-4954-82e9-f0fa47e8527f"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel5Feature",
+    "guid": "bc82e3d9-0879-4c62-9563-d2adfdf099f3"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel6Feature",
+    "guid": "576f27de-4944-461a-881b-5c21a33401f7"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel7Feature",
+    "guid": "2e00c479-7d9e-49e6-b0fe-cdd91c3fa6e6"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel8Feature",
+    "guid": "82fa4637-abfb-4e4d-a773-abba67e1eaf9"
+  },
+  {
+    "name": "SummonerArcanaOracleOneLevel9Feature",
+    "guid": "b46a0ced-a8d1-4d4e-be53-e1b6eac637d4"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerChoice",
+    "guid": "0a8620c9-f961-4d12-8450-0a1721c5ddb0"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel0Feature",
+    "guid": "41e51957-fad7-409b-89b5-fb3de01341ab"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel1Feature",
+    "guid": "e96c333e-0317-4ce5-a2d9-1322017599dd"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel2Feature",
+    "guid": "3f76c809-cf23-49c5-ab3d-ebb3c6e5bf21"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel3Feature",
+    "guid": "a9b816af-77c9-417f-85f5-07b6ea354a85"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel4Feature",
+    "guid": "c034ecca-4a52-47e1-a9d5-38a56b63d5d9"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel5Feature",
+    "guid": "dcfbaf3e-4977-4def-b5d6-c6dd2b084512"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel6Feature",
+    "guid": "05991abe-4d2a-4795-ad1a-4dbca1e3e5e0"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel7Feature",
+    "guid": "6413c4ce-11c8-44a1-990a-39abc2419e78"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel8Feature",
+    "guid": "28f95760-cbab-4c94-bd66-4c8a31a58f85"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerLevel9Feature",
+    "guid": "753eadc3-770e-4c4e-addb-c5c6b81d436e"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneChoice",
+    "guid": "98d3d840-b86c-43d3-95b1-e878b93e926b"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel0Feature",
+    "guid": "3eb1776c-fb5e-4063-bf4c-7ef1f3551f8c"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel1Feature",
+    "guid": "6b9ef3bd-83ea-46a9-946b-301b29098e32"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel2Feature",
+    "guid": "52fed24c-4e56-4937-8016-e603127cbdfa"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel3Feature",
+    "guid": "6a40c163-0884-493f-b990-a2e9241a8646"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel4Feature",
+    "guid": "fbeab2a1-5c96-458c-97c2-fb44b7dc4127"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel5Feature",
+    "guid": "d71d54cb-e7d0-442a-a994-928a4cf9bcbb"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel6Feature",
+    "guid": "7ca19552-146c-4c6a-8cfb-7d17c2b710eb"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel7Feature",
+    "guid": "f40e8ad2-7b23-46c7-bcac-55dcc2ddf9fe"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel8Feature",
+    "guid": "53b83df5-73e5-41ab-b87a-132036568c0c"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneLevel9Feature",
+    "guid": "468bfb71-1f2c-483a-a584-588b103d5a2e"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerChoice",
+    "guid": "144286c8-e219-49f9-bbcc-3061495ed357"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel0Feature",
+    "guid": "0a58cf8b-d4c3-413f-b1de-41203e4e5154"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel1Feature",
+    "guid": "7ab04fc5-a9ad-4d9a-9c9b-15c545540d28"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel2Feature",
+    "guid": "af7a44ae-717a-43ea-8058-b665bd1550f1"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel3Feature",
+    "guid": "6a04d125-0545-48b0-a4b5-89af82c04439"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel4Feature",
+    "guid": "10826d13-4ce5-49a9-9786-94522bc99a47"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel5Feature",
+    "guid": "fb633b7d-a172-44b9-a43b-085bf1fd01c0"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel6Feature",
+    "guid": "c687de39-be55-4297-95ac-a0a0985679da"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel7Feature",
+    "guid": "3039bf30-6b52-42cc-a0db-c8ca9f4cc06a"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel8Feature",
+    "guid": "0c323044-0207-4b9e-9717-68e0a74ed2a0"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerLevel9Feature",
+    "guid": "17bd21c0-d3a6-4796-9cff-8cb3d64e4fd4"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneChoice",
+    "guid": "3e5112c0-8bfc-4cbe-9a99-a50f8abb3e2d"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel0Feature",
+    "guid": "fd73a1b3-c667-40d4-9477-82b97aeddf02"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel1Feature",
+    "guid": "9821a921-2da3-41aa-8419-16a682afaf17"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel2Feature",
+    "guid": "82c1d472-4307-43cc-bca7-d0b6be1407fd"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel3Feature",
+    "guid": "51260f52-22c5-4c9d-b9e1-e773a76c1415"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel4Feature",
+    "guid": "57b75bf5-f921-4958-b387-970cf9732628"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel5Feature",
+    "guid": "e34d1ec8-9d81-4654-999d-41c941643c00"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel6Feature",
+    "guid": "6cf2ffab-8625-49b4-ba36-76bdbeccbbf8"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel7Feature",
+    "guid": "2ee0951f-5cae-468f-9ae8-c2c84601cef3"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel8Feature",
+    "guid": "fd8a7866-4ec3-42eb-a193-074cc2ff780c"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneLevel9Feature",
+    "guid": "762dfdaa-3087-496c-bb05-454372ce9f2a"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerChoice",
+    "guid": "4d416e8f-0c21-48e5-bd16-b45a31055a8a"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel0Feature",
+    "guid": "b26ebb29-aac5-43be-9116-e46e53a70c23"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel1Feature",
+    "guid": "fab5490c-59de-4f71-ad56-131a699db81c"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel2Feature",
+    "guid": "8c9a4fcd-9711-45c0-9b11-f0a43a8ca29f"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel3Feature",
+    "guid": "acf4fab1-b3d9-40fb-acb5-640e11e56021"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel4Feature",
+    "guid": "6128af53-7b2f-43a9-866e-b509a22706b5"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel5Feature",
+    "guid": "e702605e-533d-4b0b-8309-515cca568860"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel6Feature",
+    "guid": "a067a14c-b774-4c48-8a09-2738a1bfb574"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel7Feature",
+    "guid": "a91f9745-21d4-40e2-97dc-baf613051ed3"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel8Feature",
+    "guid": "149e34db-3281-4704-8962-2b1e34346899"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerLevel9Feature",
+    "guid": "0d5d2082-ee49-4272-a2c8-c30e5397009e"
+  },
+  {
+    "name": "SummonerArcanaMagusOneChoice",
+    "guid": "d7837849-7c74-4e75-b769-b184c4116238"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel0Feature",
+    "guid": "e39391f3-c4f4-45f9-984a-0b0732e9bd68"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel1Feature",
+    "guid": "a932c3da-898a-4103-b817-93cf2025762e"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel2Feature",
+    "guid": "ab5039ae-e34f-46ef-9ed0-2e7c86b11f98"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel3Feature",
+    "guid": "958b52a8-3b8e-48af-a8a6-d0dad4557dd0"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel4Feature",
+    "guid": "f3e3fa4c-8680-4cc4-abca-8068b6f7228a"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel5Feature",
+    "guid": "d0f451e5-5a15-4cda-b49b-3532d3c0555a"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel6Feature",
+    "guid": "51a30d97-9cd9-4233-8d71-fe6355b4784a"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel7Feature",
+    "guid": "187bd7ee-e22a-4b18-85a9-1b56e917d399"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel8Feature",
+    "guid": "4af99adf-7f7d-4e72-ac8e-3e58f247cfa2"
+  },
+  {
+    "name": "SummonerArcanaMagusOneLevel9Feature",
+    "guid": "7abcdba4-7940-4ba8-84d1-20a88c9122a6"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerChoice",
+    "guid": "90c568e9-65c4-4bb5-b37e-3ab8e941c43e"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel0Feature",
+    "guid": "9cb3e66e-e428-454f-813f-8aa68678c5df"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel1Feature",
+    "guid": "d8e0a224-f924-447a-a47e-5c76d49aa7ea"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel2Feature",
+    "guid": "739b1d64-c029-4da6-afe7-e175e88378cb"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel3Feature",
+    "guid": "06a044e0-1025-43eb-9d89-3d73ee40a1b1"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel4Feature",
+    "guid": "b1317b1b-9dbd-4e48-9595-466e7391cd16"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel5Feature",
+    "guid": "ef5bff12-8d1d-4462-8bf0-124a2c4503c5"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel6Feature",
+    "guid": "671d5297-27c7-4c66-a311-dd9556718b73"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel7Feature",
+    "guid": "40c3dd93-26a2-4b78-b86e-f0b49cf5fb22"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel8Feature",
+    "guid": "b069f7fd-0da1-43cc-9013-3b9fb7c0e70a"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerLevel9Feature",
+    "guid": "80fec3a1-feba-4ca4-907c-b176decfc384"
+  },
+  {
+    "name": "SummonerArcanaWitchOneChoice",
+    "guid": "628ea894-8963-471e-9627-8d730c505861"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel0Feature",
+    "guid": "05b3dbf0-2006-4b1e-b36a-ff20cd013255"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel1Feature",
+    "guid": "b800fa4e-ead0-479a-8b13-626bc7641b72"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel2Feature",
+    "guid": "c72730c7-f67a-41d0-8c14-ac8658c4a286"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel3Feature",
+    "guid": "49be8837-2b4a-430e-9e98-cb6753d317bc"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel4Feature",
+    "guid": "331ac081-594f-4ccc-b363-460e4bfbd156"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel5Feature",
+    "guid": "81fc2eef-5313-42ef-9aa1-7a9f4b46e9e3"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel6Feature",
+    "guid": "06865548-8d25-4b28-a3f8-2ed7639f6b31"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel7Feature",
+    "guid": "b461dff4-941a-45f8-b401-b1044e84198e"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel8Feature",
+    "guid": "624ef692-0fcc-4533-9df6-08b156759b19"
+  },
+  {
+    "name": "SummonerArcanaWitchOneLevel9Feature",
+    "guid": "82db695e-71f0-49c4-8a87-214e2fc8447e"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerChoice",
+    "guid": "271189b5-13dd-4505-a6cb-8b8f46803d20"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel0Feature",
+    "guid": "72fe01a4-061c-44b6-bbb2-bc88a13e45a9"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel1Feature",
+    "guid": "68c1bd2c-648f-4a17-a590-6e8999b6b378"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel2Feature",
+    "guid": "37ddfef2-30a9-4d6c-a66a-5f792c8c7131"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel3Feature",
+    "guid": "360e3500-3af3-4d51-aff4-9aed3f61d223"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel4Feature",
+    "guid": "e7599023-9020-4b5a-b6fd-8f0625602b3f"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel5Feature",
+    "guid": "88fe0204-7aee-49a0-be08-f86d005d9cf4"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel6Feature",
+    "guid": "5ed2f452-7369-4935-966e-c6febab56200"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel7Feature",
+    "guid": "b5be1c58-dd8e-45d2-8650-40be18813ce3"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel8Feature",
+    "guid": "8da1102c-cfbc-4ddc-a32b-d80d81282f69"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerLevel9Feature",
+    "guid": "d4edfe5b-8a8e-4a93-bff8-ab4e9a0313fb"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneChoice",
+    "guid": "3278c65f-6433-4f2d-a2f9-dbc4701062e1"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel0Feature",
+    "guid": "a23023a7-04b5-4053-a105-14f555958a9f"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel1Feature",
+    "guid": "5b1b0232-f822-4a26-8578-8ed13ee5d21a"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel2Feature",
+    "guid": "ddb49c25-fd1b-4d30-aaa7-7a0f1b7d0cae"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel3Feature",
+    "guid": "6c30a319-544e-4496-a08a-0fb0d8e72ee3"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel4Feature",
+    "guid": "b1ae42f0-7703-4487-b90a-c0a303679cba"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel5Feature",
+    "guid": "68fa3514-bed3-4cae-acc4-aec870a97408"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel6Feature",
+    "guid": "e138d05f-ade4-4e7d-87b9-659d03116e5a"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel7Feature",
+    "guid": "d06aade5-bc5b-40de-a905-585cbcc8e748"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel8Feature",
+    "guid": "4af305a8-93f5-4149-8022-2f58a1f00712"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneLevel9Feature",
+    "guid": "a14fbd55-724d-4178-bcf1-e12349cb70b3"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerChoice",
+    "guid": "46c87bc2-ae24-414b-b0d5-a45068985a48"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel0Feature",
+    "guid": "b3484710-3cc4-4429-aae0-028810b0d024"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel1Feature",
+    "guid": "20ae677d-02ce-4ef3-8478-7d39fbdd7407"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel2Feature",
+    "guid": "7ff0860b-57de-4d7a-b8e9-2a4cb1ef1591"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel3Feature",
+    "guid": "69bfe779-845b-48d6-aec7-2363e1284c93"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel4Feature",
+    "guid": "aa9018b7-7b23-4f77-af28-5f0e989e43cf"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel5Feature",
+    "guid": "d1ec160b-fceb-422e-bdc1-7dedb57c2653"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel6Feature",
+    "guid": "0996bcea-5148-4ef1-b554-c3ee64663f11"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel7Feature",
+    "guid": "e70b5cc2-84af-4b4b-9e17-8abf15335423"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel8Feature",
+    "guid": "7d75b7b6-a81c-4fd2-87b5-bc2a7d164a0b"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerLevel9Feature",
+    "guid": "40fd92a2-eaec-467b-b4a6-a5c136a787d1"
+  },
+  {
+    "name": "SummonerArcanaSummonerOneSelection",
+    "guid": "4e87a57f-752a-4ca7-9927-29d200151db4"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerFirstSelection",
+    "guid": "f9ea4f74-2b5c-4b21-ab66-53a0a2ec1ea7"
+  },
+  {
+    "name": "SummonerArcanaSummonerLowerSecondSelection",
+    "guid": "0b73c7ce-cab6-4e37-b71a-3cf3295fdcf9"
+  },
+  {
+    "name": "SummonerArcanaBardOneSelection",
+    "guid": "837633d6-bff4-4d80-bb54-cd66546fc321"
+  },
+  {
+    "name": "SummonerArcanaBardLowerFirstSelection",
+    "guid": "c2ac4d2a-1071-4914-9eff-969ad1fc2c4c"
+  },
+  {
+    "name": "SummonerArcanaBardLowerSecondSelection",
+    "guid": "123d8839-b899-48be-8fb8-2cad5e88cf05"
+  },
+  {
+    "name": "SummonerArcanaBloodragerOneSelection",
+    "guid": "9edfc5f9-0602-4f26-b2fe-2808f938506d"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerFirstSelection",
+    "guid": "6ed133ad-de48-4bd1-82aa-499ef06574a9"
+  },
+  {
+    "name": "SummonerArcanaBloodragerLowerSecondSelection",
+    "guid": "67241290-e0f5-4e55-8b71-6ae5b2770581"
+  },
+  {
+    "name": "SummonerArcanaHunterOneSelection",
+    "guid": "87137a92-ee1f-4feb-97a9-ee846295ee6d"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerFirstSelection",
+    "guid": "16932e0a-5603-4b78-8e68-44c63d64c51a"
+  },
+  {
+    "name": "SummonerArcanaHunterLowerSecondSelection",
+    "guid": "362c99a2-9d56-4bab-a677-a44a3015023b"
+  },
+  {
+    "name": "SummonerArcanaInquisitorOneSelection",
+    "guid": "e9b67d06-fef7-46f9-8f40-1dfe453b5aa7"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerFirstSelection",
+    "guid": "71a31ed1-eb4b-4364-88c9-f95d3006d9af"
+  },
+  {
+    "name": "SummonerArcanaInquisitorLowerSecondSelection",
+    "guid": "d26d7c63-1622-4841-9b06-05ed530eafe7"
+  },
+  {
+    "name": "SummonerArcanaOracleOneSelection",
+    "guid": "dd236bf9-370f-45c0-917c-8fa2f4bc3c6f"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerFirstSelection",
+    "guid": "84d94877-2a81-4ce5-8c9b-6cb6832f4db2"
+  },
+  {
+    "name": "SummonerArcanaOracleLowerSecondSelection",
+    "guid": "51da553a-b29c-436a-b0ba-0f3b8bce7b05"
+  },
+  {
+    "name": "SummonerArcanaSkaldOneSelection",
+    "guid": "8a32c3ea-6143-4471-819a-565c9ba27c1a"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerFirstSelection",
+    "guid": "c0eb8ba2-dc51-473d-8413-3af7e8fa9fa5"
+  },
+  {
+    "name": "SummonerArcanaSkaldLowerSecondSelection",
+    "guid": "67dddf7b-b4b8-43c4-b90e-cca1f1d93a11"
+  },
+  {
+    "name": "SummonerArcanaSorcererOneSelection",
+    "guid": "4303f9f9-69da-473d-af0f-72779a14d282"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerFirstSelection",
+    "guid": "657bfed0-62ec-4839-8643-bca27085476a"
+  },
+  {
+    "name": "SummonerArcanaSorcererLowerSecondSelection",
+    "guid": "9d39abdd-7e5a-40a4-aa0d-fed093f5f406"
+  },
+  {
+    "name": "SummonerArcanaMagusOneSelection",
+    "guid": "f358ff92-2026-40de-84e6-ac4d0e5dc876"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerFirstSelection",
+    "guid": "144908a6-ccf6-416d-9bd6-46489fd58e50"
+  },
+  {
+    "name": "SummonerArcanaMagusLowerSecondSelection",
+    "guid": "1bfb85c6-f4c6-4b91-a25d-b21a2ca45792"
+  },
+  {
+    "name": "SummonerArcanaWitchOneSelection",
+    "guid": "fa21a121-03c7-4a57-99a7-b0c3db896d11"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerFirstSelection",
+    "guid": "cdfd6ab4-d2fc-4be3-92c3-6188c6f93ac3"
+  },
+  {
+    "name": "SummonerArcanaWitchLowerSecondSelection",
+    "guid": "ecd81524-920a-441e-bde7-c9a908abfa76"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionOneSelection",
+    "guid": "5e6a37ad-9e34-4cab-a787-bd2a54f6b853"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerFirstSelection",
+    "guid": "5ff6d30e-9c4f-4db5-9281-41c0893c0c12"
+  },
+  {
+    "name": "SummonerArcanaEldritchScionLowerSecondSelection",
+    "guid": "2b2227e8-7046-4028-8ac6-8e92838c53f3"
   }
 ]

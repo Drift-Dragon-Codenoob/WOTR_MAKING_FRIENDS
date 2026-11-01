@@ -16,6 +16,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Player candidate build failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'Offline rules failed.' }
 & (Join-Path $root 'tests\Verify-AssemblyAndSource.ps1') -GamePath $GamePath
 & (Join-Path $root 'tests\Verify-CharacterBuildAssembly.ps1') -GamePath $GamePath
+& (Join-Path $root 'tests\Verify-SummonerFeats.ps1') -GamePath $GamePath
 $stage = Join-Path $root ('artifacts\player-staging\' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
 Copy-Item (Join-Path $root 'Output\*') $stage -Recurse
@@ -24,6 +25,7 @@ foreach ($file in 'LICENSE','MESSAGE_TO_BALKOTH.md') { Copy-Item (Join-Path $roo
 Copy-Item (Join-Path $root 'licenses\BlueprintCore-LICENSE') $stage
 Copy-Item (Join-Path $root 'docs\SYNTHESIST_BUILD_FLOW_TEST.md') (Join-Path $stage 'PLAYER_TEST.md')
 Copy-Item (Join-Path $root 'docs\SYNTHESIST_APPEARANCES.md') $stage
+Copy-Item (Join-Path $root 'docs\SYNTHESIST_FEATS.md') $stage
 $infoPath = Join-Path $stage 'Info.json'
 $info = Get-Content $infoPath -Raw | ConvertFrom-Json
 $info.DisplayName = 'MAKING FRIENDS (Synthesist build-flow player test)'

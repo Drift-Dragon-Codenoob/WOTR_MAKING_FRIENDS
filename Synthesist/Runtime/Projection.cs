@@ -31,6 +31,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             Delta(owner.Stats.AC, EidolonProgression.At(state.SummonerLevel).ArmourBonus + 2 +
                 EvolutionStatistics.SharedNaturalArmourDelta(part), ModifierDescriptor.NaturalArmor);
             EvolutionStatistics.Project(part, source);
+            SummonersCallRuntime.Project(part);
             int meld = twin ? 0 : EidolonProgression.MeldBonus(state.SummonerLevel);
             if (meld > 0)
             {

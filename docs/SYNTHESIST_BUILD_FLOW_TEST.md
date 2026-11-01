@@ -25,6 +25,8 @@ Report: whether the build selections appeared, whether each point balance was co
 
 ## Follow-up cases
 
+Four normal feats are now candidates: **Extra Evolution**, **Expanded Arcana**, **Rending Claws** and **Summoner's Call**. They spend your normal feat picks. Keep an ordinary feat for the three-point baseline creation test above; choosing Extra Evolution instead raises the starting allowance to four. See [feat rules and focused player checks](SYNTHESIST_FEATS.md), also included in the ZIP. Native feat selections, combat effects and respec behaviour still await David's tests.
+
 | Case | Action | Expected result |
 |---|---|---|
 | Deliberately unspent points | On another fresh test, finish purchases early. | Ordinary confirmation is unavailable; **Confirm and leave remaining evolution points unspent** explicitly completes that build. Ordinary play cannot reopen allocation. |

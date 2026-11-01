@@ -267,6 +267,8 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
             if (returning && Eidolon.State.IsDead) Eidolon.Descriptor.Resurrect(Owner, 0f, true);
             Eidolon.Damage = State.Durability.Wounds;
             Eidolon.IsInGame = false;
+            SummonersCallRuntime.Summoned(Owner, Eidolon);
+            State.Durability.ChangeMaximum(Math.Max(1, Eidolon.MaxHP));
             try { ApplyProjection(false); }
             catch { RemoveProjection(); State.ForceDismiss(); throw; }
         }
@@ -427,6 +429,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Runtime
                 Eidolon.IsInGame = IsSplit || IsPreparing;
                 NeedsReconcile = false;
             }
+            SummonersCallRuntime.Expire(Owner, Eidolon);
             ReconcileDurabilityMaximum();
             if ((Owner.State.IsDead || Owner.State.IsUnconscious) && (IsFused || IsSplit || IsPreparing || TwinActive || IsRitualActive)) { Dismiss(); return; }
             if (IsRitualActive && Now >= RitualEndsAt)

@@ -167,7 +167,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
             string purchases = !detail ? "" : string.Join("\n", build.Purchases.Select(p => (p.Aspect ? "Aspect: " : "Eidolon: ") +
                 EvolutionIntegration.DisplayName(p.Key, SynthesistBlueprints.BuildFeature(p.Key + "Feature").Name) + (string.IsNullOrEmpty(p.Option) ? "" : " / " + p.Option) + " (" + p.Cost + " points)"));
             return $"{build.Form}; appearance: {AppearanceIntegration.Find(build.Appearance)?.Name ?? "not chosen"}\n" +
-                $"Eidolon points remaining: {build.Remaining}/{EidolonProgression.At(build.Level).EvolutionPoints}. Aspect remaining: {build.AspectRemaining}.\n" +
+                $"Eidolon points remaining: {build.Remaining}/{EidolonProgression.At(build.Level).EvolutionPoints + build.BonusEvolutionPoints} (Extra Evolution: +{build.BonusEvolutionPoints}). Aspect remaining: {build.AspectRemaining}.\n" +
                 $"Natural attacks: {build.NaturalAttacks(false)}/{EidolonProgression.At(build.Level).MaximumNaturalAttacks}.\n" + purchases;
         }
     }

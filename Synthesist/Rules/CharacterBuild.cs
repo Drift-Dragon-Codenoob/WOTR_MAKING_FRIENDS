@@ -20,10 +20,11 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
         public EidolonForm Form;
         public string Appearance;
         public bool Confirmed;
+        public int BonusEvolutionPoints;
         public List<EvolutionPurchase> Purchases = new();
         public int AspectSpent => Purchases.Where(p => p.Aspect).Sum(p => p.Cost);
         public int EidolonSpent => Purchases.Where(p => !p.Aspect).Sum(p => p.Cost);
-        public int Remaining => EidolonProgression.At(Level).EvolutionPoints - EidolonSpent - AspectBudget.Diverted(Level, AspectSpent);
+        public int Remaining => EidolonProgression.At(Level).EvolutionPoints + BonusEvolutionPoints - EidolonSpent - AspectBudget.Diverted(Level, AspectSpent);
         public int AspectRemaining => AspectBudget.Allowance(Level) - AspectSpent;
         public int PurchasedRank(string key, bool aspect) => Purchases.Count(p => p.Key == key && p.Aspect == aspect);
         public int Rank(string key, bool aspect)
@@ -31,16 +32,16 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
         public bool HasArms(bool aspect = false) => aspect || Rank("EvolutionLimbsArms", false) > 0;
         public CharacterBuild Copy() => new()
         {
-            Version = Version, Level = Level, Form = Form, Appearance = Appearance,
+            Version = Version, Level = Level, Form = Form, Appearance = Appearance, BonusEvolutionPoints = BonusEvolutionPoints,
             Confirmed = Confirmed, Purchases = Purchases.Select(p => p.Copy()).ToList()
         };
-        public static CharacterBuild Begin(int level, EidolonForm form, CharacterBuild previous, bool keep)
+        public static CharacterBuild Begin(int level, EidolonForm form, CharacterBuild previous, bool keep, int bonusEvolutionPoints = 0)
         {
             EidolonProgression.At(level);
             if (keep && previous != null && (previous.Level > level || previous.Form != form))
                 throw new InvalidOperationException("Rebuild evolutions after changing base form or reducing Summoner level.");
             var result = keep && previous != null ? previous.Copy() : new CharacterBuild();
-            result.Level = level; result.Form = form; result.Confirmed = false;
+            result.Level = level; result.Form = form; result.Confirmed = false; result.BonusEvolutionPoints = bonusEvolutionPoints;
             result.Appearance = previous?.Appearance;
             return result;
         }
@@ -75,7 +76,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Rules
         {
             if (Version != 1 || !Enum.IsDefined(typeof(EidolonForm), Form) || Purchases == null ||
                 Purchases.Any(p => p == null || string.IsNullOrEmpty(p.Key) || p.Cost < 1) ||
-                AspectSpent > AspectBudget.Allowance(Level) || Remaining < 0)
+                BonusEvolutionPoints < 0 || BonusEvolutionPoints > 5 || AspectSpent > AspectBudget.Allowance(Level) || Remaining < 0)
                 throw new InvalidOperationException("Invalid saved eidolon build.");
             EidolonProgression.At(Level);
         }

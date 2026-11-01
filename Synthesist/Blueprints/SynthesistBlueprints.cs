@@ -121,6 +121,7 @@ namespace WOTR_MAKING_FRIENDS.Synthesist.Blueprints
                 .SetDescription(Text("form.description", "Choose biped, quadruped or serpentine."))
                 .SetAllFeatures(forms).ConfigureWithLogging();
             CreateHealingSpells();
+            SummonerFeats.Create();
             ArchetypeRegistrar.Register(features);
             Ready = true;
         }
