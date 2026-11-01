@@ -6,9 +6,9 @@
 
 ## Installation
 
-Close WotR normally. Back up the installed `Mods/WOTR_MAKING_FRIENDS` folder and your saves. Install `WOTR_MAKING_FRIENDS-build-flow-player-test.zip` using Unity Mod Manager. It retains the existing mod ID and baseline version metadata, with a distinct **Synthesist build-flow player test** display name. Its ZIP has `Info.json` and the DLL at the root. This package has not been installed or launched by Codex.
+Close WotR normally. Back up the installed `Mods/WOTR_MAKING_FRIENDS` folder and your saves. Install `WOTR_MAKING_FRIENDS-build-flow-player-test.zip` using Unity Mod Manager, or copy its verified root contents into the existing mod folder after backup. It retains the existing mod ID and baseline version metadata, with a distinct **Synthesist build-flow player test** display name. Its ZIP has `Info.json` and the DLL at the root. Local installation receipts and backups are recorded under the ignored `artifacts/` directory; `BUILD_INFO.json` identifies the packaged revision and assembly hash. Starting the game is not in-game acceptance.
 
-Keep ToyBox unlimited casting and combined after-combat restoration enabled. Use separate test saves. The earlier local development loader overrides have not been changed by this work.
+Keep ToyBox unlimited casting and combined after-combat restoration enabled. Use separate test saves. The normal relative Unity Mod Manager loader configuration is retained; no development launcher override or automated test interface is needed.
 
 ## First test: creation only
 

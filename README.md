@@ -1,5 +1,11 @@
 # MAKING FRIENDS (Summoner Mod)
 
+**Synthesist fork — development candidate, 1 November 2026.** Work on this fork is on the `synthesist` branch. It includes the original-PF1e Synthesist implementation, 59 cosmetic appearance candidates, four new selectable feats and the reviewed lifecycle/build repairs. The complete archetype is **not yet accepted for release**; version 0.3.0 remains reserved for a tested release. Player packages retain the existing mod ID and baseline version metadata.
+
+Start with the [current player handoff](docs/TESTING_HANDOFF.md). See the [code review and remaining release blockers](docs/SYNTHESIST_CODE_REVIEW.md), [implementation evidence](docs/SYNTHESIST_IMPLEMENTATION.md), [appearance catalogue](docs/SYNTHESIST_APPEARANCES.md) and [feat guide](docs/SYNTHESIST_FEATS.md). David performs in-game testing; current player packages contain no automated acceptance/profiling interface.
+
+The original Making Friends documentation and download links below describe Balkoth's upstream mod. Those download links do not supply this fork's Synthesist test candidate. This fork requires ModMenu 2.0.14 or newer; use the verified player ZIP for its experimental build.
+
 ## [![Download zip](https://github.com/Balkoth-dev/WOTR_MAKING_FRIENDS/blob/master/DownloadButton.png?raw=true "Download zip")](https://github.com/Balkoth-dev/WOTR_MAKING_FRIENDS/releases/latest/download/WOTR_MAKING_FRIENDS.zip)
 
 Requires ModMenu:

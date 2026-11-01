@@ -27,6 +27,7 @@ Copy-Item (Join-Path $root 'licenses\BlueprintCore-LICENSE') $stage
 Copy-Item (Join-Path $root 'docs\SYNTHESIST_BUILD_FLOW_TEST.md') (Join-Path $stage 'PLAYER_TEST.md')
 Copy-Item (Join-Path $root 'docs\SYNTHESIST_APPEARANCES.md') $stage
 Copy-Item (Join-Path $root 'docs\SYNTHESIST_FEATS.md') $stage
+Copy-Item (Join-Path $root 'docs\TESTING_HANDOFF.md') $stage
 $infoPath = Join-Path $stage 'Info.json'
 $info = Get-Content $infoPath -Raw | ConvertFrom-Json
 $info.DisplayName = 'MAKING FRIENDS (Synthesist build-flow player test)'
